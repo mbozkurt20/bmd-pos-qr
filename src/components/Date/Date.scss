@@ -1,0 +1,23 @@
+.date {
+  color: #fff;
+
+  &-title {
+    font-size: 1.25rem;
+  }
+
+  &-time {
+    font-size: 4.25rem;
+    line-height: 4rem;
+    margin-left: -.25rem;
+    letter-spacing: 2px;
+  }
+
+}
+
+
+
+@media screen and (max-width: 992px) {
+  .date {
+    text-align: center;
+  }
+}
