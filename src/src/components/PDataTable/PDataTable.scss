@@ -1,0 +1,116 @@
+.table-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5rem;
+    
+}
+
+.table-nav::-webkit-scrollbar {
+    display: none;
+  }
+@media screen and (max-width: 991px) {
+    .table-nav {
+        flex-direction: column;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 1rem !important;
+    }
+    
+
+}
+
+.table-title {
+    color: #f2125b;
+    padding-left: 0.5rem !important;
+    font-size: 1.25rem !important;
+    font-weight: 500;
+}
+
+.table-filter {
+    min-width: 120px;
+}
+
+th {
+    font-weight: bold !important;
+}
+
+th,
+td {
+    background: transparent;
+    font-weight: 400;
+}
+
+.form-check-input {
+    width: 2.5rem;
+    height: 1.5em;
+    background-color: red;
+}
+
+.form-check-input:checked {
+    background-color: #28a745 !important;;
+    border-color: #28a745 !important;;
+}
+
+.search-icon {
+    position: absolute;
+    left: 0.5rem;
+    top: 0.4rem;
+    font-size: 1.35rem;
+    color: #f2125b99;
+}
+
+.customer-search-input {
+    padding-left: 2rem;
+}
+
+.table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    min-width: 400px;
+    border-radius: 25px;
+}
+
+.table thead tr th {
+    text-align: left;
+}
+
+.table th,
+.table td {
+    padding: 12px 15px;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+
+.table tbody tr:last-of-type {
+    border-bottom: 1px solid transparent;
+}
+
+.table tbody tr.active-row {
+    font-weight: bold;
+    color: #f2125b;
+}
+
+.table tr:last-child th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.table tr:last-child th:last-child {
+    border-top-right-radius: 10px;
+}
+
+.table tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+.table tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
+
+.table tbody tr:hover {
+    background-color: #ddd;
+}

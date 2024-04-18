@@ -1,0 +1,127 @@
+.breadcrumb {
+  margin-bottom: 0px;
+}
+.basket-items{
+  background: #fff;
+  position: relative;
+  width: 25%;
+  padding: 0 1rem;
+
+  &-top{
+    padding: 1rem 0;
+    border-bottom: 1px solid #00000011;
+
+    &-title{
+      color: rgb(246, 33, 86);
+      font-size: 1.125rem;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+  }
+
+  &-order{
+    .basket-items{
+      &-top{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .basket-item-piece{
+      color: rgb(224, 43, 82);
+      font-weight: 600;
+      background: transparent;
+    }
+
+    &-person{
+      background: linear-gradient(145deg, rgb(230, 109, 81) ,rgb(224, 43, 82));
+      color: #fff;
+      padding: 8px;
+      border-radius: 8px;
+      svg{
+        fill: #fff;
+        height: 15px;
+      }
+    }
+  }
+
+  &-content{
+    position: relative;
+    overflow-y: auto;
+    max-height: 390px;
+  }
+
+  &-row-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #000;
+    padding: 1rem 0;
+    border-bottom: 1px solid #00000011;
+  }
+
+  &-bottom{
+    color: #000;
+    border-top: 1px solid #00000011;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 1rem;
+    min-height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    &-title{
+      font-size: 1.125rem;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.basket-total{
+  font-weight: 600;
+  font-size: 1.75rem;
+}
+
+.basket-item{
+  &-left, &-right{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  &-piece{
+    background: rgb(246, 33, 86);
+    width: max-content;
+    min-width: 30px;
+    min-height: 25px;
+    padding: .25rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 25px;
+  }
+
+  &-label{
+    font-weight: 600;
+  }
+
+  &-price{
+    font-weight: 600;
+    font-size: 1.125rem;
+  }
+
+  &-time{
+    margin-right: 1rem;
+  }
+}
+
+.button-green{
+  background: linear-gradient(145deg, rgb(35, 193, 35), green);
+  height: 50px;
+  min-width: 150px;
+}
