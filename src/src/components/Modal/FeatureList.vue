@@ -152,7 +152,7 @@ const setQuantity = (type) => {
         </div>
       </div>
       <div class="col-lg-12">
-        <button @click="onFeatureSelect" class="w-100 text-center py-3">Ekle</button>
+        <button @click="onFeatureSelect" class="btn btn-danger w-100 text-center py-3">Ekle</button>
       </div>
     </div>
   </Modal>
