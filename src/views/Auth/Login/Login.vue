@@ -52,8 +52,8 @@ export default {
   data() {
     return {
       showPassword: false,
-      email: "info@nevapos.com",
-      password: "E123456789",
+      email: "",
+      password: "",
       message: "ssdasd",
     };
   },
