@@ -21,7 +21,7 @@ const getTotal = computed(() => getTotalOfOrders());
               class="orders-top-item-notification"
               style="width: 20px; height: 20px; font-size: 11px"
             >
-              5
+              {{packageStore.orders.length}}
             </div>
           </div>
         </div>
