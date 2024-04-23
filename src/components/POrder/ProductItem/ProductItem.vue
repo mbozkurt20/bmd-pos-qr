@@ -24,6 +24,11 @@ const startPress = (item) => {
     if (item.hasOwnProperty("features") && item.features.length) {
       setAddedProductFeatures(item.features);
     }
+    if (packageRoute.value) {
+      item.price = item.package_price;
+    } else if (fastSell.value) {
+      item.price = item.fast_price;
+    }
     tableDetailStore.selectedProductOnFeature = item;
     setFeatureListModal(true);
   }, 500);
