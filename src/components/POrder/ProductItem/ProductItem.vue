@@ -80,6 +80,7 @@ const submit = (item) => {
       :class="{ 'order-card-active': item.active }"
       v-for="item in product"
       :key="item.id"
+      @mousedown="startPress(item)"
       @touchstart="startPress(item)"
       @mouseup="endPress(item)"
       @touchend="endPress(item)"
