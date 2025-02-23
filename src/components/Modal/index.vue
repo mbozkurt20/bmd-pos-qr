@@ -16,13 +16,13 @@ const { title, icon, isOpened, handleClose, width } = defineProps({
   <div class="wrapper" v-if="isOpened">
     <div class="card" :style="`max-width:${width};`">
       <div class="header">
-        <h2 class="title m-0">
+        <h2 class="title m-0 text-white">
           <ion-icon v-if="icon" :name="icon" />
-          <div>{{ title }} </div>
+          {{ title }}
         </h2>
         <ion-icon class="close" @click="handleClose" style="font-size: 30px;" name="close-circle-outline" />
       </div>
-      <div class="outer-wrapper" :class="title == 'Müşteri Seç' ? 'customer-modal' : ''">
+      <div class="outer-wrapper" :class="title === 'Müşteri Seç' ? 'customer-modal' : ''">
         <slot></slot>
       </div>
     </div>
@@ -34,7 +34,7 @@ ion-icon {
   font-size: 20px;
   margin-right: 8px;
   position: relative;
-  color: rgb(220, 24, 98);
+  color: white;
   top: -1px;
 }
 

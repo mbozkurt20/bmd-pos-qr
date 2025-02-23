@@ -1,41 +1,44 @@
 <template>
-  <div class="wrapper">
-    <ion-icon
-      name="lock-closed-outline"
-      style="font-size: 90px; margin-bottom: 50px"
-    />
+  <div style="display: flex; align-items: center; justify-content: center; height: 100vh;width: 100%;">
+    <div class="wrapper">
+      <ion-icon
+          name="lock-closed-outline"
+          style="font-size: 90px; margin-bottom: 50px"
+      />
 
-    <div class="value-box">
-      <div class="value">
-        <input
-          class="pass-input"
-          type="text"
-          name=""
-          :value="replaceWithAsterisk(passwordText)"
-        />
+      <div class="value-box">
+        <div class="value">
+          <input
+              @keyup.enter="login"
+              class="pass-input"
+              type="text"
+              name=""
+              :value="replaceWithAsterisk(passwordText)"
+          />
+        </div>
+        <button @click="login">
+          <ion-icon name="arrow-forward-outline" style="font-size: 22px" />
+        </button>
       </div>
-      <button @click="login">
-        <ion-icon name="arrow-forward-outline" style="font-size: 22px" />
-      </button>
-    </div>
 
-    <div class="buttons">
-      <div @click="passwordText += '1'" class="button">1</div>
-      <div @click="passwordText += '2'" class="button">2</div>
-      <div @click="passwordText += '3'" class="button">3</div>
-      <div @click="passwordText += '4'" class="button">4</div>
-      <div @click="passwordText += '5'" class="button">5</div>
-      <div @click="passwordText += '6'" class="button">6</div>
-      <div @click="passwordText += '7'" class="button">7</div>
-      <div @click="passwordText += '8'" class="button">8</div>
-      <div @click="passwordText += '9'" class="button">9</div>
-      <div @click="passwordText = ''" class="button">C</div>
-      <div @click="passwordText += '0'" class="button">0</div>
-      <div
-        @click="passwordText = passwordText.slice(0, passwordText.length - 1)"
-        class="button"
-      >
-        <ion-icon name="arrow-back-outline" />
+      <div class="buttons">
+        <div @click="passwordText += '1'" class="button">1</div>
+        <div @click="passwordText += '2'" class="button">2</div>
+        <div @click="passwordText += '3'" class="button">3</div>
+        <div @click="passwordText += '4'" class="button">4</div>
+        <div @click="passwordText += '5'" class="button">5</div>
+        <div @click="passwordText += '6'" class="button">6</div>
+        <div @click="passwordText += '7'" class="button">7</div>
+        <div @click="passwordText += '8'" class="button">8</div>
+        <div @click="passwordText += '9'" class="button">9</div>
+        <div @click="passwordText = ''" class="button">C</div>
+        <div @click="passwordText += '0'" class="button">0</div>
+        <div
+            @click="passwordText = passwordText.slice(0, passwordText.length - 1)"
+            class="button"
+        >
+          <ion-icon name="arrow-back-outline" />
+        </div>
       </div>
     </div>
   </div>
@@ -55,13 +58,14 @@
 }
 
 .wrapper {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
+  border-radius: 25px;
+  width: 20vw;
+  height: 50vh;
   align-items: center;
+  display: flex;
   flex-direction: column;
   justify-content: center;
-
+  background: #f50057;
   .value-box {
     width: 100%;
     display: flex;
@@ -114,6 +118,7 @@
       height: 50px;
       border: 1px solid white;
       border-radius: 100px;
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -165,9 +170,12 @@ axios({
     });
     setLoading(false);
   }
+}).catch(err => {
+  console.log({mb: err})
 });
 
 const login = () => {
+  console.log({users: users.value})
   let user = users.value.find((user) => user.password == passwordText.value);
   passwordText.value = "";
   if (user) {

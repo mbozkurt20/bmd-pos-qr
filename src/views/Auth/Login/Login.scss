@@ -5,7 +5,7 @@
   height: max-content;
   text-align: center;
   margin: 0 auto;
-
+  padding: 25px;
   &-form{
     padding: 25px 20px 10px 20px;
     &-title{
@@ -20,13 +20,13 @@
       color: #fff;
       width: 100%;
       font-size: 16px;
-      background: #34215e;
+      background: #ff1b4fph;
       border:#34215e;
       padding: 15px;
       font-weight: 600;
     }
     &-loginBtn:hover{
-      background: #F22151;
+      background: #ef2b58;
       border: #F22151;
     }
     &-reg{

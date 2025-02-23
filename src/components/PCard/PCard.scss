@@ -1,14 +1,15 @@
 .card {
-    background: transparent !important;
+    background: #e7004d !important;
     border: 0;
     text-align: center;
-
+    border-radius: 25px;
+    padding: 75px;
+    margin-top: 5vh;
     &-items {
         width: 100%;
         display: grid;
         gap: 20px;
         grid-template-columns: auto auto auto auto;
-
 
     }
 
@@ -18,7 +19,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(#000000, 0.05);
+        background: rgba(#000000, 0.2);
         padding: 0.5rem;
         border-radius: 8px;
         @media (max-width: 1024px){
@@ -36,9 +37,9 @@
     }
 
     &-title {
-        margin-top: .5rem;
-        color: #fff;
-        font-size: 1rem;
+        margin-top: .8rem;
+        color: white;
+        font-size: 1.1rem;
         font-weight: 500;
     }
 }

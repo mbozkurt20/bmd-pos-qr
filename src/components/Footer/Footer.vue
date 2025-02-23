@@ -3,9 +3,9 @@
         <div class="container">
             <div class="footer-link d-flex">
               <template v-if="kalangun">
-                <a class="footer-link" href="" >
+                <a class="footer-link bg-white rounded px-5 text-indigo" style="padding: 3px" href="" >
                   <ion-icon name="notifications-outline"></ion-icon>
-                  Abonelik bitimine <span style="font-size: 18px">{{kalangun}}</span> gün kaldı
+                  Abonelik bitimine <span class="text-indigo" style="font-size: 18px">{{kalangun}}</span> gün kaldı
                 </a>
               </template>
               <template v-else>
@@ -17,7 +17,7 @@
 
             </div>
           <template v-if="kalangun">
-            <router-link to="/settings" class="btn btn-primary footer-button">Ayarlar
+            <router-link to="/settings" class="btn btn-white footer-button text-white">Ayarlar
               <ion-icon name="settings-outline"></ion-icon>
             </router-link>
           </template>
@@ -58,12 +58,19 @@ export default {
     const userData = localStorage.getItem('userData');
     if (userData) {
       let user = JSON.parse(userData);
+
+      console.log(user.end_date)
       this.license = user['license'];
-      const start = new Date();
-      const end = new Date(user['end_date']);
-      const differenceInMilliseconds = Math.abs(end - start);
-      const differenceInDays = Math.ceil(differenceInMilliseconds / (1000 * 60 * 60 * 24));
-      this.kalangun = differenceInDays;
+
+      const currentDate = new Date();
+      const endDate = new Date(user.end_date); // $user->end_date yerine geçecek tarih
+
+      const diffTime = Math.abs(endDate - currentDate);
+      const kalanGun = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      console.log(`Kalan Gün: ${kalanGun}`);
+
+      this.kalangun = kalanGun;
 
       this.userData = user;
     }

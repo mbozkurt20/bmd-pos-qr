@@ -6,12 +6,12 @@
           <img class="weatherIcon" :src="icon" />
         </div>
         <div class="col-lg-6" style="margin: 0; padding: 10px 20px">
-          <div class="weatherDegree">{{ degree }} <span>°</span></div>
+          <div class="weatherDegree text-indigo">{{ degree }} <span>°</span></div>
         </div>
-        <div class="weatherDesc">{{ description }}</div>
+        <div class="weatherDesc text-indigo">{{ description }}</div>
       </div>
     </div>
-    <div v-else>Hava Durumu Alınamadı.</div>
+    <div class="text-indigo" v-else>Hava Durumu Alınamadı.</div>
   </div>
 </template>
 <style scoped>

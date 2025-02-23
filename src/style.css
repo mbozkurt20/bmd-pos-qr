@@ -14,13 +14,39 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.text-indigo {
+  color: #3d5afe;
+}
 
+.bg-indigo {
+ background-color: #3d5afe;
+}
+
+.border-indigo {
+  border: 2px solid #3d5afe;
+}
+
+.text-indigo {
+  color: #3d5afe;
+}
+
+.btn-indigo {
+  background-color: #3d5afe;
+}
+
+.btn-indigo:hover {
+  background-color: #5069f8;
+}
+
+.bg-orange {
+  background-color: #fb9d03;
+}
 body {
   margin: 0;
   padding: 0;
   color: #fff;
   /*background-image: url("assets/image/app-background.webp");*/
-  background-image: linear-gradient(90deg,#fe0453 0%, #553c8e 60%, #3a2564 100%);
+  background-color: ghostwhite;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;

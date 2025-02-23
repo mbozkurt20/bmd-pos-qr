@@ -11,18 +11,20 @@
         </div>
         <div class="login-form">
           <input
-            type="email"
-            class="login-input"
-            v-model="email"
-            placeholder="E-posta Adresiniz"
+              type="number"
+              class="login-input"
+              v-model="code"
+              placeholder="Restaurant Kodunuz"
+              @keyup.enter="LoginAttack"
           />
         </div>
         <div class="login-form">
           <input
-            type="password"
-            class="login-input"
-            v-model="password"
-            placeholder="Şifreniz"
+              type="password"
+              class="login-input"
+              v-model="password"
+              placeholder="Şifreniz"
+              @keyup.enter="LoginAttack"
           />
         </div>
         <div class="login-form">
@@ -33,6 +35,7 @@
       </div>
     </div>
   </div>
+
   <PFooter></PFooter>
 </template>
 <style src="./Login.scss" lang="scss" scoped />
@@ -43,6 +46,7 @@ import PFooter from "../../../components/Footer/Footer.vue";
 import PHeader from "../../../components/Header/PHeader/PHeader.vue";
 import Forget from "../Forget.vue";
 import { setLoading } from "../../../store/app";
+import {toast} from "vue3-toastify";
 
 export default {
   components: {
@@ -52,7 +56,7 @@ export default {
   data() {
     return {
       showPassword: false,
-      email: "",
+      code: "",
       password: "",
       message: "ssdasd",
     };
@@ -60,13 +64,17 @@ export default {
 
   methods: {
     LoginAttack() {
+      if (!(this.code && this.password)){
+        return toast.warning('Lütfen Bilgilerinizi Giriniz!')
+      }
+
       setLoading(true);
 
       axios({
         method: "POST",
         url: "v2/login",
         data: {
-          email: this.email,
+          code: this.code,
           password: this.password,
         },
       })
@@ -78,12 +86,17 @@ export default {
               "userData",
               JSON.stringify(response.data.user)
             );
-            await router.push({ name: "Index" });
 
+            toast.success('Giriş Başarılı')
+            setTimeout(() => {
+              router.push({ name: "Index" });
+            },1000)
             setLoading(false);
           }
         })
         .catch((err) => {
+          console.log({error: err})
+          toast.error(err.response.data.message)
           setLoading(false);
         });
     },

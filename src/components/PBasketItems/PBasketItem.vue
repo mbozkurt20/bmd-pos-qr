@@ -59,8 +59,7 @@ onLongPress(
 <template>
   <div
     @click="handleClickItem"
-    :class="[
-      'basket-items-row-item cursor-pointer flex-column align-items-start',
+    :class="['basket-items-row-item cursor-pointer flex-column align-items-start',
       {
         'item-selected': getIsSelectedCartItem(item.id),
       },
@@ -72,9 +71,7 @@ onLongPress(
     <div class="d-flex justify-content-between align-items-center w-100">
       <div class="basket-item-left">
         <h6 class="basket-item-quantity" v-if="type !== 'tables'">
-          {{
-            itemAbsoluteQuantity(item) == 0 ? 1 : itemAbsoluteQuantity(item)
-          }}x
+          {{ itemAbsoluteQuantity(item) == 0 ? 1 : itemAbsoluteQuantity(item)  }}x
         </h6>
         <h6 v-if="item.divideQuantity" class="basket-item-divide-quantity">
           ({{ item.divideQuantity }})
@@ -141,7 +138,6 @@ onLongPress(
       </div>
     </div>
   </div>
-
   <div
     :class="[
       'basket-items-row-item cursor-pointer flex-column align-items-start',

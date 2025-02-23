@@ -2,8 +2,8 @@
   <PHeader></PHeader>
   <div class="container">
     <div class="wrapper-row">
-      <div class="left">
-        <div class="row">
+      <div class="left  p-3 py-5 rounded">
+        <div class="row ">
           <div class="col-lg-6">
             <PDate />
           </div>
@@ -51,6 +51,7 @@ tableDetailStore.selectedIndex = 0;
 
     .left {
       flex: 0.3;
+      margin-right: 2vw;
     }
 
     .right {
