@@ -135,7 +135,7 @@ const handleClickSidebarItem = ({ index }) => {
 
   products.value = areas.value[index].tables;
 };
-const pusher = new Pusher("e312a9f949cef84204fb", {
+const pusher = new Pusher("ae5735e6147dbd8fee74", {
   cluster: "eu",
   encrypted: true,
 });

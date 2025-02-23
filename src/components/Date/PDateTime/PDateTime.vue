@@ -1,5 +1,5 @@
 <template>
-    <div class="date-time py-3 text-indigo">
+    <div class="date-time py-3">
         {{ currentTime }}
     </div>
 </template>

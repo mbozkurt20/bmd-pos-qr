@@ -2,14 +2,14 @@
   <header class="header py-2">
     <div class="container header-row">
       <div class="header-left d-flex">
-        <a href="/" class="header-logo">
+        <a href="/index" class="header-logo">
           <img src="../../../assets/image/logo.png">
         </a>
         <PHeaderNav/>
       </div>
       <div class="header-right d-flex">
         <PHeaderState profileState="false"/>
-        <button class="header-exit" v-if="license" @click="logout">
+        <button class="header-exit text-white" v-if="license" @click="logout">
           <ion-icon name="enter-outline"></ion-icon>
         </button>
       </div>

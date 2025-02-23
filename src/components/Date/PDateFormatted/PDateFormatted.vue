@@ -1,5 +1,5 @@
-<template>border-primary
-    <div class="date-title text-indigo">
+<template>
+    <div class="date-title py-3 px-1">
         {{ formattedDate }}
     </div>
 </template>

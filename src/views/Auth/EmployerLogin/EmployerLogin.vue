@@ -1,5 +1,15 @@
 <template>
-  <div style="display: flex; align-items: center; justify-content: center; height: 100vh;width: 100%;">
+  <div style="
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100%;
+
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+">
     <div class="wrapper">
       <ion-icon
           name="lock-closed-outline"
@@ -40,91 +50,141 @@
           <ion-icon name="arrow-back-outline" />
         </div>
       </div>
+
+      <a class="text-white mt-4 border border-white p-1 px-3" href="/">Geri Git</a>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-#app {
-  height: 100%;
-}
-
-.pass-input {
-  all: unset;
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
   width: 100%;
-  font-size: 32px !important;
-  position: relative;
-  top: 5px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 .wrapper {
   border-radius: 25px;
-  width: 20vw;
+  width: 90%;
+  max-width: 400px;
   height: 50vh;
-  align-items: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
-  background: #f50057;
-  .value-box {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  text-align: center;
+}
 
-    .value {
-      background: #0000002a;
-      max-width: 120px;
-      width: 100%;
-      text-align: center;
-      padding: 10px;
-      height: 55px;
+.icon {
+  font-size: 70px;
+  margin-bottom: 30px;
+  color: white;
+}
 
-      border-radius: 12px 0px 0px 12px;
+.value-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 250px;
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.value {
+  background: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  height: 50px;
+  border-radius: 12px 0 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-      h1 {
-        margin: 0px;
-        font-size: 35px;
-      }
-    }
+.pass-input {
+  all: unset;
+  font-size: 24px;
+  width: 100%;
+}
 
-    button {
-      height: 55px;
-      background: #0000002a;
-      border: none !important;
-      border-radius: 0px 12px 12px 0px;
+button {
+  height: 50px;
+  background: rgba(0, 0, 0, 0.2);
+  border: none;
+  border-radius: 0 12px 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  cursor: pointer;
+}
 
-      &:hover {
-        border: none !important;
-      }
-    }
+.button-icon {
+  font-size: 22px;
+  color: white;
+}
+
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 30px;
+  width: 100%;
+  max-width: 250px;
+}
+
+.button {
+  width: 50px;
+  height: 50px;
+  border: 1px solid white;
+  border-radius: 50%;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.back-link {
+  margin-top: 20px;
+  color: white;
+  text-decoration: none;
+  border: 1px solid white;
+  padding: 5px 15px;
+  border-radius: 5px;
+}
+
+@media (max-width: 500px) {
+  .wrapper {
+    height: auto;
+    padding: 15px;
+  }
+
+  .icon {
+    font-size: 50px;
+    margin-bottom: 20px;
+  }
+
+  .pass-input {
+    font-size: 20px;
   }
 
   .buttons {
-    max-width: max-content;
-    width: 100%;
-    display: grid;
-    gap: 12px;
-    grid-template-columns: auto auto auto;
+    gap: 8px;
+  }
 
-    margin-top: 40px;
-
-    .button {
-      width: 50px;
-      height: 50px;
-      border: 1px solid white;
-      border-radius: 100px;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 25px;
-    }
+  .button {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
   }
 }
 </style>
@@ -175,7 +235,7 @@ axios({
 });
 
 const login = () => {
-  console.log({users: users.value})
+  console.log({users: users.va})
   let user = users.value.find((user) => user.password == passwordText.value);
   passwordText.value = "";
   if (user) {

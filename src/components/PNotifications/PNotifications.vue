@@ -1,9 +1,9 @@
 <template>
   <div class="notifications">
-    <div class="notifications-title text-indigo">
+    <div class="notifications-title">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="ionicon text-indigo"
+        class="ionicon"
         viewBox="0 0 512 512"
       >
         <path
@@ -29,8 +29,8 @@
           class="notifications-item-image"
         />
         <div class="notifications-item-group">
-          <div class="notifications-item-title text-indigo">Yeni Sipariş Var</div>
-          <div class="notifications-item-time text-indigo">
+          <div class="notifications-item-title">Yeni Sipariş Var</div>
+          <div class="notifications-item-time">
             {{ formatTime(item.created_at) }}
           </div>
         </div>

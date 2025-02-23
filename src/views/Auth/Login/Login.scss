@@ -1,6 +1,6 @@
 .login{
   width: 30vw;
-  background: #fff;
+  background: rgb(#000, 0.5);
   border-radius: 1.25vw;
   height: max-content;
   text-align: center;
@@ -9,10 +9,10 @@
   &-form{
     padding: 25px 20px 10px 20px;
     &-title{
-      color: #434343;
+      color: ghostwhite;
     }
     &-desc{
-      color: #434343;
+      color: ghostwhite;
       font-size: 12px;
     }
 
@@ -20,13 +20,13 @@
       color: #fff;
       width: 100%;
       font-size: 16px;
-      background: #ff1b4fph;
+      background: rgb(#000, 0.6);
       border:#34215e;
       padding: 15px;
       font-weight: 600;
     }
     &-loginBtn:hover{
-      background: #ef2b58;
+      background: rgb(#000, 0.5);
       border: #F22151;
     }
     &-reg{
@@ -37,13 +37,13 @@
     }
   }
   &-input{
-    background: #fff;
+    background: rgb(#000, 0.5);
     border: 1px solid #ddd;
     border-radius: 1.25vw;
     padding: 17px;
+    color: white;
     width: 100%;
     font-size: 16px;
-    color: #434343;
     text-align: center;
   }
   &-center{

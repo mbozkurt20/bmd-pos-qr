@@ -1,9 +1,9 @@
 <template>
     <div class="home">
-            <div class="date">
-                <PDateFormatted />
-                <PDateTime />
-            </div>
+      <div class="date">
+        <PDateFormatted />
+        <PDateTime />
+      </div>
     </div>
 </template>
 

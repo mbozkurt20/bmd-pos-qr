@@ -83,7 +83,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #f22351;
+  background: rgb(#000, 0.5);
   color: white;
   cursor: pointer;
   transition: border-color 0.25s;
