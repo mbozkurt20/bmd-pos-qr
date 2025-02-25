@@ -2,13 +2,13 @@
   <div class="weather">
     <div v-if="weather === true">
       <div v-if="icon" class="row">
-        <div class="col-lg-6 weatherIcon">
-          <img class="weatherIcon" :src="icon" />
+        <div class="col-lg-6 weatherIcon text-custom">
+          <img class="weatherIcon " :src="icon" />
         </div>
         <div class="col-lg-6" style="margin: 0; padding: 10px 20px">
-          <div class="weatherDegree ">{{ degree }} <span>°</span></div>
+          <div class="weatherDegree text-custom">{{ degree }} <span>°</span></div>
         </div>
-        <div class="weatherDesc ">{{ description }}</div>
+        <div class="weatherDesc text-custom">{{ description }}</div>
       </div>
     </div>
     <div class="text-white" v-else>Hava Durumu Alınamadı.</div>

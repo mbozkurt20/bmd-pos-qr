@@ -640,6 +640,7 @@ export const fetchMenu = () => {
     },
   })
     .then((response) => {
+      console.log({response:response})
       if (response.data.success === true) {
         tableDetailStore.categories = response.data.categories;
         tableDetailStore.products =
@@ -715,7 +716,7 @@ export const fetchTable = (id) => {
 
 export const fetchFastSell = () => {
   tableDetailStore.table = {
-    name: "Hızlı Satış",
+    name: "Gel-Al",
     isFastSell: true,
   };
   tableDetailStore.note = "";

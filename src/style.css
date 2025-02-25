@@ -14,6 +14,16 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.button-custom {
+  background: rgb(24, 49, 95);
+  color: white;
+}
+
+.text-custom {
+  color: rgba(25, 55, 109, 1);
+}
+
 .text-indigo {
   color: #3d5afe;
 }

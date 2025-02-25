@@ -36,6 +36,7 @@
     <div class="basket-items-bottom">
       <h6 v-if="type === 'tables'">TOPLAM</h6>
 
+      <!-- span> Masalar sayfası<span/-->
       <button
         @click="onSave()"
         class="button-green"
@@ -44,37 +45,43 @@
           tableDetailStore.table.status === 2
         "
       >
-        KAYDET
+        KAYDET 1
       </button>
+
+      <!-- span> Masalar sayfası<span/-->
       <button
         @click="updateProductTables()"
         class="button-green"
         v-if="tableDetailStore.table.status === 1"
       >
-        KAYDET
+        KAYDET 2
       </button>
+
+      <!-- span> Gel-al sayfası<span/-->
       <button
         :disabled="!getIsAvailableFastSellButton"
         @click="onFastSell()"
         class="button-green"
         v-if="tableDetailStore.table.isFastSell !== undefined"
       >
-        KAYDET
+        KAYDET 3
       </button>
+
+      <!-- span> Paketler sayfası<span/-->
       <button
         :disabled="!getIsAvailableFastSellButton"
         @click="onPackages()"
         class="button-green"
         v-if="tableDetailStore.table.isPackages !== undefined"
       >
-        KAYDET
+        KAYDET 4
       </button>
       <button
         @click="takePayment()"
         class="button-green"
         v-if="tableDetailStore.table.status === 3"
       >
-        ÖDEME AL
+        ÖDEME AL 2
       </button>
       <div class="basket-total">
         {{ formatPrice(calculateTotalPrice) }}

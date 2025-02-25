@@ -3,9 +3,9 @@
         <div class="container">
             <div class="footer-link d-flex">
               <template v-if="kalangun">
-                <a class="footer-link bg-white rounded px-5 text-dark" style="padding: 3px" href="" >
+                <a class="footer-link bg-white rounded px-5 text-custom" style="padding: 3px" href="" >
                   <ion-icon name="notifications-outline"></ion-icon>
-                  Abonelik bitimine <span class="text-dark" style="font-size: 18px">{{kalangun}}</span> gün kaldı
+                  Abonelik bitimine <span class="text-custom" style="font-size: 18px">{{kalangun}}</span> gün kaldı
                 </a>
               </template>
               <template v-else>

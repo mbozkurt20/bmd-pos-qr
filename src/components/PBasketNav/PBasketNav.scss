@@ -1,5 +1,5 @@
 .basket-nav{
-  background: rgb(#000, 0.5);
+  background: rgba(25, 55, 109, 1);
   padding-top: .25rem;
   padding-bottom: .25rem;
   border-radius: 25px 0 0 25px;
@@ -7,7 +7,6 @@
 
   &-item{
     background: transparent;
-    border-bottom: 1px solid #ffffff38;
     border-radius: 0;
     display: flex;
     flex-direction: column;
@@ -28,6 +27,6 @@
     }
   }
   &-item:hover{
-    border: 1px solid #ffffff38;
+    background: #ffffff11;
   }
 }

@@ -19,9 +19,9 @@ const sendGift = () => {
 <template>
     <Modal :is-opened="modalStore.giftNote" :handle-close="handleClose" title="İkram Notu">
         <div class="px-2">
-            <textarea type="text" placeholder="Lütfen Bir İkram Nedeni Giriniz.." class="form-control"
+            <textarea placeholder="Lütfen ikram notunu giriniz." class="form-control"
                 v-model="exclude_note" rows="6" />
-            <button class="w-100" @click="sendGift"> Kaydet </button>
+            <button :disabled="!exclude_note.length" class="w-100 button-custom" @click="sendGift"> Kaydet </button>
         </div>
     </Modal>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card2">
     <div class="card-items">
       <div class="card-item" v-for="item in cards">
         <router-link :to="item.url">
@@ -33,7 +33,7 @@ const cards =
       url: "/tables"
     },
       {
-        title: 'Hızlı Satış',
+        title: 'Gel-Al',
         image: basket,
         url: "/fast-sell"
       },

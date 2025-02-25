@@ -2,8 +2,8 @@
   <PHeader></PHeader>
   <div class="container">
     <div class="wrapper-row">
-      <div class="left p-3 py-5 rounded pLeft">
-        <div class="row ">
+      <div class="left rounded pt-5">
+        <div class="row">
           <div class="col-lg-6">
             <PDate />
           </div>
@@ -38,10 +38,6 @@ tableDetailStore.selectedIndex = 0;
 </script>
 
 <style scoped lang="scss">
-.pLeft {
-  background: rgb(#000, 0.5);
-  padding: 50px;
-}
 .container {
   @media (max-width: 1024px) {
     padding: 0px 40px;
@@ -51,7 +47,6 @@ tableDetailStore.selectedIndex = 0;
     width: 100%;
     flex: 1;
     align-items: center;
-    gap: 15px;
 
     .left {
       flex: 0.3;

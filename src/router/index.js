@@ -18,9 +18,12 @@ import Settings from '../views/Setting/index.vue'
 import Menu from "../views/Menu/index.vue"
 import Stocks from "../views/Stocks/index.vue"
 import Report from "../views/Report/index.vue"
-// changes
+import NotFound from '../views/404.vue';
+
 
 const routes = [
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }, // 404 Route
+
     {
         path: '/',
         name: 'Login',
@@ -55,7 +58,7 @@ const routes = [
         name: 'FastSell',
         component: FastSell,
         meta: {
-            title: 'Gel Al',
+            title: 'Gel-Al',
             auth: [1],
             middleware: [auth]
         }

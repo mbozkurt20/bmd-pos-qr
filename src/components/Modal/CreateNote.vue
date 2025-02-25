@@ -12,7 +12,7 @@ const handleClose = () => {
   <Modal :is-opened="modalStore.createNote" :handle-close="handleClose"  title="Not">
         <div class="px-2">
             <textarea type="text" placeholder="Not girin" class="form-control" v-model="tableDetailStore.note" rows="6" />
-            <button class="w-100" @click="handleClose"> Kaydet </button>
+            <button class="w-100 button-custom " @click="handleClose"> Kaydet </button>
         </div>
   </Modal>
 </template>

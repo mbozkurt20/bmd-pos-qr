@@ -1,5 +1,5 @@
 <template>
-    <div class="date-title py-3 px-1">
+    <div class="date-title py-3 px-1 text-custom">
         {{ formattedDate }}
     </div>
 </template>

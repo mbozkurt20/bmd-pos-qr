@@ -10,7 +10,7 @@
       </div>
       <div class="setting-item">
         <div class="left-side">
-          <span class="title">Hızlı Satışlar</span>
+          <span class="title">Gel Al</span>
         </div>
         <div class="right-side">{{ formatPrice(report.endOfDay.self) }}</div>
       </div>

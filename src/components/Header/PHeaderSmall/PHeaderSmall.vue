@@ -3,7 +3,7 @@
         <div class="header-row">
             <div class="header-left d-flex">
                 <div v-if="user && user.type != 3" role="button" class="btn btn-icon btn-sm rounded shadow text-white"
-                    style="background-color: #a12769;" @click="router.push('/index')">
+                    style="background-color: #a12769;" @click="backButton">
                     <ion-icon style="font-size: 22px;top:2.5px;position:relative;" name="arrow-back-outline"></ion-icon>
                 </div>
                 <a href="/" class="header-logo">
@@ -29,10 +29,14 @@
 <script setup lang="ts">
 import PHeaderState from "../PHeaderState/PHeaderState.vue"
 import { device } from "../../../main";
-import router from "../../../router";
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const user = localStorage.user ? JSON.parse(localStorage.getItem('user')) : null 
 
+const backButton = () => {
+  router.back();
+}
 </script>
 
 <style src="./PHeaderSmall.scss" lang="scss" scoped/>

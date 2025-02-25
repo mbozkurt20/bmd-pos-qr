@@ -235,7 +235,6 @@ axios({
 });
 
 const login = () => {
-  console.log({users: users.va})
   let user = users.value.find((user) => user.password == passwordText.value);
   passwordText.value = "";
   if (user) {
