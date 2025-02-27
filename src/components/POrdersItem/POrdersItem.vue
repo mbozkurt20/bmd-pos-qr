@@ -1,10 +1,11 @@
 <template>
   <div
     @click="selectOrder"
-    class="orders-item"
+    class="orders-item cursor-pointer"
     :class="{ 'orders-item-active': getIsSelected }"
   >
     <div class="orders-item-left">
+      <small>{{order.id}}</small>
       <img
         :src="getPlatformImage(order.platform)"
         class="orders-item-image"

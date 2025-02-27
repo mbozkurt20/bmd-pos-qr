@@ -15,6 +15,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.btn-custom {
+  background: rgb(24, 49, 95);;
+}
+
+.btn-custom:hover {
+  background: rgb(29, 57, 110);;
+}
 .button-custom {
   background: rgb(24, 49, 95);
   color: white;

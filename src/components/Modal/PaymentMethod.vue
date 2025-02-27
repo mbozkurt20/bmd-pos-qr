@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Modal from "./index.vue";
 import { modalStore } from "../../store/modal";
-import { sendSelf, sendPackages, getCartTotal } from "../../store/table-detail";
+import { sendSelf, sendPackages, getCartTotal, updatePackages } from "../../store/table-detail";
 import { ref, watch } from "vue";
 import formatPrice from "../../utils/formatPrice";
 import { tableDetailStore } from "../../store/table-detail";
@@ -35,7 +35,12 @@ const selectedMethod = ref();
 
 const sendMethod = () => {
   if (props.type === "packages") {
-    sendPackages(selectedMethod.value.title);
+    if (route.params.id){
+      updatePackages(selectedMethod.value.title,route.params.id)
+    }else {
+      sendPackages(selectedMethod.value.title);
+    }
+
   } else {
     sendSelf(selectedMethod.value.title);
   }
@@ -70,7 +75,7 @@ const sendMethod = () => {
             </div>
           </div>
         </div>
-        <button class="w-100" @click="sendMethod" style="color: black">
+        <button class="w-100 btn-custom" @click="sendMethod">
           Tamamla
         </button>
       </div>

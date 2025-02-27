@@ -287,12 +287,13 @@ export const sendPackages = (paymentMethod) => {
     });
 };
 
-export const updatePackages = (paymentMethod) => {
+export const updatePackages = (paymentMethod,orderId) => {
   setLoading(true);
   axios({
     method: "POST",
     url: "api/v2/order/update_package",
     data: {
+      id: orderId,
       domain: localStorage.getItem("domain"),
       notes: tableDetailStore.note,
       products: parseCart(),

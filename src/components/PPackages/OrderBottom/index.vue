@@ -27,22 +27,8 @@ const cancel = () => {
 
     <div class="orders-right-actions w-100">
       <router-link :to="`/packages/${packageStore.order.id}`">
-        <button class="button-gray">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="ionicon"
-            viewBox="0 0 512 512"
-          >
-            <path
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="32"
-              d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"
-            />
-          </svg>
-          Düzenle
+        <button class="btn-custom ">
+          <strong>Düzenle</strong>
         </button>
       </router-link>
       <button
