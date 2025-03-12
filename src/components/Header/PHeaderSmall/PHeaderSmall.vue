@@ -7,7 +7,7 @@
                     <ion-icon style="font-size: 22px;top:2.5px;position:relative;" name="arrow-back-outline"></ion-icon>
                 </div>
                 <a href="/" class="header-logo">
-                    <img src="../../../assets/image/logo.png" alt="">
+                  <h4 class="text-white mt-2">{{userData ? userData.name : ''}}</h4>
                 </a>
             </div>
             <div class="header-right d-flex">
@@ -32,8 +32,8 @@ import { device } from "../../../main";
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const user = localStorage.user ? JSON.parse(localStorage.getItem('user')) : null 
-
+const user = localStorage.user ? JSON.parse(localStorage.getItem('user')) : null
+const userData =  JSON.parse(localStorage.getItem('userData'))
 const backButton = () => {
   router.back();
 }

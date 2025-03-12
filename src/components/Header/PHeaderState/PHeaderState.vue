@@ -96,12 +96,12 @@ export default {
         ? JSON.parse(localStorage.user).name
         : user["name"];
 
-      this.headerState.push({
-        label: empName,
-        url: "/employer-login",
-        state: user["code"],
-        icon: "person-outline",
-      });
+      // this.headerState.push({
+      //   label: empName,
+      //   url: "/employer-login",
+      //   state: user["code"],
+      //   icon: "person-outline",
+      // });
       this.userData = user;
     }
   },

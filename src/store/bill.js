@@ -1,6 +1,8 @@
 import { reactive } from "vue";
 import { addPayment, tableDetailStore, addProductToTable, updateProductTables, setIsBilling } from "./table-detail.js";
 import { setCustomerListModal } from "./modal.js"
+import {toast} from "vue3-toastify";
+import router from "../router";
 
 export const billStore = reactive({
   amount: 0,
@@ -143,6 +145,7 @@ export const selectBillCartItem = (item) => {
 
 export const clickCalculatorButton = (value) => {
   billStore.amount = parseFloat(billStore.amount);
+
   if (value === 'C') {
     billStore.amount = 0;
     return;
@@ -152,10 +155,8 @@ export const clickCalculatorButton = (value) => {
     return;
   }
   if (value === 'enter') {
-
     billStore.amount = 0;
-    updateProductTables();
-
+    // updateProductTables();
     return;
   }
   if(value == '%'){

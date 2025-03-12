@@ -1,11 +1,18 @@
+.container {
+  display: flex;
+  justify-content: center; /* Yatayda ortalar */
+  align-items: center; /* Dikeyde ortalar */
+  height: 100vh; /* Yüksekliği tam ekran yapar */
+}
+
 .login{
   width: 30vw;
-  background: rgb(#000, 0.5);
-  border-radius: 1.25vw;
+  background: white;
+
   height: max-content;
   text-align: center;
   margin: 0 auto;
-  padding: 25px;
+  padding: 50px;
   &-form{
     padding: 25px 20px 10px 20px;
     &-title{
@@ -20,14 +27,12 @@
       color: #fff;
       width: 100%;
       font-size: 16px;
-      background: rgb(#000, 0.6);
-      border:#34215e;
+      background: rgb(24, 49, 95);
       padding: 15px;
       font-weight: 600;
     }
     &-loginBtn:hover{
-      background: rgb(#000, 0.5);
-      border: #F22151;
+      background: rgb(32, 56, 100);
     }
     &-reg{
       font-weight: 600;
@@ -37,11 +42,11 @@
     }
   }
   &-input{
-    background: rgb(#000, 0.5);
+    background: white;
     border: 1px solid #ddd;
-    border-radius: 1.25vw;
+
     padding: 17px;
-    color: white;
+    color: rgb(24, 49, 95);
     width: 100%;
     font-size: 16px;
     text-align: center;
@@ -50,7 +55,9 @@
     text-align: center;
     color: #2c2c2c;
   }
+}
 
-
-
+.loginH1 {
+  font-size: 72px;
+  color: rgb(24, 49, 95);;
 }

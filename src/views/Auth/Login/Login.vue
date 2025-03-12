@@ -1,42 +1,42 @@
 <template>
-  <PHeader></PHeader>
   <div class="container">
-    <div class="content-row">
-      <div class="login">
-        <div class="login-form center">
-          <h5 class="login-form-title">Restaurant Girişi</h5>
-          <p class="login-form-desc">
-            Tüm Siparişlerinizi tek panelden yönetin.
-          </p>
-        </div>
-        <div class="login-form">
-          <input
-              type="number"
-              class="login-input"
-              v-model="code"
-              placeholder="Restaurant Kodunuz"
-              @keyup.enter="LoginAttack"
-          />
-        </div>
-        <div class="login-form">
-          <input
-              type="password"
-              class="login-input"
-              v-model="password"
-              placeholder="Şifreniz"
-              @keyup.enter="LoginAttack"
-          />
-        </div>
-        <div class="login-form">
-          <button class="login-form-loginBtn" @click="LoginAttack">
-            Giriş Yap
-          </button>
+    <div class="row">
+      <div class="col-md-6">
+        <h1 class="loginH1">Hesabınızda oturum açın</h1>
+      </div>
+      <div class="col-md-6">
+        <div class="login ">
+          <div class="login-form">
+            <h5 class=" login-form-title text-dark">Restaurant Girişi</h5>
+          </div>
+          <div class="login-form">
+            <input
+                type="number"
+                class="login-input"
+                v-model="code"
+                maxlength="6"
+                placeholder="Restaurant Kodunuz"
+                @keyup.enter="LoginAttack"
+            />
+          </div>
+          <div class="login-form">
+            <input
+                type="password"
+                class="login-input"
+                v-model="password"
+                placeholder="Şifreniz"
+                @keyup.enter="LoginAttack"
+            />
+          </div>
+          <div class="login-form">
+            <button class="login-form-loginBtn" @click="LoginAttack">
+              Oturum Aç
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
-  <PFooter></PFooter>
 </template>
 <style src="./Login.scss" lang="scss" scoped/>
 <script lang="ts">

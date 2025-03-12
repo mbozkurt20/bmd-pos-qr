@@ -39,21 +39,17 @@
       <!-- span> Masalar sayfası<span/-->
       <button
         @click="onSave()"
-        class="button-green"
-        v-if="
-          tableDetailStore.table.status === 0 ||
-          tableDetailStore.table.status === 2
-        "
-      >
+        class="btn-custom"
+        v-if="tableDetailStore.table.status === 0 ||
+          tableDetailStore.table.status === 2">
         KAYDET 1
       </button>
 
       <!-- span> Masalar sayfası<span/-->
       <button
         @click="updateProductTables()"
-        class="button-green"
-        v-if="tableDetailStore.table.status === 1"
-      >
+        class="btn-custom"
+        v-if="tableDetailStore.table.status === 1">
         KAYDET 2
       </button>
 
@@ -61,7 +57,7 @@
       <button
         :disabled="!getIsAvailableFastSellButton"
         @click="onFastSell()"
-        class="button-green"
+        class="btn-custom"
         v-if="tableDetailStore.table.isFastSell !== undefined"
       >
         KAYDET 3
@@ -71,17 +67,18 @@
       <button
         :disabled="!getIsAvailableFastSellButton"
         @click="onPackages()"
-        class="button-green"
+        class="btn-custom"
         v-if="tableDetailStore.table.isPackages !== undefined"
       >
-        KAYDET 4
+        KAYDET
       </button>
+<!--      v-if="tableDetailStore.table.status === 3"-->
       <button
         @click="takePayment()"
         class="button-green"
-        v-if="tableDetailStore.table.status === 3"
+        v-if="tableDetailStore.table.status === 1 || tableDetailStore.table.status === 3"
       >
-        ÖDEME AL 2
+        ÖDEME AL
       </button>
       <div class="basket-total">
         {{ formatPrice(calculateTotalPrice) }}
@@ -135,7 +132,7 @@ const calculateTotalPrice = computed(() => {
   if (isBillingPage.value) {
     return getCartTotal() - payedTotal.value;
   } else {
-    const total = props.productItems.reduce((total, item) => {
+    let total = props.productItems.reduce((total, item) => {
       const tableRoute = route.fullPath.split("/")[1] == "tables";
       if (tableRoute) {
         return route.params.id

@@ -3,7 +3,7 @@
     <div class="container header-row">
       <div class="header-left d-flex">
         <a href="/index" class="header-logo">
-          <img src="../../../assets/image/logo.png">
+          <h2 class="text-white mt-2">{{userData ? userData.name : ''}}</h2>
         </a>
         <PHeaderNav/>
       </div>
@@ -29,11 +29,13 @@ export default {
   },
   data() {
     return {
-      license: null
+      license: null,
+      userData: JSON.parse(localStorage.getItem('userData'))
     };
   },
 
   mounted() {
+
     const userData = localStorage.getItem('userData');
     if (userData) {
       let user = JSON.parse(userData);

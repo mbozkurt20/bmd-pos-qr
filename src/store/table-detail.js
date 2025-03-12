@@ -1,4 +1,5 @@
 import { computed, reactive } from "vue";
+import { useRoute } from 'vue-router';
 import axios from "axios";
 import router from "../router/index.js";
 import { billStore, onClickMethod, setBillStoreAmount, setBillingCart } from "./bill.js";
@@ -9,6 +10,7 @@ import { appStore } from "./app.js";
 import "vue3-toastify/dist/index.css";
 import unId from "../utils/uniqueId"
 
+const route = useRoute();
 const tableDetailStoreConst = {
   selectedIndex: 0,
   categories: [],
@@ -221,8 +223,7 @@ export const addPayment = (
   }
 ) => {
   if (billStore.paymentMethod === null) {
-    alert("Lütfen bir ödeme yöntemi seçiniz!");
-    return;
+    return toast.warning("Lütfen bir ödeme yöntemi seçiniz!")
   }
   tableDetailStore.payments.push({
     ...payload,
@@ -462,6 +463,12 @@ export const changeTableStatus = (status) => {
 };
 
 export const updateProductTables = () => {
+  const segments = router.currentRoute.value.path.split('/');
+
+  if (calculatePayedTotal() === 0 && segments[1] === 'tables' && segments[3] === 'bill'){
+    return toast.warning('Lütfen tahsilat tutarı giriniz ve ödeme türü seçiniz!!')
+  }
+
   tableDetailStore.willMoveTableId = null;
   tableDetailStore.isDivide = false;
   setLoading(true);

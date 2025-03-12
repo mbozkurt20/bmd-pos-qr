@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { clickCalculatorButton } from "../../store/bill";
+import {toast} from "vue3-toastify";
+import router from "@/router";
 const handleButtonClick = (val: any) => {
   clickCalculatorButton(val);
 };
@@ -33,7 +35,7 @@ const handleButtonClick = (val: any) => {
       >
         <!-- SVG path data -->
       </svg>
-      Kaydet
+      Ödeme Yap
     </button>
     <button class="bill-calc-item" @click="handleButtonClick('%')">%</button>
     <button class="bill-calc-item" @click="handleButtonClick('0')">0</button>
