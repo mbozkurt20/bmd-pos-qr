@@ -1,7 +1,7 @@
 <template>
   <div class="card2">
     <div class="card-items">
-      <div class="card-item" v-for="item in cards">
+      <div class="card-item" v-for="item in cards" :key="item.slug">
         <router-link :to="item.slug">
           <div class="card-image">
             <img :src="item.icon" alt=""/>
@@ -16,83 +16,49 @@
 </template>
 
 <script setup lang="js">
-import yemeksepeti from "../../assets/image/yemeksepeti.png"
-import table from "../../assets/image/dinner-table.png"
-import delivery from "../../assets/image/delivery.png"
-import basket from "../../assets/image/basket.png"
-import card from "../../assets/image/card.png"
-import box from "../../assets/image/box.png"
-import products from "../../assets/image/burger.png"
-import userplus from "../../assets/image/userplus.png"
-import statistic from "../../assets/image/statistics.png"
 import axios from "axios";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
+import Pusher from "pusher-js";
 
 const cards = ref([]);
 
-axios({
-  url: "api/v2/modules",
-  method: "GET",
-  params: {
-    domain: localStorage.getItem("domain"),
-    tenantId : JSON.parse( localStorage.getItem('userData')).tenant.id
-  }
-}).then((res) => {
-  res.data.modules.forEach(item => {
-   cards.value.push(item.module)
-  })
-}).catch((err) => {
-  console.log({err: err})
-});
+onMounted(() => {
+  axios({
+    url: "api/v2/modules",
+    method: "GET",
+    params: {
+      domain: localStorage.getItem("domain"),
+      tenantId: JSON.parse(localStorage.getItem('userData')).tenant.id
+    }
+  }).then((res) => {
+    console.log({asf:res.data.modules})
+    cards.value = res.data.modules.map(item => ({
+      name: item.module.name,
+      icon: item.module.icon,
+      slug: "/" + item.module.slug
+    }));
+  }).catch((err) => {
+    console.log({ err });
+  });
 
-// const cards =
-//     [
-//       {
-//         title: 'Masalar',
-//         image: table,
-//         status: true,
-//         url: "/tables",
-//         slug: 'tables'
-//       },
-//       {
-//         title: 'Gel-Al',
-//         image: basket,
-//         status: true,
-//         url: "/fast-sell",
-//         slug: 'gel_al'
-//       },
-//       {
-//         title: 'Paketler',
-//         image: delivery,
-//         status: true,
-//         url: "/packages",
-//         slug: 'packages'
-//       },
-//       {
-//         title: 'Online Siparişler',
-//         image: card,
-//         status: true,
-//         url: "/online",
-//         slug: 'online_orders'
-//       },
-//       {
-//         title: 'Stoklar',
-//         image: box,
-//         url: "/stocks",
-//       }, {
-//       title: 'Ürünler',
-//       image: products,
-//       url: "/menu"
-//     }, {
-//       title: 'Cariler',
-//       image: userplus,
-//       url: "/currents"
-//     }, {
-//       title: 'Raporlar',
-//       image: statistic,
-//       url: "/report"
-//     },
-//     ]
+
+  Pusher.logToConsole = true;
+
+  const pusher = new Pusher('ac293c727687682a5b63', {
+    cluster: 'eu'
+  });
+
+  const channel = pusher.subscribe("module-channel");
+
+  channel.bind("module-event", function (data) {
+    cards.value = data.map(item => ({
+      name: item.module.name,
+      icon: item.module.icon,
+      slug: "/" + item.module.slug
+    }));
+  });
+
+});
 </script>
 
 <style src="./PCard.scss" lang="scss" scoped/>

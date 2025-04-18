@@ -72,7 +72,7 @@ const onCreate = () => {
         v-model="credentials.address"
       />
 
-      <button @click="onCreate" style="margin-top: 12px; color: white">
+      <button class="btn-custom" @click="onCreate" style="margin-top: 12px; color: white">
         Kaydet
       </button>
     </div>
