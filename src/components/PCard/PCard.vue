@@ -18,6 +18,7 @@
 <script setup lang="js">
 import axios from "axios";
 import {onMounted, ref} from "vue";
+import {usePusher} from "@/composables/usePusher.js";
 import Pusher from "pusher-js";
 
 const cards = ref([]);
@@ -44,8 +45,8 @@ onMounted(() => {
 
   Pusher.logToConsole = true;
 
-  const pusher = new Pusher('ac293c727687682a5b63', {
-    cluster: 'eu'
+  const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
+    cluster: import.meta.env.VITE_PUSHER_CLUSTER
   });
 
   const channel = pusher.subscribe("module-channel");
@@ -57,7 +58,6 @@ onMounted(() => {
       slug: "/" + item.module.slug
     }));
   });
-
 });
 </script>
 
