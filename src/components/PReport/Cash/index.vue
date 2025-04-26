@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h6 class="content-title">İşlemler</h6>
+  <div class="mb-5">
+    <h5 class="content-title">İşlemler</h5>
     <div class="setting">
       <div class="setting-item">
         <div class="left-side">
@@ -44,8 +44,9 @@
       </div>
     </div>
   </div>
-  <div style="margin-top: 10px">
-    <h6 class="content-title">Kasa Bilgileri</h6>
+
+  <div class="mt-5">
+    <h5 class="content-title">Kasa Bilgileri</h5>
     <div class="setting">
       <div class="setting-item">
         <div class="left-side">
@@ -69,13 +70,14 @@
         <div class="right-side">
           {{
             formatPrice(
-              Number(report.cash.nakit) + Number(report.cash.kredi_karti)
+                Number(report.cash.nakit) + Number(report.cash.kredi_karti)
             )
           }}
         </div>
       </div>
     </div>
   </div>
+
   <div>
     <div class="right-actions">
       <div class="d-flex">
@@ -86,12 +88,13 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, onMounted, onUpdated, watch } from "vue";
-const { contents } = defineProps(["contents"]);
+import {defineProps, ref, onMounted, onUpdated, watch} from "vue";
+
+const {contents} = defineProps(["contents"]);
 const flag = ref();
-import { getCash, report } from "../../../store/report";
+import {getCash, report} from "../../../store/report";
 import formatPrice from "../../../utils/formatPrice";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import {Chart as ChartJS, ArcElement, Tooltip, Legend} from "chart.js";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 const refresh = () => {
@@ -129,6 +132,7 @@ onMounted(() => {
   color: #000;
   margin: 1rem;
 }
+
 .content-title {
   color: #dc1862;
 }
@@ -148,19 +152,23 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
 }
+
 .left-side .title {
   font-size: 18px;
 }
+
 .left-side .description {
   font-size: 12px;
   color: grey;
 }
+
 .right-side span {
   background-color: white;
   padding: 4px;
   border-radius: 12px;
   font-weight: 500;
 }
+
 .switch-container {
   display: flex;
   align-items: center;

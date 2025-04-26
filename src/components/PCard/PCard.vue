@@ -1,4 +1,6 @@
 <template>
+  <button class="btn-sm btn btn-custom float-end mb-2 rounded text-white" @click="clearLocalStorage(1)">Menü Yenile</button>
+
   <div class="card2">
     <div class="card-items">
       <div class="card-item" v-for="item in cards" :key="item.slug">
@@ -18,30 +20,50 @@
 <script setup lang="js">
 import axios from "axios";
 import {onMounted, ref} from "vue";
-import {usePusher} from "@/composables/usePusher.js";
+
 import Pusher from "pusher-js";
+import {toast} from "vue3-toastify";
 
 const cards = ref([]);
 
+const clearLocalStorage = (status) => {
+  localStorage.removeItem('modules');
+
+  if (status){
+    toast.success('Yenilendi')
+  }
+}
+
 onMounted(() => {
-  axios({
-    url: "api/v2/modules",
-    method: "GET",
-    params: {
-      domain: localStorage.getItem("domain"),
-      tenantId: JSON.parse(localStorage.getItem('userData')).tenant.id
-    }
-  }).then((res) => {
-    console.log({asf:res.data.modules})
-    cards.value = res.data.modules.map(item => ({
+  let mod = localStorage.getItem('modules')
+  mod = JSON.parse(mod)
+
+  if (!mod){
+    axios({
+      url: "api/v2/modules",
+      method: "GET",
+      params: {
+        domain: localStorage.getItem("domain"),
+        tenantId: JSON.parse(localStorage.getItem('userData')).tenant.id
+      }
+    }).then((res) => {
+      cards.value = res.data.modules.map(item => ({
+        name: item.module.name,
+        icon: item.module.icon,
+        slug: "/" + item.module.slug
+      }));
+
+      localStorage.setItem('modules', JSON.stringify(res.data.modules))
+    }).catch((err) => {
+      console.log({ err });
+    });
+  }else {
+    cards.value = mod.map(item => ({
       name: item.module.name,
       icon: item.module.icon,
       slug: "/" + item.module.slug
     }));
-  }).catch((err) => {
-    console.log({ err });
-  });
-
+  }
 
   Pusher.logToConsole = true;
 
@@ -57,6 +79,8 @@ onMounted(() => {
       icon: item.module.icon,
       slug: "/" + item.module.slug
     }));
+
+    clearLocalStorage();
   });
 });
 </script>

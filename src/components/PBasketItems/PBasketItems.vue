@@ -60,7 +60,7 @@
         class="btn-custom"
         v-if="tableDetailStore.table.isFastSell !== undefined"
       >
-        KAYDET 3
+        KAYDET
       </button>
 
       <!-- span> Paketler sayfası<span/-->

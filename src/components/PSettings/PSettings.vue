@@ -26,6 +26,8 @@ import PHeaderSmall from "../Header/PHeaderSmall/PHeaderSmall.vue";
 import PSidebar from "../Header/PSidebar/PSidebar.vue";
 import PGeneral from "./PGeneral.vue";
 
+const userData = JSON.parse(localStorage.getItem('userData'))
+
 const navItems = [
   {
     label: "Sistem",
@@ -80,21 +82,7 @@ const dynamicContents = ref([
         description: "Açıklama",
         inputType: "input",
         isReadonly: true,
-        inputData: "Deneme Pide Salonu",
-      },
-      {
-        title: "Dil",
-        description: "Tüm sistem ekranları için varsayılan seçim",
-        inputType: "input",
-        isReadonly: true,
-        inputData: "Türkçe",
-      },
-      {
-        title: "Menü",
-        description: "Açıklama",
-        inputType: "input",
-        isReadonly: true,
-        inputData: "Chocolate Place",
+        inputData: userData ? userData.name : '',
       },
       {
         title: "Gün Sonu Saati",
@@ -102,13 +90,6 @@ const dynamicContents = ref([
         inputType: "input",
         isReadonly: true,
         inputData: "00:00",
-      },
-      {
-        title: "Zaman Dilimi(UTC)",
-        description: "Açıklama",
-        inputType: "input",
-        isReadonly: true,
-        inputData: "+03:00 İstanbul",
       },
     ],
   },

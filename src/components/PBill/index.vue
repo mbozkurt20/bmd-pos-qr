@@ -352,4 +352,4 @@ input:checked + .switch-slider:before {
 }
 </style>
 
-<style src="./PBill.scss" lang="scss"></style>
+<style scoped src="./PBill.scss" lang="scss"></style>

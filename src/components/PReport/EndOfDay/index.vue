@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h6 class="content-title">Gün Sonu</h6>
+  <div class="mb-5">
+    <h5 class="content-title mb-3 px-2">Gün Sonu</h5>
     <div class="setting">
       <div class="setting-item">
         <div class="left-side">
@@ -36,8 +36,8 @@
       </div>
     </div>
   </div>
-  <div style="margin-top: 10px">
-    <h6 class="content-title">Satışlar</h6>
+  <div class="mt-5">
+    <h5 class="content-title mb-3 px-2">Satışlar</h5>
     <div class="setting">
       <div class="setting-item">
         <div class="left-side">

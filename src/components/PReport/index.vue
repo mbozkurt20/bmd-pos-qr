@@ -87,7 +87,6 @@ setActiveKey(0);
   border-radius: 12px;
   padding: 2rem;
   color: #000;
-  height: 700px;
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: none; /* Firefox */

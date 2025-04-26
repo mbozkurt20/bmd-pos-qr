@@ -19,4 +19,4 @@ defineProps([
     </div>
   </div>
 </template>
-<style src="./PBill.scss" lang="scss"></style>
+<style scoped src="./PBill.scss" lang="scss"></style>

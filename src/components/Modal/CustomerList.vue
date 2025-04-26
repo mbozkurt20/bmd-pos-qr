@@ -100,7 +100,7 @@ const onChoose = () => {
           </div>
         </div>
 
-        <button class="btn btn-indigo bg-indigo p-3 mt-1 btn btn-sm text-white text-center w-100 rounded-pill"
+        <button class="btn btn-custom  p-3 mt-1 btn btn-sm text-white text-center w-100 rounded-pill"
                 @click="setCreateCustomerModal(true)"> Yeni Müşteri Ekle </button>
       </div>
     </div>

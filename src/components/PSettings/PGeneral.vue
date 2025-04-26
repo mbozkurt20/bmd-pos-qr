@@ -99,9 +99,10 @@ const settingModal = (item: any) => {
   color: grey;
 }
 .right-side span {
-  background-color: white;
-  padding: 4px;
-  border-radius: 12px;
+  background-color: #20316a;
+  color: white;
+
+  border-radius: 5px;
   font-weight: 500;
 }
 .switch-container {
