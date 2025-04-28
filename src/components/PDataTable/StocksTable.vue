@@ -1,14 +1,18 @@
 <script setup>
-import { ref } from "vue"
+import { ref,computed} from "vue"
 import { Stocks } from "../../store/stocks";
 
-const dataSearch = ref("")
+const searchText = ref("")
 
-const filteredData = () => {
-    let checkName = (stock) => stock.name.toLowerCase().includes(dataSearch.value.toLowerCase())
-    let checkCode = (stock) => stock.code.toLowerCase().includes(dataSearch.value.toLowerCase())
-    return Stocks.default.filter(stock => checkName(stock) || checkCode(stock))
-}
+const filteredData = computed(() => {
+  return Stocks.default.filter((stock) => {
+    const name = stock.name?.toLowerCase() || "";
+    const code = stock.code?.toLowerCase() || "";
+    const search = searchText.value.toLowerCase();
+
+    return name.includes(search) || code.includes(search);
+  });
+});
 </script>
 
 <template>
@@ -18,7 +22,7 @@ const filteredData = () => {
             <div class="table-search">
                 <div class="position-relative">
                     <ion-icon class="search-icon md hydrated" role="img" name="search-outline"></ion-icon>
-                    <input type="text" placeholder="Ara.." v-model="dataSearch" name="customer-search"
+                    <input type="text" placeholder="Ara.." v-model="searchText" name="customer-search"
                         class="customer-search-input form-control form-control-sm rounded-5 border-2 small"
                         autocomplete="off">
                 </div>
@@ -34,8 +38,8 @@ const filteredData = () => {
                         <th>Miktar</th>
                     </tr>
                 </thead>
-                <tbody v-if="filteredData().length > 0">
-                    <tr v-for="stock in filteredData()">
+                <tbody v-if="filteredData.length > 0">
+                    <tr v-for="stock in filteredData">
                         <td>{{ stock.code }}</td>
                         <td>{{ stock.name }}</td>
                         <td>{{ stock.category.name }}</td>

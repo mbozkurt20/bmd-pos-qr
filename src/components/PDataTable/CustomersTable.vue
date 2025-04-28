@@ -1,13 +1,13 @@
 <script setup>
-import { ref } from "vue"
+import {computed, ref} from "vue"
 import { Currents } from "../../store/current";
 
-const dataSearch = ref("")
+const searchText = ref("")
 
-const filteredData = () => {
-    let checkName = (customer) => customer.name.toLowerCase().includes(dataSearch.value.toLowerCase())
-    return Currents.customers.filter(customer => checkName(customer))
-}
+const filteredData = computed(() => {
+  let checkName = (customer) => customer.name.toLowerCase().includes(searchText.value.toLowerCase())
+  return Currents.customers.filter(customer => checkName(customer))
+})
 </script>
 
 <template>
@@ -17,7 +17,7 @@ const filteredData = () => {
             <div class="table-search">
                 <div class="position-relative">
                     <ion-icon class="search-icon md hydrated" role="img" name="search-outline"></ion-icon>
-                    <input type="text" placeholder="Ara.." v-model="dataSearch" name="customer-search"
+                    <input type="text" placeholder="Ara.." v-model="searchText" name="customer-search"
                         class="customer-search-input form-control form-control-sm rounded-5 border-2 small"
                         autocomplete="off">
                 </div>
@@ -32,8 +32,8 @@ const filteredData = () => {
                         <th>Bakiye</th>
                     </tr>
                 </thead>
-                <tbody v-if="filteredData().length > 0">
-                    <tr v-for="customer in filteredData()">
+                <tbody v-if="filteredData.length > 0">
+                    <tr v-for="customer in filteredData">
                         <td>{{ customer.name }}</td>
                         <td>{{ customer.phone }}</td>
                         <td>₺{{ customer.amount }}</td>

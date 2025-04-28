@@ -3,7 +3,7 @@
         <div class="header-row">
             <div class="header-left d-flex">
                 <div v-if="user && user.type != 3" role="button" class="btn btn-icon btn-sm rounded shadow text-white"
-                    style="background-color: #a12769;" @click="backButton">
+                     style="background-color: #e3406f;" @click="backButton">
                     <ion-icon style="font-size: 22px;top:2.5px;position:relative;" name="arrow-back-outline"></ion-icon>
                 </div>
                 <a href="/" class="header-logo">

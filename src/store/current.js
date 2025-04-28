@@ -1,4 +1,3 @@
-
 import { reactive } from "vue";
 import { setLoading } from "./app";
 import axios from "axios";
@@ -20,7 +19,8 @@ export const fetchCustomers = () => {
             domain: localStorage.getItem("domain")
         }
     }).then((res) => {
-        if (res.status == 200) {
+        if (res.status === 200) {
+            console.log({geld:res.data})
             Currents.customers = res.data.customers ?? []
         }
         setLoading(false);
@@ -33,7 +33,7 @@ export const fetchDebtors = () => {
     setLoading(true);
 
     axios({
-        url: "api/v2/customer/debtors",
+        url: "api/v2/customer/payee",
         method: "GET",
         params: {
             domain: localStorage.getItem("domain")

@@ -50,6 +50,7 @@ setActiveKey(0);
         :nav-items="navItems"
         @activeIndex="setActiveKey"
       />
+
       <div class="col-lg-10 basket-content">
         <div class="row">
           <div class="col-lg-12">

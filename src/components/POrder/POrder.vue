@@ -7,7 +7,7 @@
           <div class="input-icon">
             <ion-icon style="font-size: 22px" name="search-outline" />
           </div>
-          <input type="text" class="input" placeholder="Ara" />
+          <input v-model="searchText" type="text" class="input" placeholder="Ara" />
         </div>
         <div
           class="input-wrapper"
@@ -28,7 +28,7 @@
       </div>
     </div>
 
-    <ProductItem :product="orderItems" />
+    <ProductItem :product="filteredOrderItems" />
   </div>
 
   <FeatureList />
@@ -38,13 +38,22 @@
 import PBreadcrumb from "../PBreadcrumb/PBreadcrumb.vue";
 import ProductItem from "./ProductItem/ProductItem.vue";
 import FeatureList from "../Modal/FeatureList.vue";
-import { computed, reactive } from "vue";
+import { computed, reactive,ref } from "vue";
 import {
   tableDetailStore,
   getSelectedCategory,
 } from "../../store/table-detail";
 
 const props = defineProps(["orderItems"]);
+const searchText = ref("");
+
+const filteredOrderItems = computed(() => {
+  if (!props.orderItems) return [];
+
+  return props.orderItems.filter((item: any) =>
+      item.name?.toLowerCase().includes(searchText.value.toLowerCase())
+  );
+});
 
 const getBreadcrumb = computed(() => {
   const selectedCategory = getSelectedCategory();
