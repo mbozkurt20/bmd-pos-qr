@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineProps([
+    'table',
     'payed',
     'left'
 ])
@@ -10,7 +11,7 @@ defineProps([
     <div class="content-top-price">
       <div class="content-top-price-title">Tahsilat Tutarı</div>
       <div class="content-top-price-value">
-        {{ payed }}
+         {{payed}}
       </div>
     </div>
     <div class="content-top-price">
@@ -19,4 +20,5 @@ defineProps([
     </div>
   </div>
 </template>
+
 <style scoped src="./PBill.scss" lang="scss"></style>

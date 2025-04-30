@@ -42,7 +42,7 @@
         class="btn-custom"
         v-if="tableDetailStore.table.status === 0 ||
           tableDetailStore.table.status === 2">
-        KAYDET 1
+        KAYDET
       </button>
 
       <!-- span> Masalar sayfası<span/-->
@@ -50,7 +50,7 @@
         @click="updateProductTables()"
         class="btn-custom"
         v-if="tableDetailStore.table.status === 1">
-        KAYDET 2
+        KAYDET
       </button>
 
       <!-- span> Gel-al sayfası<span/-->

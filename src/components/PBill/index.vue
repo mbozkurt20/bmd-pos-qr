@@ -62,11 +62,15 @@
           </div>
         </div>
       </div>
+
+
       <div class="content-top-right d-flex">
         <Prices
+          :table="tableDetailStore.table"
           :left="formatPrice(getTotalCart)"
           :payed="formatPrice(payedTotal)"
         />
+
         <router-link
           :to="`/tables/${tableDetailStore.table.id}`"
           class="orders-close"
@@ -75,6 +79,8 @@
         </router-link>
       </div>
     </div>
+
+
     <div class="bill mt-4">
       <div class="bill-top d-flex">
         <div class="bill-top-price d-flex">
@@ -92,9 +98,11 @@
       </div>
       <Payments />
     </div>
+
     <div class="bill-calc mt-auto">
       <div class="row">
         <PaymentMethods :items="paymentMethods.slice(0, 5)" />
+
         <div class="col-lg-6">
           <div class="input-wrapper">
             <div class="input-left">
@@ -115,8 +123,10 @@
               {{ formatPrice(billStore.amount) }}
             </div>
           </div>
+
           <Calculator />
         </div>
+
         <PaymentMethods :items="paymentMethods.slice(5)" />
       </div>
     </div>

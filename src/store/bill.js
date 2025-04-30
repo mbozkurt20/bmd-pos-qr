@@ -127,8 +127,9 @@ if(billStore.amount > 0){
   billStore.amount = 0;
   setPaymentMethod(null);
   tableDetailStore.selectedCartItems = []
+}else {
+  toast.warning('Lütfen Bir Tutar Giriniz !!')
 }
-  
 }
 
 export const selectBillCartItem = (item) => {
@@ -155,8 +156,9 @@ export const clickCalculatorButton = (value) => {
     return;
   }
   if (value === 'enter') {
-    billStore.amount = 0;
-    // updateProductTables();
+    // billStore.amount = 0;
+    console.log({amount:  billStore.amount})
+    updateProductTables();
     return;
   }
   if(value == '%'){
@@ -164,5 +166,4 @@ export const clickCalculatorButton = (value) => {
   }else{
     billStore.amount += value;
   }
-
 }

@@ -352,15 +352,20 @@ export const calculatePayedTotal = () => {
   const totalPrice = billStore.selectedCartItems.reduce((acc, item) => {
     return acc + itemAbsolutePrice(item)
   }, 0);
+
+  console.log({totalPrice:totalPrice})
   const paidTotal = tableDetailStore.payments.reduce((acc, payment) => {
     return acc + Number(payment.total);
   }, 0);
-  if (paidTotal > 0 && totalPrice == paidTotal && tableDetailStore.selectedCartItems.length && tableDetailStore.isBilling) {
+
+  console.log({paidTotal:paidTotal})
+  if (paidTotal > 0 && totalPrice === paidTotal && tableDetailStore.selectedCartItems.length && tableDetailStore.isBilling) {
     let cartItems = tableDetailStore.selectedCartItems;
     let newSelected = cartItems.map(i => ({ ...i, exclude: 1 }))
     setUpdatedCartItems(newSelected);
     setIsBilling(false);
   }
+
   return paidTotal
 };
 
@@ -466,12 +471,14 @@ export const updateProductTables = () => {
   const segments = router.currentRoute.value.path.split('/');
 
   if (calculatePayedTotal() === 0 && segments[1] === 'tables' && segments[3] === 'bill'){
-    return toast.warning('Lütfen tahsilat tutarı giriniz ve ödeme türü seçiniz!!')
+    return toast.warning('Lütfen tahsilat tutarı giriniz veya ödeme türü seçiniz!!')
   }
 
   tableDetailStore.willMoveTableId = null;
   tableDetailStore.isDivide = false;
+
   setLoading(true);
+
   let updateData = {
     domain: localStorage.getItem("domain"),
     table_id: tableDetailStore.table.id,
@@ -480,6 +487,7 @@ export const updateProductTables = () => {
     tahsil: calculatePayedTotal(),
     notes: tableDetailStore.note,
   }
+
   let payments = tableDetailStore.payments.map((e) => ({
     ...e,
     products: e.products.map(product => {
@@ -490,10 +498,12 @@ export const updateProductTables = () => {
       }
     }),
     customer_id: tableDetailStore.customer?.id || 0
-  }))
+  }));
+
   if (payments.length > 0) {
     updateData.payments = payments
   }
+
   axios({
     method: "POST",
     url: "api/v2/area/table_order_update",
@@ -502,14 +512,17 @@ export const updateProductTables = () => {
     .then((response) => {
       setLoading(false);
       if (checkUserType(3)) {
-        router.push("/employer-login");
+        // router.push("/employer-login");
       } else {
-        router.push("/tables");
+        // router.push("/tables");
       }
+      console.log({updateData:updateData})
+      // toast.success(`${updateData.tahsil}₺ Tutarında Ödeme Alındı.`)
     })
-    .catch((e) => {
+    .catch((error) => {
       setLoading(false);
-      console.log("err", e);
+      toast.warning(error.response.data.message)
+      console.log({error:error});
     });
 };
 

@@ -9,6 +9,8 @@ import {
   tableDetailStore,
   setWillMoveTableId,
 } from "../../../store/table-detail";
+
+
 import { computed } from "vue";
 import { appStore } from "../../../store/app";
 import { onLongPress } from "@vueuse/core";
@@ -64,6 +66,7 @@ const cancelPress = () => {
     <ReviseCard :table="table" v-if="table.status === 2" />
     <ProcessingCard :table="table" v-if="table.status === 3" />
   </div>
+
   <template v-else>
     <ActiveCard :table="table" v-if="table.status === 1" />
     <router-link :to="`/tables/${table.id}`">

@@ -24,17 +24,7 @@ const handleButtonClick = (val: any) => {
     <button class="bill-calc-item" @click="handleButtonClick('3')">3</button>
     <button
       @click="handleButtonClick('enter')"
-      class="bill-calc-item bill-calc-item-enter button-pink"
-    >
-      <svg
-        data-v-9d009df2=""
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-        class="ionicon"
-        viewBox="0 0 512 512"
-      >
-        <!-- SVG path data -->
-      </svg>
+      class="bill-calc-item bill-calc-item-enter button-pink py-4">
       Ödeme Yap
     </button>
     <button class="bill-calc-item" @click="handleButtonClick('%')">%</button>
@@ -46,5 +36,12 @@ const handleButtonClick = (val: any) => {
 <style scoped lang="scss">
 .button-pink {
   background: #dc1862 !important;
+}
+
+.button-pink:hover {
+  background: #2ac900 !important;
+}
+.bill-calc-item:hover {
+  background: #dc1862;
 }
 </style>

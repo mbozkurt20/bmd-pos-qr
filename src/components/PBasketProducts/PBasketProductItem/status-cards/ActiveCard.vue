@@ -8,12 +8,7 @@ const props = defineProps(["table"]);
 <template>
   <div
     class="basket-item basket-item-active"
-    :style="
-      tableDetailStore.willMoveTableId == props.table.id
-        ? 'background-color: #6e45bb'
-        : ''
-    "
-  >
+    :style="tableDetailStore.willMoveTableId == props.table.id ? 'background-color: #6e45bb' : ''">
     <div class="basket-item-top">
       <div class="basket-item-payment d-flex">
         <div
@@ -43,7 +38,9 @@ const props = defineProps(["table"]);
     </div>
     <div class="basket-item-bottom">
       <div class="basket-item-time">
-        {{ calculateTime(table.updated_at) }}
+        <span> Son Güncelleme</span>
+        <span> (Saat Dakika)</span>
+        <h6 class="bold mt-1  ">  {{ calculateTime(table.updated_at) }}</h6>
       </div>
     </div>
   </div>
