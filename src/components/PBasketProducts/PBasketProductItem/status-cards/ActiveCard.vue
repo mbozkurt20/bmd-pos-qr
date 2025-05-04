@@ -8,7 +8,7 @@ const props = defineProps(["table"]);
 <template>
   <div
     class="basket-item basket-item-active"
-    :style="tableDetailStore.willMoveTableId == props.table.id ? 'background-color: #6e45bb' : ''">
+    :style="tableDetailStore.willMoveTableId == props.table.id ? 'background-color: #9ccc65' : ''">
     <div class="basket-item-top">
       <div class="basket-item-payment d-flex">
         <div

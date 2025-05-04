@@ -43,11 +43,22 @@
         </div>
       </div>
     </a>
+
+
+<!--    <div class="header-state-link d-flex">-->
+<!--      <div class="header-state-texts">-->
+<!--        <div class="header-state-title">-->
+<!--          <button @click="handleLogout" class="btn btn-light">Çıkış Yap</button>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
 <script>
 import { ref, onMounted, onUnmounted } from "vue";
+import router from "../../../router/index.js"; // Router'ı kullanmak için
+
 export default {
   setup() {
     const isOnline = ref(navigator.onLine);
@@ -67,6 +78,17 @@ export default {
     });
 
     return { isOnline };
+  },
+  methods: {
+    handleLogout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('domain');
+      localStorage.removeItem('userData');
+      localStorage.removeItem('user');
+
+      // Login sayfasına yönlendir
+      router.push({ name: 'Login' });
+    }
   },
   data() {
     return {

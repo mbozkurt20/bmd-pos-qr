@@ -9,14 +9,14 @@ const props = defineProps(['table'])
   <div class="basket-item" :class="`basket-item-processing`">
     <div class="basket-item-top">
       <div class="basket-item-payment d-flex">
-        <div class="d-flex align-items-center" v-if="table.orders[0].printed > 0">
+        <div class="d-flex align-items-center" v-if="table.orders && table.orders.length > 0 && table.orders[0].printed > 0">
           <ion-icon style="font-size:20px;" name="print-outline"></ion-icon>
           {{ table.orders[0].printed }}
         </div>
       </div>
       <div class="basket-item-shape"></div>
       <div class="basket-item-person d-flex">
-        <div class="d-flex align-items-center" v-if="table.orders[0].customer_count > 0">
+        <div class="d-flex align-items-center" v-if="table.orders && table.orders.length > 0 && table.orders[0].customer_count > 0">
           {{ table.orders[0].customer_count }}
           <ion-icon style="font-size:20px;" name="person-outline"></ion-icon>
         </div>

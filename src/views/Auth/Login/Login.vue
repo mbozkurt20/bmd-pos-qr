@@ -66,7 +66,11 @@ export default {
   methods: {
     LoginAttack() {
       if (!(this.code && this.password)) {
-        return toast.warning('Lütfen Bilgilerinizi Giriniz!')
+        return toast('Lütfen Bilgilerinizi Giriniz!',{
+          "theme": "dark",
+          "type": "warning",
+          "pauseOnFocusLoss": false
+        })
       }
 
       setLoading(true);
@@ -85,7 +89,11 @@ export default {
               localStorage.setItem("userData", JSON.stringify(response.data.user));
               this.login();
 
-              toast.success('Giriş Başarılı')
+              toast('Giriş Başarılı',{
+                "theme": "dark",
+                "type": "success",
+                "pauseOnFocusLoss": false
+              })
 
               setTimeout(() => {
                 const user = this.users[0];
@@ -98,7 +106,11 @@ export default {
             }
           }).catch((err) => {
             console.log({error: err})
-            toast.error(err.response.data.message)
+            toast(err.response.data.message,{
+              "theme": "dark",
+              "type": "error",
+              "pauseOnFocusLoss": false
+            })
             setLoading(false);
           });
     },

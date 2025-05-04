@@ -13,7 +13,7 @@
         {{ getCustomer }}
       </div>
     </div>
-    <div class="basket-items-content">
+    <div class="basket-items-content2">
       <div class="basket-items-row">
         <div style="color: black"></div>
         <PBasketItem
@@ -42,7 +42,7 @@
         class="btn-custom"
         v-if="tableDetailStore.table.status === 0 ||
           tableDetailStore.table.status === 2">
-        KAYDET
+        KAYDET 2
       </button>
 
       <!-- span> Masalar sayfası<span/-->
@@ -50,7 +50,7 @@
         @click="updateProductTables()"
         class="btn-custom"
         v-if="tableDetailStore.table.status === 1">
-        KAYDET
+        KAYDET 3
       </button>
 
       <!-- span> Gel-al sayfası<span/-->
@@ -60,7 +60,7 @@
         class="btn-custom"
         v-if="tableDetailStore.table.isFastSell !== undefined"
       >
-        KAYDET
+        KAYDET 4
       </button>
 
       <!-- span> Paketler sayfası<span/-->
@@ -70,7 +70,7 @@
         class="btn-custom"
         v-if="tableDetailStore.table.isPackages !== undefined"
       >
-        KAYDET
+        KAYDET 5
       </button>
 <!--      v-if="tableDetailStore.table.status === 3"-->
       <button
@@ -80,6 +80,7 @@
       >
         ÖDEME AL
       </button>
+
       <div class="basket-total">
         {{ formatPrice(calculateTotalPrice) }}
       </div>

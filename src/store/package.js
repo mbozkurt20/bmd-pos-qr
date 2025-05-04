@@ -111,13 +111,13 @@ export const setHandoveredCourier = (status, orderId = undefined) => {
       // changeOrderStatus(status);
       if(res.data.success){
         packageStore.order.courier = packageStore.courier
-        toast(res.data.message, {
-          "theme": "light",
-          "type": "success",
-          "position": "top-center",
-          "autoClose": 2000,
-          "dangerouslyHTMLString": true
-        })
+        // toast(res.data.message, {
+        //   "theme": "light",
+        //   "type": "success",
+        //   "position": "top-center",
+        //   "autoClose": 2000,
+        //   "dangerouslyHTMLString": true
+        // })
 
       }
       setLoading(false);

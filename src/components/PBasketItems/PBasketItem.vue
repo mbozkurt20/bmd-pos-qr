@@ -237,7 +237,7 @@ onLongPress(
         </div>
       </div>
       <div class="basket-item-right">
-        <div class="basket-item-price">₺{{ itemAbsolutePrice(item) }}</div>
+        <div class="basket-item-price">{{ itemAbsolutePrice(item) }}₺</div>
       </div>
     </div>
     <div class="badge ps-2 text-dark text-start w-100" v-if="item.featureList">

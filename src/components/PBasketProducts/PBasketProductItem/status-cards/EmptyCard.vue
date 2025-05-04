@@ -144,7 +144,7 @@ const go = () => {
     <div class="basket-item-title">
       {{ table.name }}
     </div>
-    <div class="basket-item-state">Boş</div>
+    <div class="basket-item-state">Masa Müsait</div>
   </div>
 </template>
 

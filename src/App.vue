@@ -29,7 +29,10 @@ onMounted(() => {
 watch(
   () => appStore.caller,
   () => {
-    toast.info("ÇAĞRI: " + appStore.caller.data, {
+    toast("ÇAĞRI: " + appStore.caller.data, {
+      "theme": "dark",
+      "type": "info",
+      "pauseOnFocusLoss": false,
       onClick: () => {
         router.push(`/packages/new`);
       },

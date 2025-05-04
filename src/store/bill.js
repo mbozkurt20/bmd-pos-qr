@@ -128,7 +128,11 @@ if(billStore.amount > 0){
   setPaymentMethod(null);
   tableDetailStore.selectedCartItems = []
 }else {
-  toast.warning('Lütfen Bir Tutar Giriniz !!')
+  toast('Lütfen Bir Tutar Giriniz !!',{
+    "theme": "dark",
+    "type": "warning",
+    "pauseOnFocusLoss": false
+  })
 }
 }
 

@@ -30,7 +30,11 @@ const clearLocalStorage = (status) => {
   localStorage.removeItem('modules');
 
   if (status){
-    toast.success('Yenilendi')
+    toast('Masalar Yenilendi',{
+      "theme": "dark",
+      "type": "success",
+      "pauseOnFocusLoss": false
+    })
   }
 }
 
