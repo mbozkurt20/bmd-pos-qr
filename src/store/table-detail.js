@@ -407,12 +407,19 @@ export const addProductToTable = () => {
             .then((response) => {
                 if (response.data.success === true) {
                     setLoading(false);
+
+                    console.log({asf: response})
                     tableDetailStore.customer = null;
                     tableDetailStore.selectedCartItems = []
                     tableDetailStore.selectedIndex = 0;
+
+                    if (!tableDetailStore.table.status){
+                        tableDetailStore.table.status = 1;
+                    }
+
                     // router.push("/tables");
 
-                    toast('Adisyon Güncellendi',{
+                    toast('Adisyon Güncellendi', {
                         "theme": "dark",
                         "type": "success",
                         "pauseOnFocusLoss": false
@@ -448,7 +455,7 @@ export const setReservation = (notes) => {
     })
         .then((res) => {
             if (res.data.success === true) {
-                toast('Masa Rezerve Edildi',{
+                toast('Masa Rezerve Edildi', {
                     "theme": "dark",
                     "type": "success",
                     "pauseOnFocusLoss": false
@@ -472,7 +479,7 @@ export const changeTableStatus = (status) => {
     })
         .then((res) => {
             if (res.data.success === true) {
-                toast('Masa Güncellendi',{
+                toast('Masa Güncellendi', {
                     "theme": "dark",
                     "type": "success",
                     "pauseOnFocusLoss": false
@@ -540,10 +547,10 @@ export const updateProductTables = () => {
                 "pauseOnFocusLoss": false
             })
 
-            if (response.data.data.total === response.data.data.tahsil){
-               setTimeout(() => {
-                   router.push("/tables");
-               },1100);
+            if (response.data.data.total === response.data.data.tahsil) {
+                setTimeout(() => {
+                    router.push("/tables");
+                }, 1100);
             }
 
         })
@@ -572,17 +579,18 @@ export const interactSelectedCartProduct = (type) => {
     }
     switch (type) {
         case "increment":
-            if (product.divideQuantity && product.divideQuantity >= 1) {
-                product.divideQuantity--;
+            console.log({tt: product})
+            if (product.quantity && product.quantity >= 1) {
+                product.quantity++;
             }
             break;
         case "decrement":
-            if (product.divideQuantity) {
-                if (product.divideQuantity < product.quantity) {
-                    product.divideQuantity++;
+            if (product.quantity) {
+                if (product.quantity > 1) {
+                    product.quantity--;
                 }
             } else {
-                product.divideQuantity = 1
+                product.quantity = 1
             }
             break;
         case "remove":
@@ -638,7 +646,10 @@ export const giftCartProduct = (note = '') => {
         });
         tableDetailStore.selectedCartItems = [];
     } else {
-        alert("İkram edilemez.");
+        toast('Üzgünüz, ikram edilemeyen ürün!!',{
+            type: 'warning',
+            theme: 'dark'
+        })
     }
 };
 

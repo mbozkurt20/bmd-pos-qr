@@ -42,7 +42,7 @@
         class="btn-custom"
         v-if="tableDetailStore.table.status === 0 ||
           tableDetailStore.table.status === 2">
-        KAYDET 2
+        KAYDET
       </button>
 
       <!-- span> Masalar sayfası<span/-->
@@ -50,7 +50,7 @@
         @click="updateProductTables()"
         class="btn-custom"
         v-if="tableDetailStore.table.status === 1">
-        KAYDET 3
+        KAYDET
       </button>
 
       <!-- span> Gel-al sayfası<span/-->
@@ -60,7 +60,7 @@
         class="btn-custom"
         v-if="tableDetailStore.table.isFastSell !== undefined"
       >
-        KAYDET 4
+        KAYDET
       </button>
 
       <!-- span> Paketler sayfası<span/-->
@@ -70,7 +70,7 @@
         class="btn-custom"
         v-if="tableDetailStore.table.isPackages !== undefined"
       >
-        KAYDET 5
+        KAYDET
       </button>
 <!--      v-if="tableDetailStore.table.status === 3"-->
       <button

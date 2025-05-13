@@ -42,19 +42,19 @@ const getBasketNavItems = computed(() => {
   if (tableDetailStore.selectedCartItems.length > 0) {
     const result = [];
     result.push({
-      label: " ",
+      label: "Ekle",
       icon: "add-outline",
       onClick: () => {
         setIsDivide(true);
-        interactSelectedCartProduct("decrement");
+        interactSelectedCartProduct("increment");
       },
     });
     result.push({
-      label: " ",
+      label: "Çıkar",
       icon: "remove-outline",
       onClick: () => {
         setIsDivide(true);
-        interactSelectedCartProduct("increment");
+        interactSelectedCartProduct("decrement");
       },
     });
 

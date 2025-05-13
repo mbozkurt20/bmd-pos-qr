@@ -9,13 +9,13 @@ defineProps([
 <template>
   <div class="d-flex" style="gap: 36px;">
     <div class="content-top-price">
-      <div class="content-top-price-title">Tahsilat Tutarı</div>
-      <div class="content-top-price-value">
+      <div class="content-top-price-title mb-2">Tahsilat Tutarı</div>
+      <div class="content-top-price-value"  style="color: #008837">
          {{payed}}
       </div>
     </div>
     <div class="content-top-price">
-      <div class="content-top-price-title">Toplam</div>
+      <div class="content-top-price-title mb-2">Ödenecek Tutar</div>
       <div class="content-top-price-value content-top-price-value-pink">{{ left }}</div>
     </div>
   </div>
