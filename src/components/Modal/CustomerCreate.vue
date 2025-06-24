@@ -7,12 +7,15 @@ import { reactive } from "vue";
 import { setLoading } from "../../store/app";
 import { appStore } from "../../store/app";
 import { onMounted, ref, watch } from "vue";
+import {toast} from "vue3-toastify";
 watch(
   () => appStore.caller,
   () => {
     credentials.phone = appStore.caller.data;
   }
 );
+const message = ref(null);
+
 const credentials = reactive({
   name: "",
   phone: appStore.caller ? appStore.caller.data : "",
@@ -34,17 +37,29 @@ const onCreate = () => {
     },
   })
     .then((response) => {
+      console.log({res: response})
       if (response.data.success) {
+        message.value = response.data.message;
         addCustomer(response.data.customer);
         tableDetailStore.customer = response.data.customer;
         handleClose();
         Object.assign(credentials, { name: "", phone: "", address: "" });
         setLoading(false);
+
+        setTimeout(() => {
+          message.value = "";
+        },5000);
       }
     })
     .catch((err) => {
+      setLoading(false);
+
+      toast('Üzgünüz, müşteri eklenemedi.',{
+        theme: 'dark',
+        type: 'warning'
+      })
       console.log("err", err);
-    });
+    })
 };
 </script>
 
@@ -54,27 +69,31 @@ const onCreate = () => {
     :handle-close="handleClose"
     title="Müşteri Ekle"
   >
-    <div class="wrapper">
-      <input
-        type="text"
-        placeholder="İsim Soyisim"
-        v-model="credentials.name"
-      />
-      <input
-        type="text"
-        placeholder="Telefon Numarası"
-        v-model="credentials.phone"
-      />
-      <textarea
-        type="text"
-        rows="6"
-        placeholder="Adres"
-        v-model="credentials.address"
-      />
+    <p class="py-3 text-custom" v-show="message">{{message}}</p>
 
-      <button class="btn-custom" @click="onCreate" style="margin-top: 12px; color: white">
-        Kaydet
-      </button>
+    <div class="wrapper">
+      <form @submit.prevent="onCreate" >
+        <input
+            type="text" required
+            placeholder="İsim Soyisim"
+            v-model="credentials.name"
+        />
+        <input
+            type="tel"k required
+            placeholder="Telefon Numarası"
+            v-model="credentials.phone"
+        />
+        <textarea
+            type="text"
+            rows="6" required
+            placeholder="Adres"
+            v-model="credentials.address"
+        />
+
+        <button class="btn-custom" type="submit" style="margin-top: 12px; color: white">
+          Kaydet
+        </button>
+      </form>
     </div>
   </Modal>
 </template>

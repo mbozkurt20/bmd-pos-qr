@@ -417,8 +417,6 @@ export const addProductToTable = () => {
                         tableDetailStore.table.status = 1;
                     }
 
-                    // router.push("/tables");
-
                     toast('Adisyon Güncellendi', {
                         "theme": "dark",
                         "type": "success",
