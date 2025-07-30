@@ -82,7 +82,7 @@ const sendCourierToSet = (id) => {
         <div class="couriers">
           <div
             @click="onChoose(courier.id)"
-            class="courier-row"
+            class="courier-row cursor-pointer hoverable"
             :class="{ active: selectedCourierId == courier.id }"
             v-for="courier in packageStore.couriers.filter((post) => {
               return post.name
@@ -92,7 +92,7 @@ const sendCourierToSet = (id) => {
           >
             <div class="d-flex justify-content-start align-items-center">
               <ion-icon style="font-size: 18px" name="person-outline" />
-              <span class="text-dark">{{ courier.name }}</span>
+              <span class="">{{ courier.name }}</span>
             </div>
             <div>{{ courier.phone }}</div>
           </div>
@@ -114,6 +114,12 @@ const sendCourierToSet = (id) => {
   &.active {
     background-color: rgb(241 238 247);
   }
+}
+
+.courier-row:hover{
+  background: #dc1862;
+  color: white;
+  border-radius: 10px;
 }
 .couriers {
   height: 320px;
