@@ -8,7 +8,6 @@ const props = defineProps(['table'])
 <template>
   <div class="basket-item" :class="`basket-item-processing`">
     <div class="basket-item-top">
-      <div class="basket-item-shape"></div>
       <div class="basket-item-person d-flex">
         <div class="d-flex align-items-center" v-if="table.orders && table.orders.length > 0 && table.orders[0].customer_count > 0">
           {{ table.orders[0].customer_count }}
@@ -18,8 +17,8 @@ const props = defineProps(['table'])
     </div>
     <div class="basket-item-title">
       {{ table.name }}
-      <ion-icon style="font-size: 24px" name="print-outline"/>
     </div>
+
     <div class="basket-item-price">
       {{ formatPrice(table.amount) }}
     </div>
