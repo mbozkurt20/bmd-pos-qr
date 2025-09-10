@@ -1,5 +1,5 @@
 <template>
-  <div class="basket-items" v-if="!device.mobile">
+  <div class="basket-items">
     <div class="basket-items-top">
       <div class="basket-items-top-title">
         {{ title }}

@@ -10,16 +10,6 @@ const props = defineProps(["table"]);
     class="basket-item basket-item-active"
     :style="tableDetailStore.willMoveTableId == props.table.id ? 'background-color: #9ccc65' : ''">
     <div class="basket-item-top">
-      <div class="basket-item-payment d-flex">
-        <div
-          class="d-flex align-items-center"
-          v-if="table.orders[0]?.printed > 0"
-        >
-          <ion-icon style="font-size: 20px" name="print-outline"></ion-icon>
-          {{ table.orders[0]?.printed }}
-        </div>
-      </div>
-      <div class="basket-item-shape"></div>
       <div class="basket-item-person d-flex">
         <div
           class="d-flex align-items-center"
@@ -38,9 +28,7 @@ const props = defineProps(["table"]);
     </div>
     <div class="basket-item-bottom">
       <div class="basket-item-time">
-        <span> Son Güncelleme</span>
-        <span> (Saat Dakika)</span>
-        <h6 class="bold mt-1  ">  {{ calculateTime(table.updated_at) }}</h6>
+        {{ calculateTime(table.updated_at) }}
       </div>
     </div>
   </div>

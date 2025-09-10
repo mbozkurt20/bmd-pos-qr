@@ -16,14 +16,6 @@
             tableDetailStore.table.isPackages === undefined
           "
         >
-          <div class="input-icon">
-            <ion-icon style="font-size: 22px" name="person-outline" />
-          </div>
-          <input
-            type="text"
-            class="input info-btn"
-            v-model="tableDetailStore.customerCount"
-          />
         </div>
       </div>
     </div>

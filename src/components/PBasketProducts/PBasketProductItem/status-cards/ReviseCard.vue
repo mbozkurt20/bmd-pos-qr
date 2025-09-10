@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import calculateTime from "@/utils/calculateTime";
+
 const props = defineProps(['table'])
 </script>
 
@@ -13,15 +15,19 @@ const props = defineProps(['table'])
     <div class="basket-item-reservation">
       {{ table.reservation }}
     </div>
-    <div class="basket-item-price" >
-      <ion-icon style="font-size: 22px" name="time-outline"></ion-icon>
+    <div class="basket-item-bottom">
+      <div class="basket-item-time">
+        {{ calculateTime(table.updated_at) }}
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .basket-item-reservation{
-  font-size: 12px;
-  color: #ffffff99;
+  font-size: 13px;
+  color: #f4f4f4;
+  justify-content: center;
+  margin: auto;
 }
 </style>

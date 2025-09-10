@@ -16,7 +16,8 @@
 }
 
 .btn-custom {
-  background: rgb(24, 49, 95);;
+  background: rgb(24, 49, 95);
+    font-size: 14px;
 }
 
 .btn-custom:hover {

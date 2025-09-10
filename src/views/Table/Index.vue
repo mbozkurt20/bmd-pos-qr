@@ -3,7 +3,6 @@
   <div class="basket">
     <div class="content-row">
       <PBasketNav
-        v-if="!device.mobile"
         :items="getBasketNavItems"
         :is-show-move-button="false"
       />
@@ -25,7 +24,6 @@
         :col-size="2"
       />
       <PSidebar
-        v-if="!device.mobile"
         main-title="MASALAR"
         :nav-items="areas"
         @clickSidebarItem="handleClickSidebarItem"

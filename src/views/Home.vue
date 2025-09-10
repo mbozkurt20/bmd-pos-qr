@@ -3,14 +3,7 @@
   <div class="container">
     <div class="wrapper-row">
       <div class="left rounded pt-5">
-        <div class="row">
-          <div class="col-lg-6">
-            <PDate />
-          </div>
-          <div class="col-lg-6">
-            <PWeather />
-          </div>
-        </div>
+        <PDate />
         <PNotifications />
       </div>
       <div class="right">
@@ -22,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, onUnmounted } from "vue";
 import PDate from "../components/Date/Date.vue";
 import PNotifications from "../components/PNotifications/PNotifications.vue";
 import PCard from "../components/PCard/PCard.vue";

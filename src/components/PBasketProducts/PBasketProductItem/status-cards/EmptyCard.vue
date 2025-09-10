@@ -24,7 +24,7 @@ const changeTable = () => {
   //setLoading(true);
   axios({
     method: "POST",
-    url: "api/v2/area/table_change",
+    url: "/api/v2/area/table_change",
     data: {
       table_id: tableDetailStore.willMoveTableId,
       change_id: props.table.id,
@@ -138,13 +138,10 @@ const go = () => {
     ]"
     @click="go"
   >
-    <div class="basket-item-top justify-content-center">
-      <div class="basket-item-shape"></div>
-    </div>
     <div class="basket-item-title">
       {{ table.name }}
     </div>
-    <div class="basket-item-state">Masa Müsait</div>
+
   </div>
 </template>
 

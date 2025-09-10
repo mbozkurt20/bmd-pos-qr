@@ -139,7 +139,6 @@ const submit = (item) => {
 <style scoped lang="scss">
 .order-card-image {
   width: 100%;
-  height: 130px;
   border-radius: 8px;
 }
 
@@ -158,7 +157,6 @@ const submit = (item) => {
 }
 .order-card-image {
   width: 100%;
-  height: 130px;
   border-radius: 8px;
 }
 

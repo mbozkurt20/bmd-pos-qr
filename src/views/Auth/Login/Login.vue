@@ -1,14 +1,18 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-6">
+      <!-- Sol taraf: Başlık -->
+      <div class="col-12 col-md-6">
         <h1 class="loginH1">Hesabınızda oturum açın</h1>
       </div>
-      <div class="col-md-6">
-        <div class="login ">
+
+      <!-- Sağ taraf: Form -->
+      <div class="col-12 col-md-6">
+        <div class="login">
           <div class="login-form">
-            <h5 class=" login-form-title text-dark">Restaurant Girişi</h5>
+            <h5 class="login-form-title text-dark">Restaurant Girişi</h5>
           </div>
+
           <div class="login-form">
             <input
                 type="number"
@@ -19,6 +23,7 @@
                 @keyup.enter="LoginAttack"
             />
           </div>
+
           <div class="login-form">
             <input
                 type="password"
@@ -28,6 +33,7 @@
                 @keyup.enter="LoginAttack"
             />
           </div>
+
           <div class="login-form">
             <button class="login-form-loginBtn" @click="LoginAttack">
               Oturum Aç
@@ -38,6 +44,7 @@
     </div>
   </div>
 </template>
+
 <style src="./Login.scss" lang="scss" scoped/>
 <script lang="ts">
 import axios from "axios";

@@ -15,6 +15,12 @@
   </div>
 </template>
 <style scoped>
+.weather {
+  text-align: center;
+  color: white;
+}
+
+/* İkon */
 .weatherIcon {
   padding: 0;
   margin: 0;
@@ -22,9 +28,12 @@
 }
 
 .weatherIcon img {
-  width: 4.27083vw;
+  width: 4.2vw;
+  max-width: 80px;
+  min-width: 40px;
 }
 
+/* Derece */
 .weatherDegree {
   padding: 0;
   margin: 0;
@@ -37,6 +46,7 @@
   position: absolute;
 }
 
+/* Açıklama */
 .weatherDesc {
   font-size: 16px;
   text-transform: capitalize;
@@ -45,6 +55,55 @@
   font-weight: 700;
   text-align: center;
 }
+
+/* Tablet için */
+@media (max-width: 992px) {
+  .weatherIcon img {
+    width: 60px;
+  }
+
+  .weatherDegree {
+    font-size: 28px;
+  }
+
+  .weatherDegree span {
+    font-size: 18px;
+  }
+
+  .weatherDesc {
+    font-size: 14px;
+  }
+}
+
+/* Mobil için */
+@media (max-width: 576px) {
+  .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .weatherIcon {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .weatherIcon img {
+    width: 50px;
+  }
+
+  .weatherDegree {
+    font-size: 24px;
+  }
+
+  .weatherDegree span {
+    font-size: 16px;
+  }
+
+  .weatherDesc {
+    font-size: 12px;
+  }
+}
+
 </style>
 <script>
 import { ref, onMounted } from "vue";

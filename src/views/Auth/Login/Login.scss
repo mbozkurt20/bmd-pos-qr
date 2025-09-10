@@ -1,29 +1,32 @@
 .container {
   display: flex;
-  justify-content: center; /* Yatayda ortalar */
-  align-items: center; /* Dikeyde ortalar */
-  height: 100vh; /* Yüksekliği tam ekran yapar */
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
 }
 
-.login{
+.login {
   width: 30vw;
   background: white;
-
   height: max-content;
   text-align: center;
   margin: 0 auto;
   padding: 50px;
-  &-form{
+
+  &-form {
     padding: 25px 20px 10px 20px;
-    &-title{
+
+    &-title {
       color: ghostwhite;
     }
-    &-desc{
+
+    &-desc {
       color: ghostwhite;
       font-size: 12px;
     }
 
-    &-loginBtn{
+    &-loginBtn {
       color: #fff;
       width: 100%;
       font-size: 16px;
@@ -31,33 +34,63 @@
       padding: 15px;
       font-weight: 600;
     }
-    &-loginBtn:hover{
+
+    &-loginBtn:hover {
       background: rgb(32, 56, 100);
     }
-    &-reg{
+
+    &-reg {
       font-weight: 600;
       font-size: 18px;
       padding: 10px 0px;
-      color:#fa0753;
+      color: #fa0753;
     }
   }
-  &-input{
+
+  &-input {
     background: white;
     border: 1px solid #ddd;
-
     padding: 17px;
     color: rgb(24, 49, 95);
     width: 100%;
     font-size: 16px;
     text-align: center;
   }
-  &-center{
+
+  &-center {
     text-align: center;
     color: #2c2c2c;
   }
 }
 
 .loginH1 {
-  font-size: 72px;
-  color: rgb(24, 49, 95);;
+  font-size: clamp(24px, 5vw, 72px);
+  color: rgb(24, 49, 95);
+  text-align: center;
+
+  @media (max-width: 768px) {
+    margin-bottom: 20px;
+  }
+}
+
+/* Responsive ayarlar */
+@media (max-width: 992px) {
+  .login {
+    width: 50vw;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .login {
+    width: 70vw;
+    padding: 25px;
+  }
+}
+
+@media (max-width: 576px) {
+  .login {
+    width: 90vw;
+    padding: 20px;
+  }
 }
