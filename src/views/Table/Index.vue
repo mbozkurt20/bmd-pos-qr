@@ -1,5 +1,5 @@
 <template>
-  <PHeaderSmall v-if="!device.mobile" />
+  <PHeaderSmall />
   <div class="basket">
     <div class="content-row">
       <PBasketNav
@@ -7,7 +7,6 @@
         :is-show-move-button="false"
       />
       <PBarMobile
-        v-if="device.mobile"
         :nav-items="areas"
         @clickSidebarItem="handleClickSidebarItem"
         :selected-index="tableDetailStore.tableSelectedIndex"

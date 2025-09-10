@@ -62,12 +62,10 @@ onMounted(() => {
   <div class="basket">
     <div class="content-row">
       <PBasketNav
-        v-if="!device.mobile"
         :items="navItems"
         :is-show-move-button="isShowMoveButton"
       />
       <PBarMobile
-        v-if="device.mobile"
         :nav-items="tableDetailStore.categories"
         @clickSidebarItem="handleClickSidebarItem"
         :selected-index="tableDetailStore.selectedIndex"

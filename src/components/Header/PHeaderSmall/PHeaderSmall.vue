@@ -12,7 +12,7 @@
             </div>
             <div class="header-right d-flex">
                 <PHeaderState profileState="false" />
-                <template v-if="!device.mobile">
+                <template>
                     <router-link to="/" class="header-exit"><svg xmlns="http://www.w3.org/2000/svg" class="ionicon"
                             viewBox="0 0 512 512">
                             <path
