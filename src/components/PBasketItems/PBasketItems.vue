@@ -13,8 +13,8 @@
         {{ getCustomer }}
       </div>
     </div>
-    <div class="basket-items-content2">
-      <div class="basket-items-row">
+    <div class="basket-items-content2" style="overflow-y: scroll">
+      <div class="basket-items-row" >
         <div style="color: black"></div>
         <PBasketItem
           v-for="item in productItems"
