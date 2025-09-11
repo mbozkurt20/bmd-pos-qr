@@ -47,9 +47,9 @@
 
       <!-- span> Masalar sayfası<span/-->
       <button
-        @click="updateProductTables()"
-        class="btn-custom"
-        v-if="tableDetailStore.table.status === 1">
+          @click="updateProductTables()"
+          class="btn-custom"
+          v-if="tableDetailStore.table.status === 1 || tableDetailStore.table.status === 3">
         KAYDET
       </button>
 

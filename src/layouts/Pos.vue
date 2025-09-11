@@ -66,6 +66,7 @@ onMounted(() => {
         :is-show-move-button="isShowMoveButton"
       />
       <PBarMobile
+          v-if="device.mobile"
         :nav-items="tableDetailStore.categories"
         @clickSidebarItem="handleClickSidebarItem"
         :selected-index="tableDetailStore.selectedIndex"

@@ -7,7 +7,7 @@
         :is-show-move-button="false"
       />
       <PBarMobile
-          v-if="device.mobile"
+        v-if="device.mobile"
         :nav-items="areas"
         @clickSidebarItem="handleClickSidebarItem"
         :selected-index="tableDetailStore.tableSelectedIndex"
