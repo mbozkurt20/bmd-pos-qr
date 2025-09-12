@@ -43,10 +43,11 @@ import PBarMobile from "../../components/PSidebar/TableMobile/PBarMobile.vue";
 import { computed, onMounted, watch, ref, onUnmounted, watchEffect } from "vue";
 import axios from "axios";
 import Pusher from "pusher-js";
-import { resetTableDetail, tableDetailStore } from "../../store/table-detail";
+import { resetTableDetail, tableDetailStore,changeTableStatus } from "../../store/table-detail";
 import { setLoading } from "../../store/app";
 import { device } from "../../main";
-import router from "../../router";
+import router from "@/router";
+
 const changeTableData = ref([]);
 const userData = localStorage.getItem("userData");
 let user = JSON.parse(userData);
@@ -76,19 +77,25 @@ const getFilteredProducts = computed(() => {
   return leftProducts.value.filter((e) => e.status === 1 || e.status === 3);
 });
 
-const getBasketNavItems = computed(() => [
+/*const getBasketNavItems = computed(() => [
+  {
+    label: "Barkod",
+    icon: "qr-code-outline",
+  },
+  {
+    label: "Düzenle",
+    icon: "create-outline",
+  },
   {
     label: "İptal",
     icon: "close-circle-outline",
-    onClick: () => {
-      router.push("/tables");
-    },
   },
+
   {
     label: "Notlar",
     icon: "copy-outline",
   },
-]);
+]);*/
 
 const fetchData = (loading = false) => {
   if (loading) setLoading(true);

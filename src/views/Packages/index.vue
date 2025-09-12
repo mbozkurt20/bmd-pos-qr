@@ -124,7 +124,7 @@ const getBasketNavItems = computed(() => {
             label: "İptal",
             icon: "close-circle-outline",
             onClick: () => {
-              router.push("/tables");
+              changeTableStatus(0);
             },
           },
           {

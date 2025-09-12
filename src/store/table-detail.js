@@ -442,7 +442,7 @@ export const addProductToTable = () => {
 export const setReservation = (notes) => {
 
     axios({
-        url: "api/v2/area/reservation",
+        url: "/api/v2/area/reservation",
         method: "POST",
         data: {
             domain: localStorage.getItem("domain"),
@@ -467,7 +467,7 @@ export const setReservation = (notes) => {
 
 export const changeTableStatus = (status) => {
     axios({
-        url: "api/v2/area/status",
+        url: "/api/v2/area/status",
         method: "POST",
         data: {
             domain: localStorage.getItem("domain"),
@@ -532,7 +532,7 @@ export const updateProductTables = () => {
 
     axios({
         method: "POST",
-        url: "api/v2/area/table_order_update",
+        url: "/api/v2/area/table_order_update",
         data: updateData,
     })
         .then((response) => {
@@ -545,7 +545,7 @@ export const updateProductTables = () => {
                 "pauseOnFocusLoss": false
             })
 
-            if (response.data.data.total === response.data.data.tahsil) {
+            if (response.data.total === response.data.tahsil) {
                 setTimeout(() => {
                     router.push("/tables");
                 }, 1100);
@@ -697,7 +697,7 @@ export const fetchMenu = () => {
     setLoading(true);
     axios({
         method: "GET",
-        url: "api/v2/category/list",
+        url: "/api/v2/category/list",
         params: {
             domain: localStorage.getItem("domain"),
         },
@@ -723,7 +723,7 @@ export const fetchTable = (id) => {
     setLoading(true);
     axios({
         method: "GET",
-        url: "api/v2/area/show",
+        url: "/api/v2/area/show",
         params: {
             id: id,
             domain: localStorage.getItem("domain"),
@@ -804,7 +804,7 @@ export const fetchSingleOrder = async (id) => {
     setLoading(true);
 
     axios({
-        url: "api/v2/order/show",
+        url: "/api/v2/order/show",
         method: "GET",
         params: {
             domain: localStorage.getItem('domain'),

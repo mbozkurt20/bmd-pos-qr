@@ -9,8 +9,9 @@ const userData = ref(localStorage.getItem("userData"));
 import Pusher from "pusher-js";
 let user = JSON.parse(userData.value);
 const message = ref([]);
-const pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
-  cluster: import.meta.env.VITE_PUSHER_CLUSTER
+const pusher = new Pusher("e617d5f462a9a069d6f5", {
+  cluster: "mt1",
+  forceTLS: true,
 });
 onUnmounted(() => {
   pusher.unsubscribe("sinerPosSocket_" + user["code"]);
