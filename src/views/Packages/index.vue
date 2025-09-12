@@ -125,6 +125,7 @@ const getBasketNavItems = computed(() => {
             icon: "close-circle-outline",
             onClick: () => {
               changeTableStatus(0);
+              router.push("/tables");
             },
           },
           {

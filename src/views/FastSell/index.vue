@@ -16,6 +16,7 @@ import POrder from "../../components/POrder/POrder.vue";
 import {
   tableDetailStore,
   interactSelectedCartProduct,
+  changeTableStatus,
   updateProductTables,
 } from "../../store/table-detail";
 import { setCreateNoteModal } from "../../store/modal";
@@ -23,6 +24,7 @@ import { computed } from "vue";
 import tableDetailNavItems from "../../constants/table-detail-nav-items";
 import CreateNote from "../../components/Modal/CreateNote.vue";
 import PaymentMethod from "../../components/Modal/PaymentMethod.vue";
+import router from "@/router";
 
 const getBasketNavItems = computed(() => {
   if (tableDetailStore.selectedCartItems.length > 0) {
@@ -66,10 +68,17 @@ const getBasketNavItems = computed(() => {
           {
             label: "Yazdır",
             icon: "print-outline",
+            onClick: () => {
+              changeTableStatus("3")
+            }
           },
           {
             label: "İptal",
             icon: "close-circle-outline",
+            onClick: () => {
+              changeTableStatus(0);
+              router.push("/tables");
+            },
           },
           {
             label: "Not Ekle",

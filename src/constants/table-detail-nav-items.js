@@ -21,6 +21,7 @@ export default [
     icon: "close-circle-outline",
       onClick: () => {
           changeTableStatus(0);
+          router.push("/tables");
       },
   },
   {
@@ -31,6 +32,13 @@ export default [
       router.push("/tables");
     },
   },
+    {
+        label: "Masalar",
+        icon: "copy-outline",
+        onClick: () => {
+            router.push('/tables')
+        },
+    },
   {
     label: "Not Ekle",
     icon: "copy-outline",
