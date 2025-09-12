@@ -23,6 +23,7 @@ import { computed } from "vue";
 import tableDetailNavItems from "../../constants/table-detail-nav-items";
 import CreateNote from "../../components/Modal/CreateNote.vue";
 import PaymentMethod from "../../components/Modal/PaymentMethod.vue";
+import router from "@/router";
 
 const getBasketNavItems = computed(() => {
   if (tableDetailStore.selectedCartItems.length > 0) {
@@ -70,6 +71,9 @@ const getBasketNavItems = computed(() => {
           {
             label: "İptal",
             icon: "close-circle-outline",
+            onClick: () => {
+              router.push("/tables");
+            },
           },
           {
             label: "Not Ekle",

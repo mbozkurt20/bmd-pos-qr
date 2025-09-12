@@ -114,6 +114,9 @@ const getBasketNavItems = computed(() => {
           {
             label: "İptal",
             icon: "close-circle-outline",
+            onClick: () => {
+              router.push("/tables");
+            },
           },
           {
             label: "Not Ekle",

@@ -43,6 +43,7 @@ import {
 import { computed } from "vue";
 import tableDetailNavItems from "../../constants/table-detail-nav-items";
 import { useRoute } from "vue-router";
+import router from "@/router";
 
 const route = useRoute();
 let excludedNavItems = ["Taşı"];
@@ -122,6 +123,9 @@ const getBasketNavItems = computed(() => {
           {
             label: "İptal",
             icon: "close-circle-outline",
+            onClick: () => {
+              router.push("/tables");
+            },
           },
           {
             label: "Not Ekle",

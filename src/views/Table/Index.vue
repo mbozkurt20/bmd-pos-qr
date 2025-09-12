@@ -46,7 +46,7 @@ import Pusher from "pusher-js";
 import { resetTableDetail, tableDetailStore } from "../../store/table-detail";
 import { setLoading } from "../../store/app";
 import { device } from "../../main";
-
+import router from "../../router";
 const changeTableData = ref([]);
 const userData = localStorage.getItem("userData");
 let user = JSON.parse(userData);
@@ -78,18 +78,12 @@ const getFilteredProducts = computed(() => {
 
 const getBasketNavItems = computed(() => [
   {
-    label: "Barkod",
-    icon: "qr-code-outline",
-  },
-  {
-    label: "Düzenle",
-    icon: "create-outline",
-  },
-  {
     label: "İptal",
     icon: "close-circle-outline",
+    onClick: () => {
+      router.push("/tables");
+    },
   },
-
   {
     label: "Notlar",
     icon: "copy-outline",
@@ -100,7 +94,7 @@ const fetchData = (loading = false) => {
   if (loading) setLoading(true);
   axios({
     method: "GET",
-    url: "api/v2/area/list",
+    url: "/api/v2/area/list",
     params: {
       domain: localStorage.getItem("domain"),
     },
@@ -133,9 +127,8 @@ const handleClickSidebarItem = ({ index }) => {
 
   products.value = areas.value[index].tables;
 };
-const pusher = new Pusher("ae5735e6147dbd8fee74", {
-  cluster: "eu",
-  encrypted: true,
+const pusher = new Pusher("e617d5f462a9a069d6f5", {
+  cluster: "mt1",
 });
 onUnmounted(() => {
   pusher.unsubscribe("sinerPosSocket_" + user["code"]);

@@ -19,6 +19,9 @@ export default [
   {
     label: "İptal",
     icon: "close-circle-outline",
+      onClick: () => {
+          router.push("/tables");
+      },
   },
   {
     label: "Taşı",
