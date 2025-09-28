@@ -7,6 +7,7 @@
 }
 
 .login {
+  border:#8BC34A 2.2px solid;
   width: 30vw;
   background: white;
   height: max-content;
@@ -30,13 +31,13 @@
       color: #fff;
       width: 100%;
       font-size: 16px;
-      background: rgb(24, 49, 95);
+      background: #8BC34A;
       padding: 15px;
       font-weight: 600;
     }
 
     &-loginBtn:hover {
-      background: rgb(32, 56, 100);
+      background: #8BC34A;
     }
 
     &-reg {
@@ -51,7 +52,7 @@
     background: white;
     border: 1px solid #ddd;
     padding: 17px;
-    color: rgb(24, 49, 95);
+    color: #8BC34A;
     width: 100%;
     font-size: 16px;
     text-align: center;
@@ -65,7 +66,7 @@
 
 .loginH1 {
   font-size: clamp(24px, 5vw, 72px);
-  color: rgb(24, 49, 95);
+  color: #519704;
   text-align: center;
 
   @media (max-width: 768px) {
