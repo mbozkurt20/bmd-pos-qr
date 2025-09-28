@@ -77,6 +77,7 @@ const getFilteredProducts = computed(() => {
   return leftProducts.value.filter((e) => e.status === 1 || e.status === 3);
 });
 
+const getBasketNavItems = computed(() => []);
 /*const getBasketNavItems = computed(() => [
   {
     label: "Barkod",

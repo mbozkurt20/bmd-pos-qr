@@ -15,8 +15,6 @@ onMounted(() => {
   getPersonnel();
 });
 
-const id = ref("" + 1);
-const leftZero = ref("0000");
 </script>
 
 <template>
@@ -43,17 +41,20 @@ const leftZero = ref("0000");
         </div>
       </div>
     </div>
+
     <div class="table-responsive" style="min-height: 100px">
       <table class="table bg-transparent">
         <thead>
           <tr>
             <th>Personel Adı</th>
-            <th>Tutar</th>
+            <th>Personel Telefon</th>
+            <th>Kazanç</th>
           </tr>
         </thead>
         <tbody v-if="report.personnel.length > 0">
           <tr v-for="(p, index) in filteredData()">
             <td>{{ p.name }}</td>
+            <td>{{ p.phone }}</td>
             <td>{{ formatPrice(p.amount) }}</td>
           </tr>
         </tbody>

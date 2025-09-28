@@ -61,12 +61,8 @@ onLongPress(
   <div
       @click="handleClickItem"
       :class="['basket-items-row-item cursor-pointer  align-items-start',
-      {
-      'item-selected': getIsSelectedCartItem(item.id),
-      },
-      {
-      'opacity-50': itemAbsoluteQuantity(item) == 0,
-      },
+      { 'item-selected': getIsSelectedCartItem(item.id)  },
+      { 'opacity-50': itemAbsoluteQuantity(item) == 0  },
     ]">
 
     <div class="justify-content-between align-items-center w-100">
@@ -81,16 +77,13 @@ onLongPress(
 
         <div class="basket-item-label d-flex flex-column gap-0">
           <div class="d-flex justify-content-start align-items-center gap-2">
-            <span class="basket-item-print" v-if="type === 'tables'"
-            >{{ item.orders[0]?.printed }}
-            </span>
             {{ item.name }}
           </div>
         </div>
       </div>
 
       <div class="basket-item-right">
-        <div class="basket-item-price">
+        <div class="basket-item-price text-custom">
           {{
             type === "tables"
                 ? formatPrice(item.amount)

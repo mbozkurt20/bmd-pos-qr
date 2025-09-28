@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 const menuItems = [
-    { label: 'Ana Sayfa', url: '/index' }
+
 ]
 </script>
 

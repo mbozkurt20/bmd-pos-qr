@@ -19,7 +19,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(25, 55, 109, 1);
+        background: #8BC34A;
         padding: 0.5rem;
         border-radius: 8px;
         @media (max-width: 1024px){
@@ -37,11 +37,11 @@
     }
 
     &-image:hover {
-        background: rgb(43, 69, 115);
+        background: rgb(231, 0, 77);
     }
     &-title {
         margin-top: .8rem;
-        color: rgba(25, 55, 109, 1);
+        color: #8BC34A;
         font-size: 1.1rem;
         font-weight: 500;
     }

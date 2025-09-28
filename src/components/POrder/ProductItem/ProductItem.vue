@@ -15,73 +15,18 @@ const route = useRoute();
 const packageRoute = ref(route.fullPath.split("/")[1] === "packages");
 const fastSell = ref(route.fullPath.split("/")[1] === "fast-sell");
 
-const selectedItem = ref(null); // kısa tıklamada seçilen
-const longPressItem = ref(null); // uzun basmada seçilen
+const selectedItem = ref(null);
 
-const startTime = ref(0);
-const pressTimer = ref(null);
+const isSelected = (item) => selectedItem.value?.id === item.id;
 
-const startX = ref(0);
-const startY = ref(0);
-const moved = ref(false);
-
-const startPress = (item, event) => {
-  moved.value = false;
-  startTime.value = Date.now();
-
-  if (event.type.startsWith("touch")) {
-    const touch = event.touches[0];
-    startX.value = touch.clientX;
-    startY.value = touch.clientY;
-  } else {
-    startX.value = event.clientX;
-    startY.value = event.clientY;
-  }
-
-  pressTimer.value = setTimeout(() => {
-    longPressItem.value = item;
-    if (item.features?.length) setAddedProductFeatures(item.features);
-    tableDetailStore.selectedProductOnFeature = item;
-    setFeatureListModal(true);
-  }, 500);
-};
-const movePress = (event) => {
-  let x, y;
-  if (event.type.startsWith("touch")) {
-    const touch = event.touches[0];
-    x = touch.clientX;
-    y = touch.clientY;
-  } else {
-    x = event.clientX;
-    y = event.clientY;
-  }
-
-  const dx = Math.abs(x - startX.value);
-  const dy = Math.abs(y - startY.value);
-
-  if (dx > 10 || dy > 10) {
-    moved.value = true;
-    cancelPress();
-  }
-};
-const endPress = (item) => {
-  clearTimeout(pressTimer.value);
-  if (moved.value) return; // scroll yaptı, kısa tıklama iptal
-
-  const pressDuration = Date.now() - startTime.value;
-  if (pressDuration < 500) {
-    selectedItem.value = item;
-  }
-};
-
-const cancelPress = () => {
-  clearTimeout(pressTimer.value);
-  startTime.value = 0;
+const selectItem = (item) => {
+  selectedItem.value = isSelected(item) ? null : item;
 };
 
 const addSelectedToCart = () => {
   if (!selectedItem.value) return;
-  const item = selectedItem.value;
+  const item = { ...selectedItem.value };
+
   if (packageRoute.value) item.price = item.package_price;
   else if (fastSell.value) item.price = item.fast_price;
 
@@ -98,17 +43,20 @@ const addSelectedToCart = () => {
   selectedItem.value = null;
 };
 
-// dış tıklama ile iptal
+const openCustomizeModal = (item) => {
+  if (item.features?.length) setAddedProductFeatures(item.features);
+  tableDetailStore.selectedProductOnFeature = item;
+  setFeatureListModal(true);
+};
+
+// Dış tıklamada kart seçimini temizle
 const handleClickOutside = (event: MouseEvent) => {
-  const cards = document.querySelectorAll(".order-card");
+  const cards = document.querySelectorAll(".product-card");
   let clickedInside = false;
   cards.forEach((card) => {
     if (card.contains(event.target as Node)) clickedInside = true;
   });
-  if (!clickedInside) {
-    selectedItem.value = null;
-    longPressItem.value = null;
-  }
+  if (!clickedInside) selectedItem.value = null;
 };
 
 onMounted(() => {
@@ -132,73 +80,52 @@ const submit = (item) => {
     tableDetailStore.products = item.products;
   }
 };
-
 </script>
 
 <template>
-  <div class="orders gap-2 mt-4" v-if="product.length > 0">
+  <div class="product-grid" v-if="product.length > 0">
     <div
-        class="order-card"
+        class="product-card"
         v-for="item in product"
         :key="item.id"
-        @mousedown="startPress(item, $event)"
-        @touchstart="startPress(item, $event)"
-        @mousemove="movePress"
-        @touchmove="movePress"
-        @mouseup="endPress(item)"
-        @touchend="endPress(item)"
-        @mouseleave="cancelPress"
-        @touchcancel="cancelPress"
+        @click.stop="selectItem(item)"
     >
-      <img :src="item.image" class="order-card-image cursor-pointer" />
-      <div class="order-card-name cursor-pointer">{{ item.name }}</div>
-      <form class="order-card-info" style="display: flex; align-items: center; gap: 10px;">
-        <div class="order-card-price" v-if="packageRoute">{{ formatPrice(item.package_price) }}</div>
-        <div class="order-card-price" v-if="fastSell">{{ formatPrice(item.fast_price) }}</div>
-        <div class="order-card-price" v-if="!packageRoute && !fastSell">{{ formatPrice(item.price) }}</div>
+      <img :src="item.image" alt="Ürün" class="product-image" />
 
-        <!-- Kısa tıklama Ekle butonu -->
-        <button
-            v-if="selectedItem === item"
-            type="button"
-            class="order-card-button"
-            @click.stop="addSelectedToCart"
-        >
+      <div class="product-info">
+        <div class="product-name">{{ item.name }}</div>
+        <div class="product-price">
+          <span v-if="packageRoute">{{ formatPrice(item.package_price) }}</span>
+          <span v-else-if="fastSell">{{ formatPrice(item.fast_price) }}</span>
+          <span v-else>{{ formatPrice(item.price) }}</span>
+        </div>
+      </div>
+
+      <div v-if="isSelected(item)" class="action-buttons">
+        <button class="add-button" @click.stop="addSelectedToCart">
           Ekle
         </button>
-
-        <!-- Uzun basma Feature butonu -->
-        <button
-            v-if="longPressItem === item"
-            type="button"
-            class="order-card-button feature-btn"
-            @click.stop="() => setFeatureListModal(true)"
-        >
-          Özellikler
+        <button class="customize-button" @click.stop="openCustomizeModal(item)">
+          Özelleştir
         </button>
-      </form>
+      </div>
     </div>
   </div>
 
-
+  <!-- Categories -->
   <div class="orders gap-2 mt-4" v-if="tableDetailStore.showParent">
     <div
         class="order-card"
         style="height: 214px"
-        v-for="item in tableDetailStore.categories[tableDetailStore.selectedIndex]
-        ?.children_recursive"
+        v-for="item in tableDetailStore.categories[tableDetailStore.selectedIndex]?.children_recursive"
         :key="item.id"
         @click="submit(item)"
     >
-      <div class="cursor-pointer">
-        {{ item.name }}
-      </div>
+      <div class="cursor-pointer">{{ item.name }}</div>
     </div>
   </div>
-  <div
-      class="orders gap-2 mt-4"
-      v-if="tableDetailStore.showSubCategory && tableDetailStore.showSubCategory"
-  >
+
+  <div class="orders gap-2 mt-4" v-if="tableDetailStore.showSubCategory">
     <div
         class="order-card"
         style="height: 214px"
@@ -206,121 +133,128 @@ const submit = (item) => {
         :key="item.id"
         @click="submit(item)"
     >
-      <div class="cursor-pointer">
-        {{ item.name }}
-      </div>
+      <div class="cursor-pointer">{{ item.name }}</div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.order-card.selected {
-  background-color: rgb(222, 223, 222); // hafif mavi arka plan
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+  padding: 1rem;
 }
-.order-card-button {
-  background-color: #cac8c8;
-  color: #1a1414;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
+
+.product-card {
+  flex: 0 0 200px; // varsayılan genişlik
+  min-height: 230px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
-}
-.order-card-button:hover {
-  background-color: #d3d8dd;
-}
-.feature-btn {
-  background-color: #28a745;
-}
-.feature-btn:hover {
-  background-color: #1e7e34;
-}
-.weather {
-  text-align: center;
-  color: white;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  }
 }
 
-/* İkon */
-.weatherIcon {
-  padding: 0;
-  margin: 0;
-  text-align: right;
-}
-
-.weatherIcon img {
-  width: 4.2vw;
-  max-width: 80px;
-  min-width: 40px;
-}
-
-/* Derece */
-.weatherDegree {
-  padding: 0;
-  margin: 0;
-  font-size: 36px;
-  position: relative;
-}
-
-.weatherDegree span {
-  font-size: 22px;
-  position: absolute;
-}
-
-/* Açıklama */
-.weatherDesc {
-  font-size: 16px;
-  text-transform: capitalize;
-  padding: 0;
-  margin: 0;
-  font-weight: 700;
-  text-align: center;
-}
-
-/* Tablet için */
+/* Responsive */
 @media (max-width: 992px) {
-  .weatherIcon img {
-    width: 60px;
-  }
-
-  .weatherDegree {
-    font-size: 28px;
-  }
-
-  .weatherDegree span {
-    font-size: 18px;
-  }
-
-  .weatherDesc {
-    font-size: 14px;
+  .product-card {
+    flex: 0 0 150px; // tablet için
   }
 }
 
-/* Mobil için */
 @media (max-width: 576px) {
-  .row {
-    flex-direction: column;
-    align-items: center;
-  }
+  .product-card {
+    flex: 0 0 150px; // tablet için
 
-  .weatherIcon {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-
-  .weatherIcon img {
-    width: 50px;
-  }
-
-  .weatherDegree {
-    font-size: 24px;
-  }
-
-  .weatherDegree span {
-    font-size: 16px;
-  }
-
-  .weatherDesc {
-    font-size: 12px;
   }
 }
 
+.product-image {
+  width: 100%;
+  height: 100px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.product-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.product-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+
+.product-price {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e7004d;
+  margin-bottom: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: auto;
+  width: 100%;
+}
+
+.add-button,
+.customize-button {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-button {
+  background-color: #30d760;
+  color: #fff;
+  &:hover {
+    background-color: #1fde74;
+  }
+}
+
+.customize-button {
+  background-color: #e7004d;
+  color: #fff;
+  &:hover {
+    background-color: #e13a71;
+  }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .product-card {
+    width: 45vw;
+  }
+}
+
+@media (max-width: 576px) {
+  .product-card {
+    width: 90vw;
+  }
+}
 </style>

@@ -23,7 +23,7 @@ const saveReservation = () => {
             <input type="text" name="name" v-model="reservation.customer" placeholder="Müşteri Adı"
                 class="form-control mb-3">
             <input type="text" name="phone" v-model="reservation.phone" placeholder="Telefone" class="form-control mb-3">
-            <button class="w-100" @click="saveReservation"> Kaydet </button>
+            <button class="w-100 btn-custom" @click="saveReservation"> Kaydet </button>
         </div>
     </Modal>
 </template>

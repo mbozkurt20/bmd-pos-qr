@@ -1,5 +1,5 @@
 .footer {
-  background: rgba(25, 55, 109, 1);
+  background: #8BC34A;
   padding: 7.5px;
   position: absolute;
   bottom: 0px;
@@ -270,10 +270,6 @@
     font-size: 11px !important;
   }
 
-  .basket-items-bottom {
-    padding: 1rem .25rem !important;
-  }
-
   .input {
     font-size: 11px !important;
     padding-left: 32px !important;
@@ -410,10 +406,6 @@
     border-radius: 0 !important;
   }
 
-  .basket-items-bottom {
-    position: relative !important;
-    padding: 0 !important;
-  }
 
   .order-card {
     min-width: 100px !important;

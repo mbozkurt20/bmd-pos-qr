@@ -93,20 +93,20 @@ export default {
   data() {
     return {
       userData: null,
-      headerState: [
-        {
-          label: "Internet",
-          url: "#",
-          state: "Online",
-          icon: "wifi-outline",
-        },
-        {
-          label: "Server",
-          url: "#",
-          state: "Online",
-          icon: "server-outline",
-        },
-      ],
+     headerState: [
+       {
+         label: "Internet",
+         url: "#",
+         state: "Online",
+         icon: "wifi-outline",
+       },
+       {
+         label: "Server",
+         url: "#",
+         state: "Online",
+         icon: "server-outline",
+       },
+     ],
     };
   },
   watch() {},

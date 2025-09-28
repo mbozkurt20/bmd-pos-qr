@@ -23,23 +23,38 @@ const handleButtonClick = (val: any) => {
     <button class="bill-calc-item" @click="handleButtonClick('2')">2</button>
     <button class="bill-calc-item" @click="handleButtonClick('3')">3</button>
     <button
-      @click="handleButtonClick('enter')"
+      @click="handleButtonClick('add')"
       class="bill-calc-item bill-calc-item-enter button-pink py-4">
-      Ödeme Yap
+      Ödemeyi Ekle
     </button>
+
     <button class="bill-calc-item" @click="handleButtonClick('%')">%</button>
     <button class="bill-calc-item" @click="handleButtonClick('0')">0</button>
     <button class="bill-calc-item" @click="handleButtonClick('.')">.</button>
+
+    <button
+        @click="handleButtonClick('enter')"
+        class="bill-calc-item bill-calc-item-enter button-grean py-4" >
+      Ödeme Yap
+    </button>
   </div>
 </template>
 
 <style scoped lang="scss">
+.button-grean {
+  background: #30d760 !important;
+}
+
+.button-grean:hover {
+  background: #4fec7c !important;
+}
+
 .button-pink {
   background: #dc1862 !important;
 }
 
 .button-pink:hover {
-  background: #2ac900 !important;
+  background: #cd5a80 !important;
 }
 .bill-calc-item:hover {
   background: #dc1862;

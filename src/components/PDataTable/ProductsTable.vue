@@ -63,7 +63,9 @@ const setProductStatus = (product) => {
         <thead>
           <tr>
             <th>#</th>
+            <th>Görsel</th>
             <th>Ürün Adı</th>
+            <th>Ürün Adet</th>
             <th>Ürün Fiyatı</th>
             <th>Durumu</th>
           </tr>
@@ -71,7 +73,9 @@ const setProductStatus = (product) => {
         <tbody v-if="filteredData().length > 0">
           <tr v-for="product in filteredData()">
             <td>{{ product.id }}</td>
+            <td><img height="32"  :src="product.image " alt=""></td>
             <td>{{ product.name }}</td>
+            <td>{{ product.amount ?? 'Bulunmuyor' }}</td>
             <td>₺{{ product.price }}</td>
             <td>
               <div class="form-check form-switch">

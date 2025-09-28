@@ -69,7 +69,7 @@ const getBasketNavItems = computed(() => {
             label: "Yazdır",
             icon: "print-outline",
             onClick: () => {
-              changeTableStatus("3")
+              changeTableStatus(3)
             }
           },
           {

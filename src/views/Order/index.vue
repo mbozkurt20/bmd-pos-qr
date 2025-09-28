@@ -94,7 +94,7 @@ const getBasketNavItems = computed(() => {
       tableDetailStore.isReturn
     ) {
       result.push({
-        label: "İptal",
+        label: "Masayı Kapat",
         icon: "close-outline",
         onClick: () => {
           interactSelectedCartProduct("clear");
@@ -112,11 +112,18 @@ const getBasketNavItems = computed(() => {
       if (table.status === 0) {
         return [
           {
-            label: "İptal",
+            label: "Masayı Kapat",
             icon: "close-circle-outline",
             onClick: () => {
               changeTableStatus(0);
               router.push("/tables");
+            },
+          },
+          {
+            label: "Masalara Git",
+            icon: "copy-outline",
+            onClick: () => {
+              router.push('/tables')
             },
           },
           {
@@ -126,6 +133,7 @@ const getBasketNavItems = computed(() => {
               setCreateNoteModal(true);
             },
           },
+
           {
             label: "Rezerve",
             icon: "notifications-outline",

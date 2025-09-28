@@ -1,90 +1,71 @@
 <template>
   <div class="basket-items">
+    <!-- Üst Başlık -->
     <div class="basket-items-top">
       <div class="basket-items-top-title">
         {{ title }}
       </div>
       <div
-        @click="setCustomerListModal(true)"
-        class="basket-items-order-person"
-        v-if="type === 'packages'"
+          @click="setCustomerListModal(true)"
+          class="basket-items-order-person"
+          v-if="type === 'packages'"
       >
         <ion-icon name="person-add" style="font-size: 17px" />
         {{ getCustomer }}
       </div>
     </div>
-    <div class="basket-items-content2" style="overflow-y: scroll">
-      <div class="basket-items-row" >
-        <div style="color: black"></div>
+
+    <!-- Ürün Listesi -->
+    <div class="basket-items-content">
+      <div class="basket-items-row">
         <PBasketItem
-          v-for="item in productItems"
-          :key="item.id"
-          :item="item"
-          :type="type"
-          :isBillingPage="isBillingPage"
+            v-for="item in productItems"
+            :key="item.id"
+            :item="item"
+            :type="type"
+            v-if="productItems.length"
+            :isBillingPage="isBillingPage"
         />
 
-        <!-- <PayedBasketItem
-          v-for="item in productItems"
-          :key="item.id"
-          :item="item"
-          :type="type"
-          :isBillingPage="isBillingPage"
-        /> -->
+        <p style="color: lightslategray;text-align: center;margin-top: 25px" v-else>Adisyon'da Sipariş Bulunmuyor...</p>
       </div>
     </div>
-    <div class="basket-items-bottom">
-      <h6 v-if="type === 'tables'">TOPLAM</h6>
 
-      <!-- span> Masalar sayfası<span/-->
-      <button
-        @click="onSave()"
-        class="btn-custom"
-        v-if="tableDetailStore.table.status === 0 ||
-          tableDetailStore.table.status === 2">
-        KAYDET
-      </button>
+    <!-- Alt Kısım -->
+    <div class="order-actions">
+      <div class="order-actions__left">
+        <button
+            @click="onSave()"
+            class="btn btn--primary"
+            v-if="(tableDetailStore.table.status === 0 || tableDetailStore.table.status === 2) && productItems.length"
+        >
+          ADİSYONU KAYDET
+        </button>
 
-      <!-- span> Masalar sayfası<span/-->
-      <button
-          @click="updateProductTables()"
-          class="btn-custom"
-          v-if="tableDetailStore.table.status === 1 || tableDetailStore.table.status === 3">
-        KAYDET
-      </button>
+        <button
+            @click="updateProductTables()"
+            class="btn btn--primary"
+            v-if="tableDetailStore.table.status === 1 || tableDetailStore.table.status === 3"
+        >
+          ADİSYONU GÜNCELLE
+        </button>
 
-      <!-- span> Gel-al sayfası<span/-->
-      <button
-        :disabled="!getIsAvailableFastSellButton"
-        @click="onFastSell()"
-        class="btn-custom"
-        v-if="tableDetailStore.table.isFastSell !== undefined"
-      >
-        KAYDET
-      </button>
+        <button
+            @click="takePayment()"
+            class="btn btn--payment"
+            v-if="tableDetailStore.table.status === 1 || tableDetailStore.table.status === 3"
+        >
+          ÖDEME AL
+        </button>
+      </div>
 
-      <!-- span> Paketler sayfası<span/-->
-      <button
-        :disabled="!getIsAvailableFastSellButton"
-        @click="onPackages()"
-        class="btn-custom"
-        v-if="tableDetailStore.table.isPackages !== undefined"
-      >
-        KAYDET
-      </button>
-<!--      v-if="tableDetailStore.table.status === 3"-->
-      <button
-        @click="takePayment()"
-        class="button-green"
-        v-if="tableDetailStore.table.status === 1 || tableDetailStore.table.status === 3"
-      >
-        ÖDEME AL
-      </button>
-
-      <div class="basket-total">
-        {{ formatPrice(calculateTotalPrice) }}
+      <div class="order-actions__totals">
+        <div class="total-box">
+          TOPLAM <br> {{ formatPrice(calculateTotalPrice) }}
+        </div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -137,12 +118,12 @@ const calculateTotalPrice = computed(() => {
       const tableRoute = route.fullPath.split("/")[1] == "tables";
       if (tableRoute) {
         return route.params.id
-          ? total + itemAbsolutePrice(item)
-          : total + Number(item.amount);
+            ? total + itemAbsolutePrice(item)
+            : total + Number(item.amount);
       } else {
         return route.params.id
-          ? total + itemAbsolutePrice(item)
-          : total + itemAbsolutePrice(item);
+            ? total + itemAbsolutePrice(item)
+            : total + itemAbsolutePrice(item);
       }
     }, 0);
     return total;
@@ -174,25 +155,5 @@ const takePayment = () => {
 };
 </script>
 
-<style scoped>
-.basket-items-row .basket-item-time {
-  color: #777;
-  font-size: 0.9rem;
-  margin-right: 1rem;
-}
-
-.basket-items-row .basket-item-price {
-  color: #000;
-  font-size: 1.25rem;
-}
-
-.basket-items-order-person {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-}
-</style>
 
 <style src="./PBasketItems.scss" lang="scss" scoped />

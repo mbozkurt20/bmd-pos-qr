@@ -76,7 +76,9 @@ onMounted(() => {
         :product-items="productItems"
         :type="type"
       />
+
       <slot></slot>
+
       <PSidebar
         v-if="isShowRightbar && !device.mobile"
         main-title="MENÜLER"

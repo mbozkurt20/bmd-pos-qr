@@ -1,15 +1,14 @@
 <script setup>
 import PHeaderSmall from "../../components/Header/PHeaderSmall/PHeaderSmall.vue";
 import PSidebar from "../../components/Header/PSidebar/PSidebar.vue";
-import ProductsTable from "../../components/PDataTable/ProductsTable.vue";
-import CategoriesTable from "../../components/PDataTable/CategoriesTable.vue";
+
 import Summary from "./Summary/index.vue";
 import EndOfDay from "./EndOfDay/index.vue";
 import Couriers from "./Couriers/index.vue";
 import Additions from "./Additions/index.vue";
 import Personnel from "./Personnel/index.vue";
 import Cash from "./Cash/index.vue";
-import { fetchMenu } from "../../store/menu";
+
 import { ref } from "vue";
 
 const activeKey = ref(0);
@@ -31,11 +30,6 @@ const navItems = [
     icon: '<ion-icon name="bar-chart-outline"></ion-icon>',
   },
   {
-    label: "Kurye Raporları",
-    key: 3,
-    icon: '<ion-icon name="people-outline"></ion-icon>',
-  },
-  {
     label: "Adisyonlar",
     key: 4,
     icon: '<ion-icon name="ticket-outline"></ion-icon>',
@@ -49,7 +43,6 @@ const navItems = [
 
 const setActiveKey = (key) => {
   activeKey.value = key;
-  //fetchMenu();
 };
 
 setActiveKey(0);
@@ -71,9 +64,8 @@ setActiveKey(0);
               <Summary v-if="activeKey == 0" />
               <Cash v-if="activeKey == 1" />
               <EndOfDay v-if="activeKey == 2" />
-              <Couriers v-if="activeKey == 3" />
-              <Additions v-if="activeKey == 4" />
-              <Personnel v-if="activeKey == 5" />
+              <Additions v-if="activeKey == 3" />
+              <Personnel v-if="activeKey == 4" />
             </div>
           </div>
         </div>
@@ -85,7 +77,7 @@ setActiveKey(0);
 <style scoped lang="scss">
 .report-card {
   border-radius: 12px;
-  padding: 2rem;
+  padding: 0.3rem;
   color: #000;
   overflow-y: auto;
   overflow-x: hidden;

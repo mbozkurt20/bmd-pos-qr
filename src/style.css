@@ -16,20 +16,20 @@
 }
 
 .btn-custom {
-  background: rgb(24, 49, 95);
+  background: #8BC34A;
     font-size: 14px;
 }
 
 .btn-custom:hover {
-  background: rgb(29, 57, 110);;
+  background: #3bba4f;;
 }
 .button-custom {
-  background: rgb(24, 49, 95);
+  background: #8BC34A;
   color: white;
 }
 
 .text-custom {
-  color: rgba(25, 55, 109, 1);
+  color: #8BC34A;
 }
 
 .text-indigo {

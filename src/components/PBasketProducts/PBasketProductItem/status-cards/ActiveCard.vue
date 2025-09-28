@@ -11,7 +11,7 @@ const props = defineProps(["table"]);
     :style="tableDetailStore.willMoveTableId == props.table.id ? 'background-color: #9ccc65' : ''">
 
     <div class="basket-item-title">
-      {{ table.name }}
+      {{ table.id }} | {{ table.name }}
     </div>
     <div class="basket-item-price">
       {{ formatPrice(table.amount) }}

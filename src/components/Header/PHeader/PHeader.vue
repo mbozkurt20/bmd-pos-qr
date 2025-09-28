@@ -9,7 +9,7 @@
       </div>
       <div class="header-right d-flex">
         <PHeaderState profileState="false"/>
-        <button class="header-exit text-white" v-if="license" @click="logout">
+        <button class="header-exit text-white" @click="logout">
           <ion-icon name="enter-outline"></ion-icon>
         </button>
       </div>

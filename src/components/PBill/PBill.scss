@@ -118,9 +118,18 @@
   }
 
   &-content {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    display: flex;
+    gap: 8px;
     border-radius: 0 0 12px 12px;
+    flex-direction: column; /* 📱 Mobilde dikey */
+  }
+
+  /* 💻 Masaüstü için */
+  @media (min-width: 768px) {
+    &-content {
+      flex-direction: row;  /* Masaüstünde yatay */
+      gap: 12px;            /* Daha geniş aralık */
+    }
   }
 
   &-calc-col {

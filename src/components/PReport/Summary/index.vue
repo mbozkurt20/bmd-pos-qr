@@ -1,93 +1,94 @@
+<script setup lang="ts">
+import { ref, computed, onMounted } from "vue";
+import { getSummary, report } from "../../../store/report";
+import formatPrice from "../../../utils/formatPrice";
+
+const refresh = () => {
+  getSummary();
+};
+
+// Diğer alanları hesapla (diger)
+const diger = computed(() => {
+  const s = report.summary;
+  return (
+      Number(s.multinet || 0) +
+      Number(s.oda_hesap || 0) +
+      Number(s.odenmez || 0) +
+      Number(s.sodexo || 0) +
+      Number(s.ticket || 0)
+  );
+});
+
+// Ödeme türleri ve toplamları
+const paymentTypes = computed(() => {
+  const s = report.summary;
+  console.log({s : s})
+  const total = Number(s.nakit || 0) + Number(s.kredi_karti || 0) + diger.value;
+  return [
+    {
+      items: [
+        { label: "İndirim", value: s.indirim || 0, icon: "../../../assets/image/coins.png" },
+        { label: "Nakit Giriş", value: s.cash_giris || 0, icon: "../../../assets/image/credit-card.png" },
+        { label: "Nakit Çıkış", value: s.cash_cikis, icon: "../../../assets/image/more.png" },
+      ],
+    },
+    {
+      items: [
+        { label: "Nakit", value: s.nakit || 0, icon: "https://png.pngtree.com/png-clipart/20230116/original/pngtree-cash-money-isometric-flat-illustration-png-image_8916190.png" },
+        { label: "Kredi Kart", value: s.kredi_karti || 0, icon: "https://freesvg.org/img/credit-card-front.png" },
+        { label: "Eft/Pos", value: s.eft_pos, icon: "../../../assets/image/more.png" },
+        { label: "Multinet", value: s.multinet || 0, icon: "../../../assets/image/coins.png" },
+        { label: "Sodexo", value: s.sodexo || 0, icon: "../../../assets/image/credit-card.png" },
+        { label: "Ticket", value: s.ticket, icon: "../../../assets/image/more.png" },
+      ],
+      total
+    }
+  ];
+});
+
+// İstatistik kartları
+const stats1 = computed(() => {
+  const s = report.summary;
+  return [
+    { label: "Adisyonlar", value: s.adisyon + " Adet", icon: "https://cms.ikas.com/wp-content/uploads/2025/01/e-adisyon-nedir.webp" },
+    { label: "Kasa", value: formatPrice(s.cash?.amount || 0), icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWhE2gErZ6L7lUexRPNOAO4zcWIUjPkI4Gxrr-VeQsMBJYstsiFAA8O02hJBbVh6ikM3c&usqp=CAU" },
+    { label: "Ortalama Kazanç", value: formatPrice(s.kazanc || 0), icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN4C7G-NG8oPkib6OQi-g48g9BXQn6bNLH7A&s" },
+  ];
+});
+
+const stats2 = computed(() => {
+  const s = report.summary;
+  return [
+    { label: "Toplam İndirim", value: formatPrice(s.toplam_indirim || 0), icon: "https://t1.pixers.pics/img-d5043af1/cikartmalar-indirim-yuzde.png?H4sIAAAAAAAAA5VPW26DMBC8DkiEXfDbB8hvjoCMMQmNAcsmTdvT11ZV9af9qFarfc3OaOCxJTM7sG47XIR1mSbvYF58npKOLi0frsJGIK113voKEWu9v7po4x6qk5RNSaH6krV-mvy4mnivbscRkgZIpA3LW2bLxSawa4IeOwHIgSnGO3SUKYXdsJm7z8jT_WmmaI42bNcGS9TahODfh-iybHKD8eFm_sHPUCr-w_-LTv3tlCI2tDic9-ziqMoN_lD66iHD4XwBRkBKkAQ4LavhfGFESkk4HWY5qtHaTnScM2XRmJELMtKec2epIO1LuH4CFgNBzIgBAAA=" },
+    { label: "Cari İşlemleri", value: formatPrice(s.cariler || 0), icon: "https://sipay.com.tr/wp-content/uploads/2025/05/sipay-blog-gorselleri-mayis-05-png.webp" },
+  ];
+});
+
+onMounted(() => {
+  getSummary();
+});
+</script>
+
 <template>
-  <div style="min-height: calc(67vh)">
+  <div class=" py-3">
+    <!-- Ödeme Türleri Kartları -->
     <div class="row">
-      <div class="col-6">
-        <div class="card">
-          <div id="container" class="card-body">
-            <div>
-              <Doughnut :data="data" :options="options" />
-            </div>
-            <div>
-              <div
-                v-for="(item, index) in data.labels"
-                :key="index"
-                class="second"
-              >
-                <span
-                  :style="[
-                    'backgroundColor:' +
-                      data.datasets[0].backgroundColor[index],
-                  ]"
-                  class="dot"
-                ></span>
-                %{{ data.datasets[0].data[index] }}
-                {{ item }}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-6">
-        <div class="card">
+      <div class="col-12 col-md-6" v-for="(type, index) in paymentTypes" :key="index">
+        <div class="card mb-3">
           <div class="card-body">
-            <div class="row rightBox">
-              <div class="col-lg-4">
-                <img
-                  src="../../../assets/image/coins.png"
-                  class="icon"
-                  style="width: 30px"
-                />
-                <span style="margin-left: 20px; font-size: 16px">Nakit</span>
+            <div class="row rightBox" v-for="(item, i) in type.items" :key="i">
+              <div class="col-12 col-sm-6 d-flex align-items-center mb-2 mb-sm-0">
+                <img :src="item.icon" class="icon" />
+                <span class="ms-3 fs-6">{{ item.label }}</span>
               </div>
-              <div class="col-lg-4"></div>
-              <div class="col-lg-4" style="text-align: end">
-                {{ formatPrice(report.summary.nakit) }}
+              <div class="col-12 col-sm-6 text-sm-end">
+                {{ formatPrice(item.value) }}
               </div>
             </div>
-            <div class="row rightBox">
-              <div class="col-lg-4">
-                <img
-                  src="../../../assets/image/credit-card.png"
-                  class="icon"
-                  style="width: 30px"
-                />
-                <span style="margin-left: 20px; font-size: 16px">Kart</span>
-              </div>
-              <div class="col-lg-4"></div>
-              <div class="col-lg-4" style="text-align: end">
-                {{ formatPrice(report.summary.kredi_karti) }}
-              </div>
-            </div>
-            <div class="row rightBox">
-              <div class="col-lg-4">
-                <img
-                  src="../../../assets/image/more.png"
-                  class="icon"
-                  style="width: 30px"
-                />
-                <span style="margin-left: 20px; font-size: 16px">Diğer</span>
-              </div>
-              <div class="col-lg-4"></div>
-              <div class="col-lg-4" style="text-align: end">
-                {{ formatPrice(report.summary.diger) }}
-              </div>
-            </div>
-            <div class="row" style="padding-top: 10px">
-              <div class="col-lg-4">
-                <span style="font-size: 18px">Toplam</span>
-              </div>
-              <div class="col-lg-4"></div>
-              <div
-                class="col-lg-4"
-                style="text-align: end; color: #f2125b; font-weight: bold"
-              >
-                {{
-                  formatPrice(
-                    Number(report.summary.diger) +
-                      Number(report.summary.nakit) +
-                      Number(report.summary.kredi_karti)
-                  )
-                }}
+            <div class="row pt-2" v-if="index > 0">
+              <div class="col-12 col-sm-6 fs-5">Toplam</div>
+              <div class="col-12 col-sm-6 text-sm-end text-danger fw-bold">
+                {{ formatPrice(type.total) }}
               </div>
             </div>
           </div>
@@ -95,145 +96,43 @@
       </div>
     </div>
 
-    <div class="row" style="margin-top: 20px">
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <div style="float: left">
-              <img src="../../../assets/image/bill-icon.png" class="icon" />
-            </div>
-            <div style="margin-left: 70px">
-              <h5 class="card-title title">Adisyonlar</h5>
-              <p class="card-text text">{{ report.summary.adisyonlar }} Adet</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <div style="float: left">
-              <img src="../../../assets/image/cashier.png" class="icon" />
-            </div>
-            <div style="margin-left: 70px">
-              <h5 class="card-title title">Kasa</h5>
-              <p class="card-text text">
-                {{ formatPrice(report.summary.kasa) }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <div style="float: left">
-              <img src="../../../assets/image/bar-chart.png" class="icon" />
-            </div>
-            <div style="margin-left: 70px">
-              <h5 class="card-title title">Ortalama Kazanç</h5>
-              <p class="card-text text">
-                {{ formatPrice(report.summary.kazanc) }}
-              </p>
+    <!-- İstatistik Kartları -->
+    <div class="row mt-3">
+      <div class="col-12 col-md-4 mb-3" v-for="(stat, index) in stats1" :key="index">
+        <div class="card h-100">
+          <div class="card-body d-flex align-items-center">
+            <img :src="stat.icon" class="icon me-3" />
+            <div>
+              <h5 class="card-title title mb-1">{{ stat.label }}</h5>
+              <p class="card-text text mb-0">{{ stat.value }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row" style="margin-top: 20px">
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <div style="float: left">
-              <img src="../../../assets/image/bill-icon.png" class="icon" />
-            </div>
-            <div style="margin-left: 70px">
-              <h5 class="card-title title">Toplam İndirim</h5>
-              <p class="card-text text">
-                {{ formatPrice(report.summary.toplam_indirim) }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <div style="float: left">
-              <img src="../../../assets/image/cashier.png" class="icon" />
-            </div>
-            <div style="margin-left: 70px">
-              <h5 class="card-title title">Cari İşlemleri</h5>
-              <p class="card-text text">
-                {{ formatPrice(report.summary.cariler) }}
-              </p>
+    <div class="row mt-3">
+      <div class="col-12 col-md-4 mb-3" v-for="(stat, index) in stats2" :key="index">
+        <div class="card h-100">
+          <div class="card-body d-flex align-items-center">
+            <img :src="stat.icon" class="icon me-3" />
+            <div>
+              <h5 class="card-title title mb-1">{{ stat.label }}</h5>
+              <p class="card-text text mb-0">{{ stat.value }}</p>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <div>
-    <div class="right-actions">
-      <div class="d-flex">
-        <button class="button-pink" @click="refresh">Yenile</button>
-      </div>
+
+    <!-- Yenile Butonu -->
+    <div class="right-actions mt-3">
+      <button class="button-pink" @click="refresh">Yenile</button>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { defineProps, ref, onMounted, onUpdated, watch } from "vue";
-const { contents } = defineProps(["contents"]);
-const flag = ref();
-import { getSummary, report } from "../../../store/report";
-import formatPrice from "../../../utils/formatPrice";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { Doughnut } from "vue-chartjs";
-ChartJS.register(ArcElement, Tooltip, Legend);
-const refresh = () => {
-  getSummary();
-};
-const data = {
-  labels: ["Eti Karam Çikolata", "Doritos Nacho", "Tadelle Kingsize", "Nohut"],
-  datasets: [
-    {
-      backgroundColor: ["#41B883", "#E46651", "#00D8FF", "#DD1B16"],
-      data: [40, 20, 80, 10],
-    },
-  ],
-};
-
-const options = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      display: false,
-    },
-  },
-};
-const total = ref();
-onMounted(() => {
-  getSummary();
-  total.value = parseInt(report.summary.diger);
-});
-</script>
 <style lang="scss" scoped>
-#container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-}
-#container > div {
-  width: 50%;
-  height: 200px;
-}
-.second {
-  margin-top: 10px;
-}
 .title {
   color: #f2125b !important;
 }
@@ -241,40 +140,36 @@ onMounted(() => {
   font-weight: bold;
 }
 .icon {
-  width: 60px;
+  width: 50px;
+  height: auto;
   opacity: 0.3;
 }
-
 .card {
   border-radius: 15px;
-  border-style: none;
-  height: 100%;
+  border: none;
 }
-
 .right-actions {
-  text-align: center;
-  padding: 1rem;
-  margin-top: 1rem;
-  border-top: 3px solid #7777713a;
   display: flex;
-  align-items: center;
-  justify-content: end;
-
+  justify-content: flex-end;
+  padding-top: 1rem;
+  border-top: 3px solid #7777713a;
   button {
     height: 45px;
-    margin-left: 10px;
   }
-}
-
-.dot {
-  height: 20px;
-  width: 20px;
-  border-radius: 50%;
-  display: inline-block;
-  margin-right: 5px;
 }
 .rightBox {
   border-bottom: 1px solid #ddd;
-  padding: 10px;
+  padding: 10px 0;
+}
+@media (max-width: 576px) {
+  .icon {
+    width: 40px;
+  }
+  .fs-6 {
+    font-size: 0.9rem;
+  }
+  .fs-5 {
+    font-size: 1rem;
+  }
 }
 </style>

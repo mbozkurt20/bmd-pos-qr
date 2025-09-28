@@ -104,7 +104,7 @@ const getBasketNavItems = computed(() => {
       tableDetailStore.isReturn
     ) {
       result.push({
-        label: "İptal",
+        label: "Masayı Kapat",
         icon: "close-outline",
         onClick: () => {
           interactSelectedCartProduct("clear");
@@ -121,7 +121,7 @@ const getBasketNavItems = computed(() => {
       if (table.status === 0) {
         return [
           {
-            label: "İptal",
+            label: "Masayı Kapat",
             icon: "close-circle-outline",
             onClick: () => {
               changeTableStatus(0);

@@ -14,12 +14,12 @@
         </div>
         <div class="right-side">{{ formatPrice(report.endOfDay.self) }}</div>
       </div>
-      <div class="setting-item">
+      <!--div class="setting-item">
         <div class="left-side">
           <span class="title">Paket Satışlar</span>
         </div>
         <div class="right-side">{{ formatPrice(report.endOfDay.package) }}</div>
-      </div>
+      </div-->
       <div class="setting-item">
         <div class="left-side">
           <span class="title">Toplam</span>

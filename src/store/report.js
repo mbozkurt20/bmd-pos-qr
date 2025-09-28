@@ -1,8 +1,6 @@
-
 import { reactive } from "vue";
 import { setLoading } from "./app";
 import axios from "axios";
-
 
 export const report = reactive({
     summary: {},
@@ -23,6 +21,7 @@ export const getSummary = () => {
         }
     }).then((res) => {
         if (res.data.success) {
+            console.log(res)
             report.summary = res.data.summary ?? {}
         }
         setLoading(false);
@@ -97,6 +96,7 @@ export const getPersonnel = () => {
         }
     }).then((res) => {
         if (res.data.success) {
+            console.log({pers: res.data})
             report.personnel = res.data.personnel ?? []
         }
         setLoading(false);

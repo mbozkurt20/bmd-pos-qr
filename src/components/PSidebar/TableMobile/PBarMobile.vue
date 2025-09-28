@@ -1,8 +1,9 @@
 <template>
   <div class="mobile-sidebar" :class="sidebarClass">
-    <h1 v-if="mainTitle != null" class="mobile-main-title">
+    <h1 v-if="mainTitle" class="mobile-sidebar-main-title">
       {{ mainTitle }}
     </h1>
+
     <button
         class="mobile-sidebar-item"
         v-for="(item, index) in navItems"
@@ -10,7 +11,11 @@
         :class="{ 'mobile-sidebar-item-active': selectedIndex === index }"
         @click="handleClick(index, item)"
     >
-      <div class="mobile-sidebar-item-icon" v-if="item.icon" v-html="item.icon"></div>
+      <div
+          class="mobile-sidebar-item-icon"
+          v-if="item.icon"
+          v-html="item.icon"
+      ></div>
       {{ item.name }}
     </button>
   </div>

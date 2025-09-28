@@ -490,16 +490,6 @@ export const changeTableStatus = (status) => {
 };
 
 export const updateProductTables = () => {
-    const segments = router.currentRoute.value.path.split('/');
-
-    if (calculatePayedTotal() === 0 && segments[1] === 'tables' && segments[3] === 'bill') {
-        return toast('Lütfen tahsilat tutarı giriniz veya ödeme türü seçiniz!!', {
-            "theme": "dark",
-            "type": "warning",
-            "dangerouslyHTMLString": true
-        });
-    }
-
     tableDetailStore.willMoveTableId = null;
     tableDetailStore.isDivide = false;
 
@@ -530,7 +520,11 @@ export const updateProductTables = () => {
         updateData.payments = payments
     }
 
-    axios({
+    console.log({sf2: tableDetailStore.payments.length})
+
+    console.log({updateData: updateData})
+
+      axios({
         method: "POST",
         url: "/api/v2/area/table_order_update",
         data: updateData,
@@ -621,11 +615,11 @@ export const interactSelectedCartProduct = (type) => {
 };
 
 export const giftCartProduct = (note = '') => {
-
     const product = tableDetailStore.cart.find((e) => e.id === tableDetailStore.selectedCartItems[0].id);
     if (!product) {
         return;
     }
+
     if (itemAbsoluteQuantity(product) >= 1) {
         tableDetailStore.cart = tableDetailStore.cart.map((e) => {
 
