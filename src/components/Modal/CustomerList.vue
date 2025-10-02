@@ -92,7 +92,7 @@ const onChoose = () => {
           >
             <div class="d-flex justify-content-start align-items-center">
               <ion-icon style="font-size: 18px" name="person-outline" />
-              <span class="text-dark">{{ customer.name }}</span>
+              <span class="text-dark" style="cursor: pointer">{{ customer.name }}</span>
             </div>
             <div>
               {{ customer.phone }}

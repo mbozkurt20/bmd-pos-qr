@@ -1,6 +1,6 @@
 <template>
   <div class="notifications">
-    <div class="notifications-title text-custom">
+    <!--div class="notifications-title text-custom">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="ionicon"
@@ -16,7 +16,7 @@
         />
       </svg>
       Bildirimler
-    </div>
+    </div-->
     <TransitionGroup name="list" tag="div">
       <div
         @click="goToOrder(item)"

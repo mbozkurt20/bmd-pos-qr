@@ -4,8 +4,7 @@
       {{ contents.title }}
     </h6>
     <div class="setting">
-      <div
-        v-for="(item, i) in contents.inputs"
+      <div v-for="(item, i) in contents.inputs"
         class="setting-item"
         :key="'content' + i"
       >
@@ -20,6 +19,13 @@
             :style="[!item.isReadonly ? 'cursor:pointer' : '', 'padding: 10px']"
             >{{ item.inputData }}</span
           >
+          <a v-else-if="item.inputType == 'url'"
+             :href="item.description"
+               :style="[!item.isReadonly ? 'cursor:pointer' : '', 'padding: 10px']"
+          >
+            {{ item.inputData }}
+          </a>
+
           <div v-else class="switch-container">
             <div class="switch" @click="toggleSwitch(item)">
               <input type="checkbox" :checked="Settings.setting[item.key]" />

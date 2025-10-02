@@ -3,10 +3,12 @@ import { defineProps, ref, watch } from "vue";
 import OrderInfo from "../OrderInfo/index.vue";
 import { changeOrderStatusAPI, packageStore } from "../../../store/package";
 const props = defineProps(["orderData"]);
+import {
+  changeTableStatus,
+} from "../../../store/table-detail";
 
-//Fiş yazdırmak için kullanılacak fonksiyon
 const printReceipt = () => {
-  //console.log(props.orderData);
+  changeTableStatus(3);
 };
 const cancel = () => {
   changeOrderStatusAPI(5, packageStore.order.id);

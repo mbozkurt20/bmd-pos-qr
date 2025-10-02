@@ -477,7 +477,7 @@ export const changeTableStatus = (status) => {
     })
         .then((res) => {
             if (res.data.success === true) {
-                toast('Masa Güncellendi', {
+                toast(res.data.message, {
                     "theme": "dark",
                     "type": "success",
                     "pauseOnFocusLoss": false

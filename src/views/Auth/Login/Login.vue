@@ -73,7 +73,7 @@ export default {
   methods: {
     LoginAttack() {
       if (!(this.code && this.password)) {
-        return toast('Lütfen Bilgilerinizi Giriniz!',{
+        return toast('Lütfen Bilgilerinizi Giriniz!', {
           "theme": "dark",
           "type": "warning",
           "pauseOnFocusLoss": false
@@ -90,36 +90,47 @@ export default {
           password: this.password,
         },
       }).then(async (response) => {
-            if (response.data.success === true) {
-              localStorage.setItem("token", response.data.token);
-              localStorage.setItem("domain", response.data.user.tenant.domain);
-              localStorage.setItem("userData", JSON.stringify(response.data.user));
-              this.login();
-
-              toast('Giriş Başarılı',{
-                "theme": "dark",
-                "type": "success",
-                "pauseOnFocusLoss": false
-              })
-
-              setTimeout(() => {
-                const user = this.users[0];
-                console.log({user: user})
-                localStorage.setItem("user", JSON.stringify(user));
-                router.push({ name: "Index" });
-              },1000)
-
-              setLoading(false);
-            }
-          }).catch((err) => {
-            console.log({error: err})
-            toast(err.response.data.message,{
-              "theme": "dark",
-              "type": "error",
-              "pauseOnFocusLoss": false
-            })
-            setLoading(false);
+        if (!response.data.success) {
+          toast(response.data.message, {
+            "theme": "dark",
+            "type": "warning",
+            "pauseOnFocusLoss": false
           });
+
+          setLoading(false);
+
+          return;
+        }
+        if (response.data.success) {
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("domain", response.data.user.tenant.domain);
+          localStorage.setItem("userData", JSON.stringify(response.data.user));
+          this.login();
+
+          toast('Giriş Başarılı', {
+            "theme": "dark",
+            "type": "success",
+            "pauseOnFocusLoss": false
+          })
+
+          setTimeout(() => {
+            const user = this.users[0];
+            console.log({user: user})
+            localStorage.setItem("user", JSON.stringify(user));
+            router.push({name: "Index"});
+          }, 1000)
+
+          setLoading(false);
+        }
+      }).catch((err) => {
+        console.log({error: err})
+        toast(err.response.data.message, {
+          "theme": "dark",
+          "type": "error",
+          "pauseOnFocusLoss": false
+        })
+        setLoading(false);
+      });
     },
 
     login() {

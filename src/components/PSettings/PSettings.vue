@@ -30,7 +30,7 @@ const userData = JSON.parse(localStorage.getItem('userData'))
 
 const navItems = [
   {
-    label: "Sistem",
+    label: "Restaurant",
     key: 0,
     url: "/customers",
     icon: '<ion-icon name="settings-outline"></ion-icon>',
@@ -47,12 +47,12 @@ const navItems = [
     url: "/waiters",
     icon: '<ion-icon name="file-tray-stacked-outline"></ion-icon>',
   },
-  {
+  /*{
     label: "Cihazlar",
     key: 3,
     url: "/waiters",
     icon: '<ion-icon name="desktop-outline"></ion-icon>',
-  },
+  }, */
   {
     label: "Yazıcılar",
     key: 4,
@@ -65,28 +65,28 @@ const navItems = [
     url: "/waiters",
     icon: '<ion-icon name="people-outline"></ion-icon>',
   },
-  {
+  /*{
     label: "Bakım",
     key: 6,
     url: "/waiters",
     icon: '<ion-icon name="build-outline"></ion-icon>',
-  },
+  },*/
 ];
 const dynamicContents = ref([
   {
     cardMargin: true,
-    title: "SİSTEM AYARLARI",
+    title: "Restaurant Bilgileri",
     inputs: [
       {
-        title: "Kullanıcı",
-        description: "Açıklama",
+        title: "Restaurant İsmi",
+        description: "",
         inputType: "input",
         isReadonly: true,
         inputData: userData ? userData.name : '',
       },
       {
         title: "Gün Sonu Saati",
-        description: "Açıklama",
+        description: "",
         inputType: "input",
         isReadonly: true,
         inputData: "00:00",
@@ -98,61 +98,10 @@ const dynamicContents = ref([
     cardMargin: false,
     inputs: [
       {
-        title: "Logo Yazdırma",
-        description: "Logo yazdırmayı etkinleştirir",
-        inputType: "switch",
-        inputData: false,
-        key: "logo_printed",
-      },
-      {
-        title: "Bildirimler",
-        description: "Online sipariş bildirimlerini etkinleştirir",
-        inputType: "switch",
-        inputData: false,
-        key: "notification",
-      },
-      {
-        title: "Parçalı Ödemeyi Kaydet",
-        description: "Ödeme kaydetme özelliğini etkinleştirir.",
-        inputType: "switch",
-        inputData: false,
-        key: "partial_payment",
-      },
-      {
-        title: "CallerID",
-        description: "CallerID entegrasyonunu etkinleştirir.",
-        inputType: "switch",
-        inputData: false,
-        key: "callerId",
-      },
-      {
-        title: "Resim Gösterimi",
-        description: "Ürün fotoğraflarının gösterim durumunu belirler.",
-        inputType: "switch",
-        inputData: false,
-        key: "product_image",
-      },
-      {
-        title: "Sipariş Yazdırma",
-        description: "Sipariş yazdırma özelliğini etkinleştirir",
-        inputType: "switch",
-        inputData: false,
-        key: "auto_order_printed",
-      },
-      {
-        title: "Adisyon Yazdırma",
-        description: "Adisyon yazdırma özelliğini etkinleştirir.",
-        inputType: "switch",
-        inputData: false,
-        key: "auto_table_printed",
-      },
-      {
-        title: "İşlem Sonrası Çıkış",
-        description:
-          "İşlem sonrasında belirlenen ekrana otomatik olarak dönülmesini sağlar.",
-        inputType: "switch",
-        inputData: false,
-        key: "waiter_logout",
+        title: "Yazıcı Exe İndir",
+        description: "",
+        inputType: "url",
+        inputData: 'Restaurant ID: '+ userData.id+' girerek yazıcı exe bağlanabilrisiniz.',
       },
     ],
   },

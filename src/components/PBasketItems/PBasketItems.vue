@@ -44,10 +44,28 @@
 
         <button
             @click="updateProductTables()"
-            class="btn btn--primary"
+            class="btn btn-primary"
             v-if="tableDetailStore.table.status === 1 || tableDetailStore.table.status === 3"
         >
           ADİSYONU GÜNCELLE
+        </button>
+
+        <button
+            :disabled="!getIsAvailableFastSellButton"
+            @click="onFastSell()"
+            class="btn btn--primary"
+            v-if="tableDetailStore.table.isFastSell !== undefined"
+        >
+          ADİSYONU KAYDET
+        </button>
+
+        <button
+            :disabled="!getIsAvailableFastSellButton"
+            @click="onPackages()"
+            class="btn btn--primary"
+            v-if="tableDetailStore.table.isPackages !== undefined"
+        >
+          ADİSYONU KAYDET
         </button>
 
         <button
