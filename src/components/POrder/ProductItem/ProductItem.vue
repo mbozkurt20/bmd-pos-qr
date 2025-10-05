@@ -81,7 +81,6 @@ const submit = (item) => {
   }
 };
 </script>
-
 <template>
   <div class="product-grid" v-if="product.length > 0">
     <div
@@ -89,151 +88,133 @@ const submit = (item) => {
         v-for="item in product"
         :key="item.id"
         @click.stop="selectItem(item)"
+        :class="{ selected: isSelected(item) }"
     >
-      <img :src="item.image" alt="Ürün" class="product-image" />
+      <!-- Sol: Görsel -->
+      <div class="product-image-container">
+        <img :src="item.image" alt="Ürün" class="product-image" />
+      </div>
 
-      <div class="product-info">
+      <!-- Sağ: Bilgiler -->
+      <div class="product-details">
         <div class="product-name">{{ item.name }}</div>
         <div class="product-price">
           <span v-if="packageRoute">{{ formatPrice(item.package_price) }}</span>
           <span v-else-if="fastSell">{{ formatPrice(item.fast_price) }}</span>
           <span v-else>{{ formatPrice(item.price) }}</span>
         </div>
+
+        <div v-if="isSelected(item)" class="action-buttons">
+          <button class="add-button" @click.stop="addSelectedToCart">Ekle</button>
+          <button class="customize-button" @click.stop="openCustomizeModal(item)">
+            Özelleştir
+          </button>
+        </div>
       </div>
-
-      <div v-if="isSelected(item)" class="action-buttons">
-        <button class="add-button" @click.stop="addSelectedToCart">
-          Ekle
-        </button>
-        <button class="customize-button" @click.stop="openCustomizeModal(item)">
-          Özelleştir
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Categories -->
-  <div class="orders gap-2 mt-4" v-if="tableDetailStore.showParent">
-    <div
-        class="order-card"
-        style="height: 214px"
-        v-for="item in tableDetailStore.categories[tableDetailStore.selectedIndex]?.children_recursive"
-        :key="item.id"
-        @click="submit(item)"
-    >
-      <div class="cursor-pointer">{{ item.name }}</div>
-    </div>
-  </div>
-
-  <div class="orders gap-2 mt-4" v-if="tableDetailStore.showSubCategory">
-    <div
-        class="order-card"
-        style="height: 214px"
-        v-for="item in tableDetailStore.subCategory"
-        :key="item.id"
-        @click="submit(item)"
-    >
-      <div class="cursor-pointer">{{ item.name }}</div>
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
+/* Grid düzeni */
 .product-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: flex-start;
-  padding: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  padding: 16px;
 }
 
+/* Kart görünümü */
 .product-card {
-  flex: 0 0 200px; // varsayılan genişlik
-  min-height: 230px;
-  background-color: #fff;
-  border-radius: 12px;
-  padding: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
   cursor: pointer;
+  transition: all 0.25s ease;
+  min-height: 120px;
+  padding: 8px;
 
   &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.12);
+  }
+
+  &.selected {
+    border: 2px solid #e7004d;
   }
 }
 
-/* Responsive */
-@media (max-width: 992px) {
-  .product-card {
-    flex: 0 0 150px; // tablet için
-  }
-}
-
-@media (max-width: 576px) {
-  .product-card {
-    flex: 0 0 150px; // tablet için
-
-  }
+/* Görsel alanı */
+.product-image-container {
+  flex: 0 0 90px; /* Görsel genişliği */
+  height: 90px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f8f8f8;
 }
 
 .product-image {
   width: 100%;
-  height: 100px;
-  object-fit: contain;
-  margin-bottom: 12px;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
-.product-info {
+.product-card:hover .product-image {
+  transform: scale(1.05);
+}
+
+/* Sağ taraf */
+.product-details {
   flex: 1;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  text-align: left;
 }
 
 .product-name {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 6px;
+  color: #222;
+  margin-bottom: 4px;
+  line-height: 1.3;
 }
 
 .product-price {
   font-size: 14px;
   font-weight: 500;
   color: #e7004d;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .action-buttons {
   display: flex;
-  gap: 8px;
-  justify-content: center;
-  margin-top: auto;
-  width: 100%;
+  gap: 6px;
+  margin-top: 4px;
 }
 
 .add-button,
 .customize-button {
   flex: 1;
-  padding: 8px 0;
+  padding: 5px 0;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background 0.2s ease;
 }
 
 .add-button {
   background-color: #30d760;
   color: #fff;
   &:hover {
-    background-color: #1fde74;
+    background-color: #28c156;
   }
 }
 
@@ -241,20 +222,50 @@ const submit = (item) => {
   background-color: #e7004d;
   color: #fff;
   &:hover {
-    background-color: #e13a71;
+    background-color: #c90044;
   }
 }
 
 /* Responsive */
 @media (max-width: 992px) {
-  .product-card {
-    width: 45vw;
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
   .product-card {
-    width: 90vw;
+    min-height: 110px;
+  }
+  .product-image-container {
+    flex: 0 0 80px;
+    height: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .product-grid {
+    grid-template-columns: 1fr;
+  }
+  .product-card {
+    flex-direction: row;
+    width: 100%;
+  }
+  .product-image-container {
+    flex: 0 0 70px;
+    height: 70px;
+  }
+  .product-details {
+    padding: 6px 10px;
+  }
+  .product-name {
+    font-size: 14px;
+  }
+  .product-price {
+    font-size: 13px;
   }
 }
 </style>

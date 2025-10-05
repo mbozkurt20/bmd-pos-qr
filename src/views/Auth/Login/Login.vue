@@ -1,59 +1,13 @@
-<template>
-  <div class="container">
-    <div class="row">
-      <!-- Sol taraf: Başlık -->
-      <div class="col-12 col-md-6">
-        <h1 class="loginH1">Hesabınızda oturum açın</h1>
-      </div>
-
-      <!-- Sağ taraf: Form -->
-      <div class="col-12 col-md-6">
-        <div class="login">
-          <div class="login-form">
-            <h5 class="login-form-title text-dark">Restaurant Girişi</h5>
-          </div>
-
-          <div class="login-form">
-            <input
-                type="number"
-                class="login-input"
-                v-model="code"
-                maxlength="6"
-                placeholder="Restaurant Kodunuz"
-                @keyup.enter="LoginAttack"
-            />
-          </div>
-
-          <div class="login-form">
-            <input
-                type="password"
-                class="login-input"
-                v-model="password"
-                placeholder="Şifreniz"
-                @keyup.enter="LoginAttack"
-            />
-          </div>
-
-          <div class="login-form">
-            <button class="login-form-loginBtn" @click="LoginAttack">
-              Oturum Aç
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<style src="./Login.scss" lang="scss" scoped/>
 <script lang="ts">
 import axios from "axios";
-import router from "../../../router/index";
+
 import PFooter from "../../../components/Footer/Footer.vue";
 import PHeader from "../../../components/Header/PHeader/PHeader.vue";
-import Forget from "../Forget.vue";
+import {useRoute} from 'vue-router'
+
 import {setLoading} from "../../../store/app";
 import {toast} from "vue3-toastify";
+import router from "@/router";
 
 export default {
   components: {
@@ -62,65 +16,54 @@ export default {
   },
   data() {
     return {
+      route: useRoute(),
+
       users: [],
-      showPassword: false,
       code: "",
-      password: "",
-      message: "ssdasd",
     };
   },
-
+  mounted() {
+    // Component mount edildiğinde LoginAttack otomatik çalışsın
+    this.LoginAttack();
+  },
   methods: {
     LoginAttack() {
-      if (!(this.code && this.password)) {
-        return toast('Lütfen Bilgilerinizi Giriniz!', {
-          "theme": "dark",
-          "type": "warning",
-          "pauseOnFocusLoss": false
-        })
-      }
+      const restaurantCode = this.route.params.restaurantId
+      const table = this.route.params.tableId
 
-      setLoading(true);
+      console.log({restaurantCode});
+      console.log({table});
 
       axios({
         method: "POST",
-        url: "v2/login",
+        url: "v2/restaurant-menu",
         data: {
-          code: this.code,
-          password: this.password,
+          code: restaurantCode,
         },
       }).then(async (response) => {
-        if (!response.data.success) {
-          toast(response.data.message, {
-            "theme": "dark",
-            "type": "warning",
-            "pauseOnFocusLoss": false
-          });
 
-          setLoading(false);
+        setLoading(true);
 
-          return;
-        }
         if (response.data.success) {
           localStorage.setItem("token", response.data.token);
+          localStorage.setItem("restaurantCode", this.route.params.restaurantId);
+          localStorage.setItem("table",  this.route.params.tableId);
           localStorage.setItem("domain", response.data.user.tenant.domain);
           localStorage.setItem("userData", JSON.stringify(response.data.user));
           this.login();
 
-          toast('Giriş Başarılı', {
+          toast('Hoşgeldiniz...', {
             "theme": "dark",
             "type": "success",
             "pauseOnFocusLoss": false
           })
 
-          setTimeout(() => {
-            const user = this.users[0];
-            console.log({user: user})
-            localStorage.setItem("user", JSON.stringify(user));
-            router.push({name: "Index"});
-          }, 1000)
+          console.log(response.data.user.tenant.domain)
+          console.log(response.data.user)
 
           setLoading(false);
+
+          return router.push({ path: `/tables/${table}` });
         }
       }).catch((err) => {
         console.log({error: err})
@@ -155,3 +98,7 @@ export default {
   },
 };
 </script>
+
+<template>
+  <div>Yükleniyor</div>
+</template>

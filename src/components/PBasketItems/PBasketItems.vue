@@ -39,41 +39,15 @@
             class="btn btn--primary"
             v-if="(tableDetailStore.table.status === 0 || tableDetailStore.table.status === 2) && productItems.length"
         >
-          ADİSYONU KAYDET
+          SİPARİŞLERİMİ KAYDET
         </button>
 
         <button
             @click="updateProductTables()"
-            class="btn btn-primary"
+            class="btn btn--primary"
             v-if="tableDetailStore.table.status === 1 || tableDetailStore.table.status === 3"
         >
-          ADİSYONU GÜNCELLE
-        </button>
-
-        <button
-            :disabled="!getIsAvailableFastSellButton"
-            @click="onFastSell()"
-            class="btn btn--primary"
-            v-if="tableDetailStore.table.isFastSell !== undefined"
-        >
-          ADİSYONU KAYDET
-        </button>
-
-        <button
-            :disabled="!getIsAvailableFastSellButton"
-            @click="onPackages()"
-            class="btn btn--primary"
-            v-if="tableDetailStore.table.isPackages !== undefined"
-        >
-          ADİSYONU KAYDET
-        </button>
-
-        <button
-            @click="takePayment()"
-            class="btn btn--payment"
-            v-if="tableDetailStore.table.status === 1 || tableDetailStore.table.status === 3"
-        >
-          ÖDEME AL
+          SİPARİŞLERİMİ GÜNCELLE
         </button>
       </div>
 

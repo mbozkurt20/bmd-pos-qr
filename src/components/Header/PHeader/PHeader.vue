@@ -2,9 +2,7 @@
   <header class="header py-2">
     <div class="container header-row">
       <div class="header-left d-flex">
-        <a href="/index" class="header-logo">
-          <h2 class="text-white mt-2">{{userData ? userData.name : ''}}</h2>
-        </a>
+        <h2 class="text-white mt-2">{{userData ? userData.name : ''}}</h2>
         <PHeaderNav/>
       </div>
       <div class="header-right d-flex">

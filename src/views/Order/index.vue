@@ -6,13 +6,13 @@
   >
     <POrder :order-items="tableDetailStore.products" />
     <CreateNoteModal />
-    <ReservationModal />
-    <GiftNoteModal />
+    <PFooter></PFooter>
   </PosLayout>
 </template>
 
 <script setup lang="ts">
 import PosLayout from "../../layouts/Pos.vue";
+import PFooter from "../../components/Footer/Footer.vue";
 import POrder from "../../components/POrder/POrder.vue";
 import {
   tableDetailStore,
@@ -57,29 +57,6 @@ const getBasketNavItems = computed(() => {
         interactSelectedCartProduct("decrement");
       },
     });
-
-    if (tableDetailStore.isDivide) {
-      result.push({
-        label: "Taşı",
-        icon: "arrow-redo-outline",
-        onClick: () => {
-          setWillMoveTableId(tableDetailStore.table.id);
-          setStateTable(tableDetailStore.cart);
-          router.push("/tables");
-        },
-      });
-    }
-
-    if (!tableDetailStore.isCatering && !tableDetailStore.isReturn) {
-      result.push({
-        label: "İkram",
-        icon: "gift",
-        onClick: () => {
-          setGiftNoteModal(true);
-        },
-      });
-    }
-
     result.push({
       label: "Kaldır",
       icon: "trash-outline",
@@ -88,23 +65,6 @@ const getBasketNavItems = computed(() => {
       },
     });
 
-    if (
-      tableDetailStore.isCatering ||
-      tableDetailStore.isDivide ||
-      tableDetailStore.isReturn
-    ) {
-      result.push({
-        label: "Masayı Kapat",
-        icon: "close-outline",
-        onClick: () => {
-          interactSelectedCartProduct("clear");
-          setIsCatering(false);
-          setIsReturn(false);
-          setIsDivide(false);
-        },
-      });
-    }
-
     return result;
   } else {
     if (Object.keys(tableDetailStore.table).length) {
@@ -112,52 +72,10 @@ const getBasketNavItems = computed(() => {
       if (table.status === 0) {
         return [
           {
-            label: "Masayı Kapat",
-            icon: "close-circle-outline",
-            onClick: () => {
-              changeTableStatus(0);
-              router.push("/tables");
-            },
-          },
-          {
-            label: "Masalara Git",
-            icon: "copy-outline",
-            onClick: () => {
-              router.push('/tables')
-            },
-          },
-          {
             label: "Not Ekle",
             icon: "copy-outline",
             onClick: () => {
               setCreateNoteModal(true);
-            },
-          },
-
-          {
-            label: "Rezerve",
-            icon: "notifications-outline",
-            onClick: () => {
-              setReservationModal(true);
-            },
-          },
-        ];
-      } else {
-        if (tableDetailStore.table.orders.find((a) => a.printed > 0)) {
-          const index = tableDetailNavItems.indexOf(
-            tableDetailNavItems.find((a) => a.label == "Taşı")
-          );
-          if (index > -1) {
-            tableDetailNavItems.splice(index, 1);
-          }
-        }
-        return [
-          ...tableDetailNavItems,
-          table.status === 2 && {
-            label: "Rezerve İptal",
-            icon: "close-circle-outline",
-            onClick: () => {
-              changeTableStatus(0);
             },
           },
         ];

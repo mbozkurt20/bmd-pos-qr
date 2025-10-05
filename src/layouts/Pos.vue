@@ -62,6 +62,7 @@ onMounted(() => {
   <div class="basket">
     <div class="content-row">
       <PBasketNav
+          v-if="navItems.length"
         :items="navItems"
         :is-show-move-button="isShowMoveButton"
       />

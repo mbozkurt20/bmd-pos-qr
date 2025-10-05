@@ -5,9 +5,10 @@
   justify-content: center;
   gap: 12px;
   padding: 16px;
-  overflow-y: auto;
-  border-bottom: 1px solid #ddd;
 
+  border-bottom: 1px solid #ddd;
+  max-height: 30vh;
+  overflow-y: scroll;
   /* Başlık */
   &-main-title {
     flex: 1 1 100%;

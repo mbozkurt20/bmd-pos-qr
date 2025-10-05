@@ -1,31 +1,5 @@
 <template>
   <div class="header-state d-flex">
-    <a class="header-state-link d-flex">
-      <ion-icon
-        style="font-size: 18px"
-        :name="headerState[0].icon"
-        :style="isOnline ? 'color:green' : 'color:red'"
-      ></ion-icon>
-      <div class="header-state-texts">
-        <div class="header-state-title">{{ headerState[0].label }}</div>
-        <div class="header-state-state">
-          {{ headerState[0].state }}
-        </div>
-      </div>
-    </a>
-    <a class="header-state-link d-flex">
-      <ion-icon
-        style="font-size: 18px"
-        :style="isOnline ? 'color:green' : 'color:red'"
-        :name="headerState[1].icon"
-      ></ion-icon>
-      <div class="header-state-texts">
-        <div class="header-state-title">{{ headerState[1].label }}</div>
-        <div class="header-state-state">
-          {{ headerState[1].state }}
-        </div>
-      </div>
-    </a>
     <a
       class="header-state-link d-flex"
       v-if="headerState[2]"
