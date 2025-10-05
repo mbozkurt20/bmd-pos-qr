@@ -6,7 +6,6 @@
   >
     <POrder :order-items="tableDetailStore.products" />
     <CreateNoteModal />
-    <PFooter></PFooter>
   </PosLayout>
 </template>
 
