@@ -17,6 +17,11 @@ const routes = [
         path: '/restaurant/:restaurantId/table/:tableId',
         name: 'Login',
         component: Login,
+        props: route => ({
+            restaurantId: route.params.restaurantId,
+            tableId: route.params.tableId,
+            v: route.query.v ?? null   // <-- QR'dan gelen cache kırıcı parametre
+        }),
         meta: {
             title: 'Restaurant Girişi',
             middleware: [auth]

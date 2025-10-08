@@ -1,104 +1,108 @@
-<script lang="ts">
+<script setup lang="ts">
 import axios from "axios";
+import { onMounted, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
 
 import PFooter from "../../../components/Footer/Footer.vue";
 import PHeader from "../../../components/Header/PHeader/PHeader.vue";
-import {useRoute} from 'vue-router'
 
-import {setLoading} from "../../../store/app";
-import {toast} from "vue3-toastify";
-import router from "@/router";
+import { setLoading } from "../../../store/app";
+import { toast } from "vue3-toastify";
 
-export default {
-  components: {
-    PHeader,
-    PFooter,
-  },
-  data() {
-    return {
-      route: useRoute(),
+const route = useRoute();
+const router = useRouter();
 
-      users: [],
-      code: "",
-    };
-  },
-  mounted() {
-    // Component mount edildiğinde LoginAttack otomatik çalışsın
-    this.LoginAttack();
-  },
-  methods: {
-    LoginAttack() {
-      const restaurantCode = this.route.params.restaurantId
-      const table = this.route.params.tableId
+const message = ref("Yükleniyor...");
 
-      console.log({restaurantCode});
-      console.log({table});
+// QR'dan gelen değerleri route'tan al
+const restaurantCode = route.params.restaurantId as string;
+const table = route.params.tableId as string;
+const version = (route.query.v as string) || null;
 
-      axios({
-        method: "POST",
-        url: "v2/restaurant-menu",
-        data: {
-          code: restaurantCode,
-        },
-      }).then(async (response) => {
+onMounted(() => {
+  // Her yeni QR geldiğinde eski kayıtları sil
+  localStorage.removeItem("table");
+  localStorage.removeItem("table_v");
 
-        setLoading(true);
+  // Eğer yeni versiyon geldiyse kaydet (cache kırıcı)
+  if (version) localStorage.setItem("table_v", version);
 
-        if (response.data.success) {
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("restaurantCode", this.route.params.restaurantId);
-          localStorage.setItem("table",  this.route.params.tableId);
-          localStorage.setItem("domain", response.data.user.tenant.domain);
-          localStorage.setItem("userData", JSON.stringify(response.data.user));
-          this.login();
+  LoginAttack();
+});
 
-          toast('Hoşgeldiniz...', {
-            "theme": "dark",
-            "type": "success",
-            "pauseOnFocusLoss": false
-          })
+async function LoginAttack() {
+  try {
+    setLoading(true);
 
-          console.log(response.data.user.tenant.domain)
-          console.log(response.data.user)
+    const response = await axios.post("v2/restaurant-menu", {
+      code: restaurantCode,
+    });
 
-          setLoading(false);
+    if (response.data.success) {
+      const { token, user } = response.data;
 
-          return router.push({ path: `/tables/${table}` });
-        }
-      }).catch((err) => {
-        console.log({error: err})
-        toast(err.response.data.message, {
-          "theme": "dark",
-          "type": "error",
-          "pauseOnFocusLoss": false
-        })
-        setLoading(false);
+      // Eski verileri silip yenilerini yaz
+      localStorage.setItem("token", token);
+      localStorage.setItem("restaurantCode", restaurantCode);
+      localStorage.setItem("table", table);
+      localStorage.setItem("domain", user.tenant.domain);
+      localStorage.setItem("userData", JSON.stringify(user));
+
+      await fetchUserInformation();
+
+      toast("Hoşgeldiniz...", {
+        theme: "dark",
+        type: "success",
+        pauseOnFocusLoss: false,
       });
-    },
 
-    login() {
-      axios({
-        method: "POST",
-        data: {
-          domain: localStorage.getItem("domain") ?? null,
-        },
-        url: "v2/auth/information",
-        headers: {
-          Authorization: localStorage.getItem("token") || null,
-        },
-      }).then(({data}) => {
-        if (data.success === true) {
-          this.users = data.users;
-          console.log({users: this.users})
-        }
-      }).catch(err => {
-        console.log({mb: err})
+      // Doğru masaya yönlendir
+      router.push({ path: `/tables/${table}` });
+    } else {
+      toast(response.data.message || "Bir hata oluştu.", {
+        theme: "dark",
+        type: "error",
       });
     }
-  },
-};
+  } catch (err: any) {
+    console.error("LoginAttack error:", err);
+    toast(err?.response?.data?.message || "Sunucu hatası.", {
+      theme: "dark",
+      type: "error",
+    });
+  } finally {
+    setLoading(false);
+  }
+}
+
+async function fetchUserInformation() {
+  try {
+    const token = localStorage.getItem("token");
+    const domain = localStorage.getItem("domain");
+
+    if (!token || !domain) return;
+
+    const res = await axios.post(
+        "v2/auth/information",
+        { domain },
+        { headers: { Authorization: token } }
+    );
+
+    if (res.data.success) {
+      console.log("Kullanıcı bilgileri:", res.data.users);
+    }
+  } catch (e) {
+    console.warn("Bilgi alınamadı:", e);
+  }
+}
 </script>
 
 <template>
-  <div>Yükleniyor</div>
+  <div>
+    <PHeader />
+    <main class="container text-center py-6">
+      <h3>{{ message }}</h3>
+    </main>
+    <PFooter />
+  </div>
 </template>
