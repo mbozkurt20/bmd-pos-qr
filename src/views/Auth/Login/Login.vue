@@ -1,6 +1,16 @@
+<template>
+  <div>
+    <PHeader />
+    <main class="container text-center py-6">
+      <h3>{{ message }}</h3>
+    </main>
+    <PFooter />
+  </div>
+</template>
+
 <script setup lang="ts">
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
 import PFooter from "../../../components/Footer/Footer.vue";
@@ -14,41 +24,72 @@ const router = useRouter();
 
 const message = ref("Yükleniyor...");
 
-// QR'dan gelen değerleri route'tan al
-const restaurantCode = route.params.restaurantId as string;
-const table = route.params.tableId as string;
-const version = (route.query.v as string) || null;
+// Son işlenen parametreleri tut (aynı parametre ile tekrar çalışmayı önlemek için)
+let lastProcessed = {
+  restaurantId: null as string | null,
+  tableId: null as string | null,
+  v: null as string | null,
+};
 
-onMounted(() => {
-  // Her yeni QR geldiğinde eski kayıtları sil
-  localStorage.removeItem("table");
-  localStorage.removeItem("table_v");
+// Güvenli localStorage setter
+function safeSetItem(key: string, value: string | null) {
+  try {
+    if (value === null) localStorage.removeItem(key);
+    else localStorage.setItem(key, value);
+  } catch (e) {
+    console.warn("localStorage error", e);
+  }
+}
 
-  // Eğer yeni versiyon geldiyse kaydet (cache kırıcı)
-  if (version) localStorage.setItem("table_v", version);
+/**
+ * Asıl işlem fonksiyonu.
+ * restaurantId ve tableId zorunlu; version (v) opsiyonel.
+ */
+async function handleLoginAttack(restaurantId: string, tableId: string, version: string | null) {
+  // Aynı parametreler ile daha önce çalıştıysak atla
+  if (
+      lastProcessed.restaurantId === restaurantId &&
+      lastProcessed.tableId === tableId &&
+      lastProcessed.v === version
+  ) {
+    return;
+  }
 
-  LoginAttack();
-});
+  // güncelle
+  lastProcessed = { restaurantId, tableId, v: version };
 
-async function LoginAttack() {
   try {
     setLoading(true);
+    message.value = "Giriş yapılıyor...";
 
-    const response = await axios.post("v2/restaurant-menu", {
-      code: restaurantCode,
-    });
+    // Her yeni QR geldiğinde eski table ile ilgili anahtarları temizle
+    safeSetItem("table", null);
+    safeSetItem("table_v", null);
 
-    if (response.data.success) {
-      const { token, user } = response.data;
+    // Eğer QR içinde version varsa bunu kaydet (gerektiğinde backend'e gönderebilirsin)
+    if (version) safeSetItem("table_v", version);
 
-      // Eski verileri silip yenilerini yaz
-      localStorage.setItem("token", token);
-      localStorage.setItem("restaurantCode", restaurantCode);
-      localStorage.setItem("table", table);
-      localStorage.setItem("domain", user.tenant.domain);
-      localStorage.setItem("userData", JSON.stringify(user));
+    // Sunucuya restoran kodunu gönder ve token/user al
+    const postData = { code: restaurantId };
 
-      await fetchUserInformation();
+    const response = await axios.post("v2/restaurant-menu", postData);
+
+    if (response?.data?.success) {
+      const resData = response.data;
+
+      // Token ve kullanıcı bilgileri
+      const token = resData.token ?? null;
+      const user = resData.user ?? null;
+
+      // Güvenli şekilde kaydet
+      safeSetItem("token", token);
+      safeSetItem("restaurantCode", restaurantId);
+      safeSetItem("table", tableId);
+      if (user?.tenant?.domain) safeSetItem("domain", user.tenant.domain);
+      if (user) safeSetItem("userData", JSON.stringify(user));
+
+      // Ek bilgi çağrısı (bilgi endpointi)
+      await fetchUserInformation(token);
 
       toast("Hoşgeldiniz...", {
         theme: "dark",
@@ -56,28 +97,34 @@ async function LoginAttack() {
         pauseOnFocusLoss: false,
       });
 
-      // Doğru masaya yönlendir
-      router.push({ path: `/tables/${table}` });
+      message.value = "Yönlendiriliyorsunuz...";
+
+      // Yönlendir: /tables/:tableId
+      // küçük bir bekleme ver (opsiyonel)
+      setTimeout(() => {
+        router.push({ path: `/tables/${tableId}` }).catch(() => {});
+      }, 150);
     } else {
-      toast(response.data.message || "Bir hata oluştu.", {
-        theme: "dark",
-        type: "error",
-      });
+      const errMsg = response?.data?.message ?? "Giriş başarısız.";
+      message.value = errMsg;
+      toast(errMsg, { theme: "dark", type: "error" });
     }
   } catch (err: any) {
     console.error("LoginAttack error:", err);
-    toast(err?.response?.data?.message || "Sunucu hatası.", {
-      theme: "dark",
-      type: "error",
-    });
+    const errMsg = err?.response?.data?.message ?? "Sunucu hatası veya bağlantı hatası.";
+    message.value = errMsg;
+    toast(errMsg, { theme: "dark", type: "error" });
   } finally {
     setLoading(false);
   }
 }
 
-async function fetchUserInformation() {
+/**
+ * Kullanıcı bilgilerini alır (token kullanılarak)
+ */
+async function fetchUserInformation(tokenArg?: string | null) {
   try {
-    const token = localStorage.getItem("token");
+    const token = tokenArg ?? localStorage.getItem("token");
     const domain = localStorage.getItem("domain");
 
     if (!token || !domain) return;
@@ -88,21 +135,51 @@ async function fetchUserInformation() {
         { headers: { Authorization: token } }
     );
 
-    if (res.data.success) {
+    if (res?.data?.success) {
+      // İstersen store'a dispatch edebilirsin
       console.log("Kullanıcı bilgileri:", res.data.users);
     }
   } catch (e) {
-    console.warn("Bilgi alınamadı:", e);
+    console.warn("fetchUserInformation error", e);
   }
 }
+
+/**
+ * route.params / route.query değişikliklerini dinle.
+ * - onMounted içinde de bir kez çağırıyoruz (ilk QR).
+ */
+onMounted(() => {
+  const rId = (route.params.restaurantId as string) || "";
+  const tId = (route.params.tableId as string) || "";
+  const v = (route.query.v as string) || null;
+
+  if (!rId || !tId) {
+    message.value = "Geçersiz QR URL'i.";
+    toast("Geçersiz QR URL'i.", { theme: "dark", type: "error" });
+    return;
+  }
+
+  handleLoginAttack(rId, tId, v);
+});
+
+/**
+ * Eğer kullanıcı aynı component açıkken başka bir QR okutursa (route param değişir),
+ * bunları yakalayıp handleLoginAttack'i yeniden çağır.
+ */
+watch(
+    () => [route.params.restaurantId, route.params.tableId, route.query.v],
+    (newVals, oldVals) => {
+      const [newR, newT, newV] = newVals as [string, string, string?];
+      const [oldR, oldT, oldV] = oldVals as [string, string, string?];
+
+      // Eğer herhangi bir param değiştiyse ve yeni paramlar geçerli ise tekrar çalıştır
+      if ((newR && newT) && (newR !== oldR || newT !== oldT || newV !== oldV)) {
+        handleLoginAttack(newR, newT, newV ?? null);
+      }
+    }
+);
 </script>
 
-<template>
-  <div>
-    <PHeader />
-    <main class="container text-center py-6">
-      <h3>{{ message }}</h3>
-    </main>
-    <PFooter />
-  </div>
-</template>
+<style scoped>
+/* İstersen buraya stil ekle */
+</style>
