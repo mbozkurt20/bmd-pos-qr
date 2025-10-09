@@ -12,7 +12,7 @@ import NotFound from '../views/404.vue';
 
 
 const routes = [
-    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }, // 404 Route
+
     {
         path: '/restaurant/:restaurantId/table/:tableId',
         name: 'Login',
@@ -20,7 +20,6 @@ const routes = [
         props: route => ({
             restaurantId: route.params.restaurantId,
             tableId: route.params.tableId,
-            v: route.query.v ?? null   // <-- QR'dan gelen cache kırıcı parametre
         }),
         meta: {
             title: 'Restaurant Girişi',
@@ -77,6 +76,8 @@ const routes = [
             }
         ]
     },
+
+    { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }, // 404 Route
 ];
 
 

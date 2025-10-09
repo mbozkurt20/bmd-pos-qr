@@ -1,185 +1,109 @@
+<script lang="ts">
+import axios from "axios";
+import PFooter from "../../../components/Footer/Footer.vue";
+import PHeader from "../../../components/Header/PHeader/PHeader.vue";
+import { setLoading } from "../../../store/app";
+import { toast } from "vue3-toastify";
+import router from "@/router";
+
+export default {
+  name: 'Login',
+  components: { PHeader, PFooter },
+  props: {
+    restaurantId: { type: String, required: true },
+    tableId: { type: String, required: true },
+  },
+  data() {
+    return {
+      users: [],
+      code: "",
+    };
+  },
+  mounted() {
+    this.LoginAttack()
+  },
+  methods: {
+    orderC() {
+      return router.push({ path: `/tables/${localStorage.getItem("table")}` });
+    },
+    menu() {
+      return router.push({ path: `/menu` });
+    },
+
+    async LoginAttack() {
+      const restaurantCode = this.restaurantId;
+      const table = this.tableId;
+
+      try {
+        setLoading(true);
+        const response = await axios.post("v2/restaurant-menu", { code: restaurantCode });
+        if (response.data.success) {
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("restaurantCode", restaurantCode);
+          localStorage.setItem("table", table);
+          localStorage.setItem("domain", response.data.user.tenant.domain);
+          localStorage.setItem("userData", JSON.stringify(response.data.user));
+          await this.login();
+          toast("Hoşgeldiniz...", {
+            theme: "dark",
+            type: "success",
+            pauseOnFocusLoss: false,
+          });
+        }
+      } catch (err: any) {
+        console.error({ error: err });
+        toast(err.response?.data?.message || "Hata oluştu", {
+          theme: "dark",
+          type: "error",
+          pauseOnFocusLoss: false,
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    async login() {
+      try {
+        const { data } = await axios.post(
+            "v2/auth/information",
+            { domain: localStorage.getItem("domain") ?? null },
+            { headers: { Authorization: localStorage.getItem("token") || null } }
+        );
+        if (data.success) {
+          this.users = data.users;
+          console.log({ users: this.users });
+        }
+      } catch (err) {
+        console.error({ mb: err });
+      }
+    },
+  },
+};
+</script>
+
 <template>
-  <div>
-    <PHeader />
-    <main class="container text-center py-6">
-      <h3>{{ message }}</h3>
-    </main>
-    <PFooter />
+  <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(to bottom right, #dcfce7, #bbf7d0); color: #1f2937; font-family: sans-serif;">
+
+    <!-- Card -->
+    <div style=" box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-radius: 2rem; padding: 2.5rem; width: 90%; max-width: 450px; text-align: center; margin-bottom: 2rem;">
+      <h1 style="font-size: 2rem; font-weight: bold; color: #16a34a; animation: pulse 2s infinite;">Hoşgeldiniz 👋</h1>
+      <p style="color: #4b5563; font-size: 1.125rem; margin-top: 0.5rem;">Lütfen devam etmek için bir seçenek seçin</p>
+
+      <!-- Buttons -->
+      <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 2rem;">
+        <button @click="menu()"
+                style="padding: 0.75rem 2rem; border-radius: 1rem; background-color: #22c55e; color: white; font-size: 1.125rem; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+          🍽 Menüye Göz At
+        </button>
+
+        <button @click="orderC()"
+                style="padding: 0.75rem 2rem; border-radius: 1rem; background-color: white; color: #16a34a; font-size: 1.125rem; font-weight: 600; border: 2px solid #16a34a; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
+          🛒 Sipariş Ver
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import axios from "axios";
-import { onMounted, ref, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
-
-import PFooter from "../../../components/Footer/Footer.vue";
-import PHeader from "../../../components/Header/PHeader/PHeader.vue";
-
-import { setLoading } from "../../../store/app";
-import { toast } from "vue3-toastify";
-
-const route = useRoute();
-const router = useRouter();
-
-const message = ref("Yükleniyor...");
-
-// Son işlenen parametreleri tut (aynı parametre ile tekrar çalışmayı önlemek için)
-let lastProcessed = {
-  restaurantId: null as string | null,
-  tableId: null as string | null,
-  v: null as string | null,
-};
-
-// Güvenli localStorage setter
-function safeSetItem(key: string, value: string | null) {
-  try {
-    if (value === null) localStorage.removeItem(key);
-    else localStorage.setItem(key, value);
-  } catch (e) {
-    console.warn("localStorage error", e);
-  }
-}
-
-/**
- * Asıl işlem fonksiyonu.
- * restaurantId ve tableId zorunlu; version (v) opsiyonel.
- */
-async function handleLoginAttack(restaurantId: string, tableId: string, version: string | null) {
-  // Aynı parametreler ile daha önce çalıştıysak atla
-  if (
-      lastProcessed.restaurantId === restaurantId &&
-      lastProcessed.tableId === tableId &&
-      lastProcessed.v === version
-  ) {
-    return;
-  }
-
-  // güncelle
-  lastProcessed = { restaurantId, tableId, v: version };
-
-  try {
-    setLoading(true);
-    message.value = "Giriş yapılıyor...";
-
-    // Her yeni QR geldiğinde eski table ile ilgili anahtarları temizle
-    safeSetItem("table", null);
-    safeSetItem("table_v", null);
-
-    // Eğer QR içinde version varsa bunu kaydet (gerektiğinde backend'e gönderebilirsin)
-    if (version) safeSetItem("table_v", version);
-
-    // Sunucuya restoran kodunu gönder ve token/user al
-    const postData = { code: restaurantId };
-
-    const response = await axios.post("v2/restaurant-menu", postData);
-
-    if (response?.data?.success) {
-      const resData = response.data;
-
-      // Token ve kullanıcı bilgileri
-      const token = resData.token ?? null;
-      const user = resData.user ?? null;
-
-      // Güvenli şekilde kaydet
-      safeSetItem("token", token);
-      safeSetItem("restaurantCode", restaurantId);
-      safeSetItem("table", tableId);
-      if (user?.tenant?.domain) safeSetItem("domain", user.tenant.domain);
-      if (user) safeSetItem("userData", JSON.stringify(user));
-
-      // Ek bilgi çağrısı (bilgi endpointi)
-      await fetchUserInformation(token);
-
-      toast("Hoşgeldiniz...", {
-        theme: "dark",
-        type: "success",
-        pauseOnFocusLoss: false,
-      });
-
-      message.value = "Yönlendiriliyorsunuz...";
-
-      // Yönlendir: /tables/:tableId
-      // küçük bir bekleme ver (opsiyonel)
-      setTimeout(() => {
-        router.push({ path: `/tables/${tableId}` }).catch(() => {});
-      }, 150);
-    } else {
-      const errMsg = response?.data?.message ?? "Giriş başarısız.";
-      message.value = errMsg;
-      toast(errMsg, { theme: "dark", type: "error" });
-    }
-  } catch (err: any) {
-    console.error("LoginAttack error:", err);
-    const errMsg = err?.response?.data?.message ?? "Sunucu hatası veya bağlantı hatası.";
-    message.value = errMsg;
-    toast(errMsg, { theme: "dark", type: "error" });
-  } finally {
-    setLoading(false);
-  }
-}
-
-/**
- * Kullanıcı bilgilerini alır (token kullanılarak)
- */
-async function fetchUserInformation(tokenArg?: string | null) {
-  try {
-    const token = tokenArg ?? localStorage.getItem("token");
-    const domain = localStorage.getItem("domain");
-
-    if (!token || !domain) return;
-
-    const res = await axios.post(
-        "v2/auth/information",
-        { domain },
-        { headers: { Authorization: token } }
-    );
-
-    if (res?.data?.success) {
-      // İstersen store'a dispatch edebilirsin
-      console.log("Kullanıcı bilgileri:", res.data.users);
-    }
-  } catch (e) {
-    console.warn("fetchUserInformation error", e);
-  }
-}
-
-/**
- * route.params / route.query değişikliklerini dinle.
- * - onMounted içinde de bir kez çağırıyoruz (ilk QR).
- */
-onMounted(() => {
-  const rId = (route.params.restaurantId as string) || "";
-  const tId = (route.params.tableId as string) || "";
-  const v = (route.query.v as string) || null;
-
-  if (!rId || !tId) {
-    message.value = "Geçersiz QR URL'i.";
-    toast("Geçersiz QR URL'i.", { theme: "dark", type: "error" });
-    return;
-  }
-
-  handleLoginAttack(rId, tId, v);
-});
-
-/**
- * Eğer kullanıcı aynı component açıkken başka bir QR okutursa (route param değişir),
- * bunları yakalayıp handleLoginAttack'i yeniden çağır.
- */
-watch(
-    () => [route.params.restaurantId, route.params.tableId, route.query.v],
-    (newVals, oldVals) => {
-      const [newR, newT, newV] = newVals as [string, string, string?];
-      const [oldR, oldT, oldV] = oldVals as [string, string, string?];
-
-      // Eğer herhangi bir param değiştiyse ve yeni paramlar geçerli ise tekrar çalıştır
-      if ((newR && newT) && (newR !== oldR || newT !== oldT || newV !== oldV)) {
-        handleLoginAttack(newR, newT, newV ?? null);
-      }
-    }
-);
-</script>
-
 <style scoped>
-/* İstersen buraya stil ekle */
+/* Eğer Tailwind yoksa alternatif sade CSS için */
 </style>

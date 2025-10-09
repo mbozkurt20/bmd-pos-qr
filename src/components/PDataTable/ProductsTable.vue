@@ -1,197 +1,245 @@
 <script setup>
-import { ref } from "vue";
-import { changeMenuStatus, Menu } from "../../store/menu";
+import { ref, computed } from "vue";
+import { Menu } from "../../store/menu";
+import router from "@/router/index.js";
 
-const dataSearch = ref("");
-const dataFilter = ref("all");
+const search = ref("");
+const selectedCategory = ref("all");
 
-const filteredData = () => {
-  return Menu.products.filter(
-    (product) =>
-      (product.category_id == dataFilter.value || dataFilter.value == "all") &&
-      product.name.toLowerCase().includes(dataSearch.value.toLowerCase())
-  );
-};
+// Filtrelenmiş ürün listesi
+const filteredProducts = computed(() => {
+  return Menu.categories.map(category => ({
+    ...category,
+    products: category.products.filter(
+        p =>
+            (selectedCategory.value === "all" || p.category_id === selectedCategory.value) &&
+            p.name.toLowerCase().includes(search.value.toLowerCase())
+    ),
+  }));
+});
 
-const setProductStatus = (product) => {
-  if (product.status == 1) {
-    product.status = 0;
-  } else {
-    product.status = 1;
-  }
-  changeMenuStatus("api/v2/menu/destroy", product.id, product.status);
-};
+const table = localStorage.getItem('table') ?? null;
+
+const order = ()  => {
+  return router.push({ path: `/tables/${table}` });
+}
+const rawUserData = localStorage.getItem("userData");
+const userData = rawUserData ? JSON.parse(rawUserData) : null;
 </script>
 
 <template>
-  <div class="mt-2" style="padding: 10px">
-    <div class="table-nav">
-      <div class="table-title">Ürünler</div>
-      <div class="d-flex gap-3">
-        <div class="table-filter">
-          <select
-            v-model="dataFilter"
-            class="form-control form-control-sm rounded-5 w-100 border-2 px-4"
-          >
-            <option value="all" selected>Tüm Kategoriler</option>
-            <option :value="category.id" v-for="category in Menu.categories">
-              {{ category.name }}
-            </option>
-          </select>
-        </div>
-        <div class="table-search">
-          <div class="position-relative">
-            <ion-icon
-              class="search-icon md hydrated"
-              role="img"
-              name="search-outline"
-            ></ion-icon>
-            <input
-              type="text"
-              placeholder="Ara.."
-              v-model="dataSearch"
-              name="customer-search"
-              class="customer-search-input form-control form-control-sm rounded-5 border-2 small"
-              autocomplete="off"
-            />
+  <section class="menu-container">
+    <!-- Başlık -->
+    <div class="menu-header">
+      <h1>{{userData?.name}} Menü</h1>
+      <p class="mt-4"> {{userData.slogan}}</p>
+
+      <button @click="order">Sipariş Ver</button>
+    </div>
+
+    <!-- Filtre -->
+    <div class="filter-bar">
+      <select v-model="selectedCategory">
+        <option value="all">Tüm Kategoriler</option>
+        <option v-for="cat in Menu.categories" :key="cat.id" :value="cat.id">
+          {{ cat.name }}
+        </option>
+      </select>
+      <input v-model="search" type="text" placeholder="Ürün ara..." />
+    </div>
+
+    <p class="text-center mb-4">Kategorilere göre filtreleyin veya ürün arayın</p>
+
+    <!-- Menü Listesi -->
+    <div v-for="category in filteredProducts" :key="category.id" class="category-section">
+      <div v-if="category.products.length > 0">
+        <h2 class="py-4 mt-3">{{ category.name }}</h2>
+
+        <div class="product-grid">
+          <div v-for="product in category.products" :key="product.id" class="product-card">
+            <div class="product-img">
+              <img :src="product.image" :alt="product.name" />
+            </div>
+            <div class="product-info">
+              <h3>{{ product.name }}</h3>
+              <p class="details">{{ product.details }}</p>
+              <p class="price">₺{{ product.price }}</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="table-responsive" style="max-height: 100vh">
-      <table class="table bg-transparent">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Görsel</th>
-            <th>Ürün Adı</th>
-            <th>Ürün Adet</th>
-            <th>Ürün Fiyatı</th>
-            <th>Durumu</th>
-          </tr>
-        </thead>
-        <tbody v-if="filteredData().length > 0">
-          <tr v-for="product in filteredData()">
-            <td>{{ product.id }}</td>
-            <td><img height="32"  :src="product.image " alt=""></td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.amount ?? 'Bulunmuyor' }}</td>
-            <td>₺{{ product.price }}</td>
-            <td>
-              <div class="form-check form-switch">
-                <div class="switch-container">
-                  <div class="switch" @click="setProductStatus(product)">
-                    <input
-                      type="checkbox"
-                      id="flexSwitchCheckDefault"
-                      :checked="product.status"
-                    />
 
-                    <span class="switch-slider"></span>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </tbody>
-        <tbody v-else>
-          <tr>
-            <td colspan="4" class="w-100 text-center p-5">
-              Gösterilecek Ürün Bulunamadı
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div v-if="filteredProducts.every(c => c.products.length === 0)" class="no-products">
+      Gösterilecek ürün bulunamadı ☕
     </div>
-  </div>
+  </section>
 </template>
 
-<style lang="scss" scoped src="./PDataTable.scss"></style>
 <style scoped>
-.switch-container {
+/* === GENEL === */
+.menu-container {
+  background: linear-gradient(to bottom, #000000, #1a1a1a);
+  color: #fff;
+  font-family: "Raleway", sans-serif;
+  min-height: 100vh;
+  padding: 60px 20px;
+}
+
+/* === BAŞLIK === */
+.menu-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+.menu-header h1 {
+  font-family: "Oswald", sans-serif;
+  font-size: 48px;
+  color: #caa76a;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.menu-header p {
+  color: #ccc;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+/* === FİLTRE === */
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+}
+.filter-bar select,
+.filter-bar input {
+  background: #111;
+  color: #caa76a;
+  border: 1px solid #caa76a;
+  border-radius: 6px;
+  padding: 10px 15px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+.filter-bar select:hover,
+.filter-bar input:focus {
+  background: #222;
+  box-shadow: 0 0 10px rgba(202, 167, 106, 0.3);
+}
+
+/* === KATEGORİ BAŞLIKLARI === */
+.category-section h2 {
+  color: #caa76a;
+  font-size: 24px;
+  border-bottom: 2px solid #caa76a;
+  margin-bottom: 25px;
+  text-transform: uppercase;
+}
+
+/* === ÜRÜN GRID === */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+}
+
+/* === KART === */
+.product-card {
   display: flex;
   align-items: center;
-  border-radius: 8px;
-  gap: 8px;
-  cursor: pointer;
-  padding: 2px 6px;
-  color: #777;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(202, 167, 106, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(202, 167, 106, 0.25);
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.switch-container svg {
-  height: 18px;
+/* === RESİM === */
+.product-img {
+  flex-shrink: 0;
+  width: 130px;
+  height: 130px;
+  overflow: hidden;
+}
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s ease;
+}
+.product-card:hover img {
+  transform: scale(1.1);
 }
 
-.switch-label {
-  margin-right: 10px;
+/* === BİLGİ === */
+.product-info {
+  padding: 15px 20px;
+  flex: 1;
 }
-
-.switch-right {
-  flex-direction: column;
-  display: flex;
-}
-
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 50px;
-  height: 24px;
-}
-
-.switch-label {
-  font-size: 14px;
+.product-info h3 {
+  color: #fff;
+  font-size: 19px;
   font-weight: 600;
+  margin-bottom: 6px;
+}
+.product-info .details {
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+.product-info .price {
+  color: #caa76a;
+  font-weight: bold;
+  font-size: 17px;
 }
 
-.switch-state {
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+/* === ÜRÜN YOKSA === */
+.no-products {
+  text-align: center;
+  color: #888;
+  margin-top: 80px;
+  font-size: 18px;
 }
 
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+/* === RESPONSIVE === */
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .menu-header h1 {
+    font-size: 36px;
+  }
+
+  /* Kart mobilde de yatay kalacak */
+  .product-card {
+    flex-direction: row; /* column yerine row */
+    text-align: left;    /* içerik sola hizalı */
+    flex-wrap: wrap;     /* küçük ekranlarda taşmayı önler */
+  }
+
+  .product-img {
+    width: 120px;   /* daha küçük ekran için uygun boyut */
+    height: 120px;  /* aynı oran korunur */
+  }
+
+  .product-info {
+    padding: 10px 15px;
+    flex: 1;
+  }
+
+  .product-grid {
+    gap: 15px; /* mobilde daha küçük boşluk */
+  }
 }
 
-.switch-slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ed5249 !important;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-  border-radius: 20px;
-}
 
-.switch-slider:before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 4px;
-  bottom: 3px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-  border-radius: 50%;
-}
-
-input:checked + .switch-slider {
-  background-color: #28a745 !important;
-}
-
-input:focus + .switch-slider {
-  box-shadow: 0 0 1px #2196f3;
-}
-
-input:checked + .switch-slider:before {
-  -webkit-transform: translateX(25px);
-  -ms-transform: translateX(25px);
-  transform: translateX(25px);
-}
 </style>
+
