@@ -1,25 +1,14 @@
 import router from "../router/index.js";
 
 export default function auth({ to, next }) {
-    const token = localStorage.getItem('token') ?? null;
-    const table = localStorage.getItem('table') ?? null;
-    const restaurantCode = localStorage.getItem('restaurantCode') ?? null;
+    // Her QR kod okutulduğunda veya sayfa değişiminde storage sıfırlanacak
+    localStorage.clear();
 
-    if (!token) {
-        // Kullanıcı giriş yapmamışsa sadece giriş sayfasına gitmesine izin ver
-        if (to.name === 'Login' || to.fullPath === '/') {
-            return next();
-        } else {
-            localStorage.clear()
-            return next({ name: `/restaurant/${restaurantCode}/table/${table}` });
-        }
-    } else {
-        // Kullanıcı giriş yapmışsa ve /login sayfasına gitmeye çalışıyorsa, onu /index'e yönlendir
-        if (to.name === 'Login' || to.fullPath === '/') {
-            localStorage.clear()
-            return next({ name: `/restaurant/${restaurantCode}/table/${table}` });
-        }
-        // Kullanıcı giriş yapmışsa, istediği sayfaya gidebilsin
+    // Eğer kullanıcı login sayfasına gidiyorsa izin ver
+    if (to.name === 'Login' || to.fullPath === '/') {
         return next();
     }
+
+    // Diğer sayfalara gitmeye çalışırsa login sayfasına yönlendir
+    return next({ name: 'Login' });
 }
