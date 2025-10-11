@@ -9,14 +9,12 @@ import router from "@/router";
 export default {
   name: 'Login',
   components: { PHeader, PFooter },
-  props: {
-    restaurantId: { type: String, required: true },
-    tableId: { type: String, required: true },
-  },
+
   data() {
     return {
       users: [],
       code: "",
+      table: null
     };
   },
   mounted() {
@@ -48,6 +46,8 @@ export default {
           localStorage.setItem("table", table);
           localStorage.setItem("domain", response.data.user.tenant.domain);
           localStorage.setItem("userData", JSON.stringify(response.data.user));
+
+          this.table = localStorage.getItem('table')
           await this.login();
           toast("Hoşgeldiniz...", {
             theme: "dark",
@@ -102,7 +102,7 @@ export default {
 
         <button @click="orderC()"
                 style="padding: 0.75rem 2rem; border-radius: 1rem; background-color: white; color: #16a34a; font-size: 1.125rem; font-weight: 600; border: 2px solid #16a34a; cursor: pointer; transition: all 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.1);">
-          🛒 Sipariş Ver
+          🛒  {{table}} | Sipariş Ver
         </button>
       </div>
     </div>
