@@ -20,7 +20,10 @@ export default {
     };
   },
   mounted() {
+    localStorage.clear();
+
     this.LoginAttack()
+
   },
   methods: {
     orderC() {
@@ -31,8 +34,10 @@ export default {
     },
 
     async LoginAttack() {
-      const restaurantCode = this.restaurantId;
-      const table = this.tableId;
+      const pathSegments = window.location.pathname.split('/')
+
+      const restaurantCode = pathSegments[2]
+      const table = pathSegments[4]
 
       try {
         setLoading(true);

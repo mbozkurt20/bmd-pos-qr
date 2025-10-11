@@ -23,7 +23,6 @@ const routes = [
         }),
         meta: {
             title: 'Restaurant Girişi',
-            middleware: [auth]
         }
     },
     {
