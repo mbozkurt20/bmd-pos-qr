@@ -41,6 +41,21 @@ const filteredOptions = (feature) => {
   );
 };
 
+const filteredFeature = (feature) => {
+  // type 1 → tek seçimli feature
+  if (feature.type === 1) {
+    return feature.selected === feature.id
+  }
+
+  // type 1 ama alt option varsa (Acılı → AZ / ÇOK / AŞIRI)
+  if (feature.type === 1 && feature.options?.length) {
+    return feature.selected != null
+  }
+
+  return false
+}
+
+
 onLongPress(
     longPress,
     (e) => {
@@ -98,8 +113,14 @@ onLongPress(
       <div class="col-6">
         <div class="badge ps-2 text-dark text-start w-100">
           <div class="mb-2" v-if="item.portion == '0.5'">Yarım Porsiyon</div>
+          <div class="mb-2" v-if="item.portion == '1'">1 Porsiyon</div>
           <div class="mb-2" v-if="item.portion == '1.5'">1.5 Porsiyon</div>
-          <div
+
+          <div class="mb-2">
+            <strong>{{ item.features?.find(f => f.id === item.selectedFeatureId)?.name }} ({{ item.features?.find(f => f.id === item.selectedFeatureId)?.price }}₺)</strong>
+          </div>
+
+          <!--div
               class="mb-2"
               v-for="feature in item.featureList"
               v-if="item.featureList">
@@ -107,7 +128,7 @@ onLongPress(
               {{ option.name }}
               <span v-if="filteredOptions(feature).length != i + 1">, </span>
             </span>
-          </div>
+          </div-->
         </div>
       </div>
       <div
@@ -185,15 +206,8 @@ onLongPress(
         <div class="badge ps-2 text-dark text-start w-100">
           <div class="mb-2" v-if="item.portion == '0.5'">Yarım Porsiyon</div>
           <div class="mb-2" v-if="item.portion == '1.5'">1.5 Porsiyon</div>
-          <div
-              class="mb-2"
-              v-for="feature in item.featureList"
-              v-if="item.featureList"
-          >
-            <span v-for="(option, i) in filteredOptions(feature)">
-              {{ option.name
-              }}<span v-if="filteredOptions(feature).length != i + 1">, </span>
-            </span>
+          <div class="mb-2">
+            <strong>{{ item.features?.find(f => f.id === item.selectedFeatureId)?.name }} ({{ item.features?.find(f => f.id === item.selectedFeatureId)?.price }}₺)</strong>
           </div>
         </div>
       </div>

@@ -149,7 +149,9 @@ export const setStateTable = (payload) => {
 };
 
 export const getCartTotal = () => {
+    console.log('girdi')
     return tableDetailStore.cart.reduce((total, item) => {
+        console.log({fs:item})
         let quantity;
         if (item) {
             quantity = item.quantity - ((item.exclude ?? item.exclude ?? 0))
@@ -158,11 +160,8 @@ export const getCartTotal = () => {
         }
         let featurePrice = 0
         let portion = item.portion ? parseFloat(item.portion) : 1
-        if (item.featureList) {
-            featurePrice = item.featureList.map(feature => {
-                let optionsAmount = feature.options.filter(option => feature.selected.includes(option.id)).map(option => Number(option.price)).reduce((a, b) => a + b, 0)
-                return optionsAmount
-            }).reduce((a, b) => a + b, 0)
+        if (item.features && item.feature) {
+            featurePrice = item.features.find(f => f.id === item.selectedFeatureId)?.price
         }
         return total + Number((Number(item.price) + featurePrice) * portion * quantity)
     }, 0);
@@ -198,13 +197,13 @@ export const itemAbsoluteQuantity = (item) => {
 export const itemAbsolutePrice = (item, single = false) => {
     let featurePrice = 0
     let portion = item.portion ? parseFloat(item.portion) : 1
-    if (item.featureList) {
-        featurePrice = item.featureList.map(feature => {
-            let optionsAmount = feature.options.filter(option => feature.selected.includes(option.id)).map(option => Number(option.price)).reduce((a, b) => a + b, 0)
-            return optionsAmount
-        }).reduce((a, b) => a + b, 0)
+
+    if (item.features && item.selectedFeatureId) {
+        featurePrice = item.features.find(f => f.id === item.selectedFeatureId)?.price
     }
-    return Number((Number(item.price) + featurePrice) * portion * (single ? 1 : itemAbsoluteQuantity(item)))
+
+    console.log({featurePrice:featurePrice})
+    return Number((Number(item.price)) * portion * (single ? 1 : itemAbsoluteQuantity(item)) + Number(featurePrice))
 }
 
 const getSelectedProducts = () => {
@@ -268,7 +267,15 @@ export const sendSelf = (paymentMethod) => {
         },
     }).then((response) => {
         if (response.data.success === true) {
-            router.push("/index")
+            toast('Sipariş Kaydedildi', {
+                "theme": "dark",
+                "type": "success",
+                "pauseOnFocusLoss": false
+            });
+
+            setTimeout(() => {
+                router.push("/fast-sell")
+            },1000)
         }
 
         setLoading(false);
@@ -465,7 +472,34 @@ export const setReservation = (notes) => {
         });
 };
 
+export const changePackageStatus = (status,id) => {
+    console.log({status:status})
+    axios({
+        url: "/api/v2/area/status",
+        method: "POST",
+        data: {
+            domain: localStorage.getItem("domain"),
+            id: id,
+            status: status,
+        },
+    })
+        .then((res) => {
+            if (res.data.success === true) {
+                toast(res.data.message, {
+                    "theme": "dark",
+                    "type": "success",
+                    "pauseOnFocusLoss": false
+                })
+            }
+        })
+        .catch((e) => {
+            console.log("err", e);
+        });
+};
+
+
 export const changeTableStatus = (status) => {
+    console.log({status:status})
     axios({
         url: "/api/v2/area/status",
         method: "POST",
@@ -524,7 +558,7 @@ export const updateProductTables = () => {
 
     console.log({updateData: updateData})
 
-      axios({
+    axios({
         method: "POST",
         url: "/api/v2/area/table_order_update",
         data: updateData,
@@ -646,15 +680,16 @@ export const giftCartProduct = (note = '') => {
 };
 
 export const addToCartProduct = (product) => {
-
     let uniqueId = unId()
     let newCartItem = {
         raw_id: uniqueId,
         ...product,
         product_id: product.id,
+        feature_id : product.selectedFeatureId,
         id: uniqueId
     }
 
+    console.log({sf:product})
     tableDetailStore.cart.push(newCartItem);
     setAddedProductFeatures([]);
 };
